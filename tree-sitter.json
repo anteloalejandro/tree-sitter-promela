@@ -25,7 +25,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-promela",
+      "repository": "https://github.com/anteloalejandro/tree-sitter-promela",
       "funding": ""
     }
   },
@@ -33,7 +33,7 @@
     "c": false,
     "go": false,
     "java": false,
-    "node": false,
+    "node": true,
     "python": false,
     "rust": true,
     "swift": false,
