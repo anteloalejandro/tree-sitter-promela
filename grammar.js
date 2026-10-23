@@ -122,7 +122,7 @@ export default grammar({
     ivar: $ => seq(
       $.name,
       optional(seq("[", $.const, "]")),
-      optional(seq("[", "=", choice($.any_expr, $.ch_init), "]")),
+      optional(seq("=", choice($.any_expr, $.ch_init))),
     ),
 
     ch_init: $ => seq("[", $.const, "]", "of", "{", commaList($.typename), "}"),
