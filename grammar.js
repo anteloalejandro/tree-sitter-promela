@@ -87,7 +87,8 @@ export default grammar({
     utype: $ => seq("typedef", $.name, "{", $.decl_lst, "}"),
     mtype: $ => seq("mtype", optional("="), "{", commaList($.name), "}" ),
     // global vars and chans
-    decl_lst: $ => semicolonList($.one_decl),
+    // TODO: should there be an optional ; here?
+    decl_lst: $ => prec.left(semicolonList($.one_decl)),
 
     // declarations
     one_decl: $ => choice(
@@ -127,18 +128,20 @@ export default grammar({
 
     ch_init: $ => seq("[", $.const, "]", "of", "{", commaList($.typename), "}"),
 
-    varref: $ => seq(
+    // NOTE: Test prec
+    varref: $ => prec(1,seq(
       $.name,
       optional(seq("[", $.any_expr, "]")),
       optional(seq(".", $.varref))
-    ),
+    )),
 
-    send: $ => choice(
+    // NOTE: Test prec
+    send: $ => prec(1, choice(
       // normal FIFO send
       seq($.varref, "!", $.send_args),
       // sorted send
       seq($.varref, "!", "!", $.send_args),
-    ),
+    )),
 
     receive: $ => choice(
       // normal receive
@@ -175,11 +178,11 @@ export default grammar({
 
     assign: $ => choice(
       // standard assignment
-      seq($.varref, "=", $.any_expr),
+      prec.right(2, seq($.varref, "=", $.any_expr)),
       // increment
-      seq($.varref, "+", "+"),
+      prec.left(2, seq($.varref, "+", "+")),
       // decrement
-      seq($.varref, "-", "-")
+      prec.left(2, seq($.varref, "-", "-"))
     ),
 
     stmnt: $ => choice(
@@ -241,8 +244,10 @@ export default grammar({
 
     any_expr: $ => choice(
       seq("(", $.any_expr, ")"),
-      seq($.any_expr, $.binarop, $.any_expr),
-      seq($.unarop, $.any_expr),
+      // NOTE: Test prec, not all binary operations are necessarily the same
+      prec.left(seq($.any_expr, $.binarop, $.any_expr)),
+      // NOTE: Test prec, not all unary operations are necessarily the same
+      prec.right(seq($.unarop, $.any_expr)),
       seq("(", $.any_expr, "-", ">", $.any_expr, ":", $.any_expr, ")"),
       // number of messages in channel
       seq("len", "(", $.varref, ")"),
@@ -270,13 +275,13 @@ export default grammar({
     get_priority: _ => "get_priority",
     set_priority: _ => "set_priority",
 
-    expr: $ => choice(
+    expr: $ => prec.left(choice(
       $.any_expr,
       seq("(", $.expr, ")"),
       seq($.expr, $.andor, $.expr),
       // TODO: is "cannot be negated" another edge case?
       seq($.chanpoll, "(", $.varref, ")") // cannot be negated
-    ),
+    )),
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 

@@ -11,6 +11,15 @@ init
 
 (spec
   (init
-    (_)
+    (sequence
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar (name))
+          )
+        )
+      )
+    )
   )
 )
