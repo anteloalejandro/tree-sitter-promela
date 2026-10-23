@@ -1,0 +1,16 @@
+=================
+Top level Modules
+=================
+
+init
+{
+  bool myVar
+}
+
+---
+
+(spec
+  (init
+    (_)
+  )
+)
