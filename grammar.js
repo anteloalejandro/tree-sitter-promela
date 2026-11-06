@@ -358,7 +358,7 @@ export default grammar({
       // regex only matches to the end of the line by default
       seq('//', /.*/),
       // block comments
-      seq('/* ', repeat(/.*/), '*/')
+      seq('/* ', repeat(/.*?/), '*/')
     )),
 
     // TODO: Using _c_block generically for now,
