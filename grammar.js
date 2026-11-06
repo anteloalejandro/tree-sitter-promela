@@ -33,6 +33,15 @@ function semicolonList(rule) {
   return sepList(rule, ";")
 }
 
+/**
+ * Wraps `rule` with the specified `wrapper`
+ * @param {RuleOrLiteral} rule
+ * @param {RuleOrLiteral} wrapper
+ */
+function wrap(rule, wrapper) {
+  return seq(wrapper, rule, wrapper)
+}
+
 export default grammar({
   // TODO: According to the manual:
   // > The statement separator used in this list is the semi-colon ';'.
@@ -176,6 +185,7 @@ export default grammar({
       seq(optional("-"), "const")
     ),
 
+    // NOTE: These can't act as expresions, even though spin calls them operators.
     assign: $ => choice(
       // standard assignment
       prec.right(2, seq($.varref, "=", $.any_expr)),
@@ -231,49 +241,72 @@ export default grammar({
 
     options: $ => repeat1(seq(":", ":", $.sequence)),
 
-    // operator precedence
-    // binary operators:
-    // +
-    // -
-    // *
-    // /
-    // %
-    // &
-    // ^
-    // |
-    // >
-    // <
-    // >=
-    // <=
-    // ==
-    // !=
-    // <<
-    // >>
-    // &&
-    // ||
-    // unary operators:
-    // ~
-    // -
-    // !
+    // INFO: operator precedence
+    // https://en.cppreference.com/c/language/operator_precedence
+    _minus_expr: $ => prec.right(12, seq("-", $.expr)),
+    _not_expr: $ => prec.right(12, wrap("!", $.expr)),
+    _bitewise_not_expr: $ => prec.right(12, wrap("~", $.expr)),
 
-    andor: _ => choice(seq("&", "&"), seq("|", "|")),
+    _mul_expr: $ => prec.left(11, wrap("*", $.expr)),
+    _div_expr: $ => prec.left(11, wrap("/", $.expr)),
+    _mod_expr: $ => prec.left(11, wrap("%", $.expr)),
 
-    binarop: $ => choice(
-      "+", "-", "*", "/", "%", "&", "^", "|", ">", "<",
-      seq(">", "="), seq("<", "="), seq("=", "="),
-      seq("!", "="), seq("<", "<"), seq(">", ">"),
-      $.andor
+    _add_expr: $ => prec.left(10, wrap("+", $.expr)),
+    _sub_expr: $ => prec.left(10, wrap("-", $.expr)),
+
+    _left_shift_expr: $ => prec.left(9, wrap("<<", $.expr)),
+    _right_shift_expr: $ => prec.left(9, wrap(">>", $.expr)),
+
+    _lt_expr: $ => prec.left(8, wrap("<", $.expr)),
+    _le_expr: $ => prec.left(8, wrap("<=", $.expr)),
+    _gt_expr: $ => prec.left(8, wrap(">", $.expr)),
+    _ge_expr: $ => prec.left(8, wrap(">=", $.expr)),
+
+    _eq_expr: $ => prec.left(7, wrap("==", $.expr)),
+    _ne_expr: $ => prec.left(7, wrap("!=", $.expr)),
+
+    _bitwise_and_expr: $ => prec.left(6, wrap("&", $.expr)),
+    _bitwise_or_expr: $ => prec.left(5, wrap("|", $.expr)),
+    _bitwise_xor_expr: $ => prec.left(4, wrap("^", $.expr)),
+
+    _and_expr: $ => prec.left(3, wrap("&&", $.expr)),
+    _or_expr: $ => prec.left(2, wrap("||", $.expr)),
+
+    ternary_conditional: $ => prec.right(1, seq("(", $.expr, "->", $.expr, ":", $.expr, ")")),
+
+    binary_expression: $ => choice(
+      $._mul_expr,
+      $._div_expr,
+      $._mod_expr,
+      $._add_expr,
+      $._sub_expr,
+      $._left_shift_expr,
+      $._right_shift_expr,
+      $._lt_expr,
+      $._le_expr,
+      $._gt_expr,
+      $._ge_expr,
+      $._eq_expr,
+      $._ne_expr,
+      $._bitwise_and_expr,
+      $._bitwise_or_expr,
+      $._bitwise_xor_expr,
+      $._and_expr,
+      $._or_expr,
     ),
 
-    unarop: _ => choice("~", "-", "!"),
+    unary_expression: $ => choice(
+      $._minus_expr,
+      $._not_expr,
+      $._bitewise_not_expr,
+    ),
 
     any_expr: $ => choice(
       seq("(", $.any_expr, ")"),
-      // NOTE: Test prec, not all binary operations are necessarily the same
-      prec.left(seq($.any_expr, $.binarop, $.any_expr)),
-      // NOTE: Test prec, not all unary operations are necessarily the same
-      prec.right(seq($.unarop, $.any_expr)),
-      seq("(", $.any_expr, "-", ">", $.any_expr, ":", $.any_expr, ")"),
+      // TODO: Test precedence
+      $.ternary_conditional,
+      $.binary_expression,
+      $.unary_expression,
       // number of messages in channel
       seq("len", "(", $.varref, ")"),
       $.poll,
@@ -303,7 +336,6 @@ export default grammar({
     expr: $ => prec.left(choice(
       $.any_expr,
       seq("(", $.expr, ")"),
-      seq($.expr, $.andor, $.expr),
       // TODO: is "cannot be negated" another edge case?
       seq($.chanpoll, "(", $.varref, ")") // cannot be negated
     )),

@@ -49,11 +49,6 @@
     }
   },
   {
-    "type": "andor",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "any_expr",
     "named": true,
     "fields": {},
@@ -70,7 +65,7 @@
           "named": true
         },
         {
-          "type": "binarop",
+          "type": "binary_expression",
           "named": true
         },
         {
@@ -102,7 +97,11 @@
           "named": true
         },
         {
-          "type": "unarop",
+          "type": "ternary_conditional",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         },
         {
@@ -147,15 +146,15 @@
     }
   },
   {
-    "type": "binarop",
+    "type": "binary_expression",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
-          "type": "andor",
+          "type": "expr",
           "named": true
         }
       ]
@@ -253,10 +252,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "andor",
-          "named": true
-        },
         {
           "type": "any_expr",
           "named": true
@@ -708,6 +703,21 @@
     "fields": {}
   },
   {
+    "type": "ternary_conditional",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "trace",
     "named": true,
     "fields": {},
@@ -753,9 +763,19 @@
     }
   },
   {
-    "type": "unarop",
+    "type": "unary_expression",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "unsigned_decl",
@@ -832,6 +852,10 @@
     "named": false
   },
   {
+    "type": "!=",
+    "named": false
+  },
+  {
     "type": "\"",
     "named": false
   },
@@ -841,6 +865,10 @@
   },
   {
     "type": "&",
+    "named": false
+  },
+  {
+    "type": "&&",
     "named": false
   },
   {
@@ -868,6 +896,10 @@
     "named": false
   },
   {
+    "type": "->",
+    "named": false
+  },
+  {
     "type": ".",
     "named": false
   },
@@ -892,11 +924,31 @@
     "named": false
   },
   {
+    "type": "<<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
     "type": "=",
     "named": false
   },
   {
+    "type": "==",
+    "named": false
+  },
+  {
     "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": ">>",
     "named": false
   },
   {
@@ -1109,6 +1161,10 @@
     "named": false
   },
   {
+    "type": "select",
+    "named": false
+  },
+  {
     "type": "set_priority",
     "named": true
   },
@@ -1162,6 +1218,10 @@
   },
   {
     "type": "|",
+    "named": false
+  },
+  {
+    "type": "||",
     "named": false
   },
   {
