@@ -1,0 +1,500 @@
+================
+If Statement
+================
+
+init
+{
+  if :: MyInt = 1 fi
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (options
+            (sequence
+              (step
+                (stmnt
+                  (assign
+                    (varref
+                      (name))
+                    (any_expr
+                      (const))))))))))))
+
+================
+Do Loop
+================
+
+init
+{
+  do :: MyInt = 1 od
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (options
+            (sequence
+              (step
+                (stmnt
+                  (assign
+                    (varref
+                      (name))
+                    (any_expr
+                      (const))))))))))))
+
+================
+For Loop
+================
+
+init
+{
+  for (MyInt : 1 .. 10) { MyInt = 5 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (range
+            (name)
+            (any_expr
+              (const))
+            (any_expr
+              (const)))
+          (sequence
+            (step
+              (stmnt
+                (assign
+                  (varref
+                    (name))
+                  (any_expr
+                    (const)))))))))))
+
+================
+Atomic Step
+================
+
+init
+{
+  atomic { MyInt = 5 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (sequence
+            (step
+              (stmnt
+                (assign
+                  (varref
+                    (name))
+                  (any_expr
+                    (const)))))))))))
+
+================
+Deterministic Step
+================
+
+init
+{
+  d_step { MyInt = 5 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (sequence
+            (step
+              (stmnt
+                (assign
+                  (varref
+                    (name))
+                  (any_expr
+                    (const)))))))))))
+
+================
+Select
+================
+
+init
+{
+  select (MyInt : 1 .. 10)
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (range
+            (name)
+            (any_expr
+              (const))
+            (any_expr
+              (const))))))))
+
+================
+Bare Block
+================
+
+init
+{
+  {
+    MyInt = 5
+  }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (sequence
+            (step
+              (stmnt
+                (assign
+                  (varref
+                    (name))
+                  (any_expr
+                    (const)))))))))))
+
+================
+Messages
+================
+
+init
+{
+  MyChan!MyInt;
+  MyChan!!MyInt;
+  MyChan !! MyInt;
+  MyChan?MyInt;
+  MyChan??MyInt;
+  MyChan ?? MyInt;
+  MyChan?[MyInt];
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (send
+            (varref
+              (name))
+            (send_args
+              (arg_lst
+                (any_expr
+                  (varref
+                    (name))))))))
+      (step
+        (stmnt
+          (send
+            (varref
+              (name))
+            (send_args
+              (arg_lst
+                (any_expr
+                  (varref
+                    (name))))))))
+      (step
+        (stmnt
+          (send
+            (varref
+              (name))
+            (send_args
+              (arg_lst
+                (any_expr
+                  (varref
+                    (name))))))))
+      (step
+        (stmnt
+          (receive
+            (varref
+              (name))
+            (recv_args
+              (recv_arg
+                (varref
+                  (name)))))))
+      (step
+        (stmnt
+          (receive
+            (varref
+              (name))
+            (recv_args
+              (recv_arg
+                (varref
+                  (name)))))))
+      (step
+        (stmnt
+          (receive
+            (varref
+              (name))
+            (recv_args
+              (recv_arg
+                (varref
+                  (name)))))))
+      (step
+        (stmnt
+          (expr
+            (any_expr
+              (poll
+                (varref
+                  (name))
+                (recv_args
+                  (recv_arg
+                    (varref
+                      (name))))))))))))
+
+================
+Assignments
+================
+
+init
+{
+  MyInt = 5;
+  MyInt++;
+  MyInt--;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const)))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name)))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))))))))
+
+================
+Labeled Statements
+================
+
+init
+{
+  MyName: MyInt = 5;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (labeled_stmnt
+            (name)
+            (stmnt
+              (assign
+                (varref
+                  (name))
+                (any_expr
+                  (const))))))))))
+
+================
+Flow Control
+================
+
+init
+{
+  L1:	do
+	  :: MyInt -> goto L1
+	  :: MyInt -> break
+	  od;
+  L2:	
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (labeled_stmnt
+            (name)
+            (stmnt
+              (options
+                (sequence
+                  (step
+                    (stmnt
+                      (expr
+                        (any_expr
+                          (varref
+                            (name))))))
+                  (step
+                    (stmnt
+                      (name))))
+                (sequence
+                  (step
+                    (stmnt
+                      (expr
+                        (any_expr
+                          (varref
+                            (name))))))
+                  (step
+                    (stmnt))))))))
+      (step
+        (stmnt
+          (labeled_stmnt
+            (name)))))))
+
+================
+If Else
+================
+
+init
+{
+  if :: MyInt = 1; MyInt = 2; else :: MyInt = 3 fi
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (options
+            (sequence
+              (step
+                (stmnt
+                  (assign
+                    (varref
+                      (name))
+                    (any_expr
+                      (const)))))
+              (step
+                (stmnt
+                  (assign
+                    (varref
+                      (name))
+                    (any_expr
+                      (const)))))
+              (step
+                (stmnt)))
+            (sequence
+              (step
+                (stmnt
+                  (assign
+                    (varref
+                      (name))
+                    (any_expr
+                      (const))))))))))))
+
+================
+Unless
+================
+
+init
+{
+  MyInt = 1 unless MyInt = 2;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))))))
+
+================
+For In
+================
+
+init
+{
+  for (MyInt in MyList) { MyInt = 5 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (range
+            (name)
+            (name))
+          (sequence
+            (step
+              (stmnt
+                (assign
+                  (varref
+                    (name))
+                  (any_expr
+                    (const)))))))))))
+
+================
+Composed Steps
+================
+
+proctype A()
+{
+  xs MyChan;
+  xr MyChan;
+}
+
+---
+
+(spec
+  (proctype
+    (name)
+    (sequence
+      (step
+        (varref
+          (name)))
+      (step
+        (varref
+          (name))))))

@@ -51,6 +51,8 @@ function wrap(rule, wrapper) {
 }
 
 export default grammar({
+  // TODO: #define macros are not defined in the grammar.
+  // TODO: Labels (for `goto`s) are not defined in the grammar.
   // NOTE:
   // Many of the things defined as 'a' 'b' 'c' should actually be defined as
   // 'abc' or the compiler will fail. This is not stated or specified anywhere.
@@ -111,7 +113,7 @@ export default grammar({
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),
     // instantiation
-    active: $ => seq("active", "[", optional($.const), "]"),
+    active: $ => seq("active", optional(seq("[", $.const, "]"))),
     // simulation priority
     priority: $ => seq("priority", $.const),
     // execution constraints
@@ -126,6 +128,7 @@ export default grammar({
     step: $ => choice(
       seq($.stmnt, optional(seq("unless", $.stmnt))),
       $.decl_lst,
+      // TODO: xr and xs can only appear within a proctype.
       seq("xr", commaList($.varref)),
       seq("xs", commaList($.varref)),
     ),
@@ -184,7 +187,7 @@ export default grammar({
     recv_arg: $ => choice(
       $.varref,
       seq("eval", "(", $.varref, ")"),
-      seq(optional("-"), "const")
+      seq(optional("-"), $.const)
     ),
 
     // NOTE: These can't act as expresions, even though spin calls them operators.
@@ -216,7 +219,7 @@ export default grammar({
       "else",
       "break",
       seq("goto", $.name),
-      $.named_stmnt,
+      $.labeled_stmnt,
       $._print,
       $.expr,
 
@@ -224,7 +227,8 @@ export default grammar({
     ),
 
     // NOTE: precedence based on standard assignment
-    named_stmnt: $ => prec.right(1, seq($.name, ":", $.stmnt)),
+    // NOTE: The spin compiler allows labels followed by nothing
+    labeled_stmnt: $ => prec.right(1, seq($.name, ":", optional($.stmnt))),
 
 
     // NOTE: In the grammar, PRINT is actually either printf or printm.
