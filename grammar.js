@@ -192,9 +192,6 @@ export default grammar({
       $._dec_assign
     ),
 
-    // NOTE: precedence based on standard assignment
-    named_stmnt: $ => prec.right(1, seq($.name, ":", $.stmnt)),
-
     stmnt: $ => choice(
       // selection
       seq("if", $.options, "fi"),
@@ -218,13 +215,22 @@ export default grammar({
       "break",
       seq("goto", $.name),
       $.named_stmnt,
-      // NOTE: The grammar asserts 'print' is a statemnt,
-      // but only 'printf' exists, even though the later is not mentioned.
-      seq("printf", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
-      seq("assert", $.expr),
+      $._print,
       $.expr,
 
       $._embedded_c
+    ),
+
+    // NOTE: precedence based on standard assignment
+    named_stmnt: $ => prec.right(1, seq($.name, ":", $.stmnt)),
+
+
+    // NOTE: In the grammar, PRINT is actually either printf or printm.
+    _print: $ => (
+      // c-like printf
+      seq("printf", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
+      // print the name of an mtype constant (mtype x = something; printm(x))
+      seq("printm", "(", $.name, ")")
     ),
 
     // TODO: Inject the C tree-sitter parser into embedded_c blocks

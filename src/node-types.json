@@ -695,10 +695,6 @@
       "required": false,
       "types": [
         {
-          "type": "arg_lst",
-          "named": true
-        },
-        {
           "type": "assign",
           "named": true
         },
@@ -753,18 +749,9 @@
         {
           "type": "sequence",
           "named": true
-        },
-        {
-          "type": "string",
-          "named": true
         }
       ]
     }
-  },
-  {
-    "type": "string",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "subscript",
@@ -939,10 +926,6 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
     "type": "%",
     "named": false
   },
@@ -1072,10 +1055,6 @@
   },
   {
     "type": "active",
-    "named": false
-  },
-  {
-    "type": "assert",
     "named": false
   },
   {
@@ -1240,7 +1219,7 @@
     "named": false
   },
   {
-    "type": "printf",
+    "type": "printm",
     "named": false
   },
   {
