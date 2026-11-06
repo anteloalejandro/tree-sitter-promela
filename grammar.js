@@ -66,9 +66,7 @@ export default grammar({
   // but don't pollute the syntax tree
   supertypes: $ => [$.module],
 
-  conflicts: $ => [
-    [$.any_expr, $.expr],
-  ],
+  conflicts: $ => [ ],
 
   rules: {
     spec: $ => repeat($.module),
@@ -345,11 +343,15 @@ export default grammar({
     get_priority: _ => "get_priority",
     set_priority: _ => "set_priority",
 
+    _chanpoll_expr: $ => choice(
+      // TODO: is "cannot be negated" another edge case?
+      seq($.chanpoll, "(", $.varref, ")"), // cannot be negated
+      seq("(", $._chanpoll_expr,")")
+    ),
+
     expr: $ => choice(
       $.any_expr,
-      seq("(", $.expr, ")"),
-      // TODO: is "cannot be negated" another edge case?
-      seq($.chanpoll, "(", $.varref, ")") // cannot be negated
+      $._chanpoll_expr
     ),
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),

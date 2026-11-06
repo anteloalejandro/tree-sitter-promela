@@ -265,10 +265,6 @@
           "named": true
         },
         {
-          "type": "expr",
-          "named": true
-        },
-        {
           "type": "varref",
           "named": true
         }

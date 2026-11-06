@@ -2457,30 +2457,9 @@
       "type": "STRING",
       "value": "set_priority"
     },
-    "expr": {
+    "_chanpoll_expr": {
       "type": "CHOICE",
       "members": [
-        {
-          "type": "SYMBOL",
-          "name": "any_expr"
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "("
-            },
-            {
-              "type": "SYMBOL",
-              "name": "expr"
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            }
-          ]
-        },
         {
           "type": "SEQ",
           "members": [
@@ -2501,6 +2480,36 @@
               "value": ")"
             }
           ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_chanpoll_expr"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "any_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_chanpoll_expr"
         }
       ]
     },
@@ -2728,12 +2737,7 @@
       "name": "comment"
     }
   ],
-  "conflicts": [
-    [
-      "any_expr",
-      "expr"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [],
   "inline": [],
