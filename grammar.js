@@ -197,7 +197,7 @@ export default grammar({
       // deterministic atomic
       seq("d_step", "{", $.sequence, "}"),
       // non-deterministic value selection
-      seq("(", $.range, ")"),
+      seq("select", "(", $.range, ")"),
       // normal sequence
       seq("{", $.sequence, "}"),
 
