@@ -154,6 +154,10 @@
       "required": true,
       "types": [
         {
+          "type": "any_expr",
+          "named": true
+        },
+        {
           "type": "expr",
           "named": true
         }
@@ -760,7 +764,7 @@
       "required": true,
       "types": [
         {
-          "type": "expr",
+          "type": "any_expr",
           "named": true
         }
       ]
@@ -820,7 +824,7 @@
       "required": true,
       "types": [
         {
-          "type": "expr",
+          "type": "any_expr",
           "named": true
         }
       ]

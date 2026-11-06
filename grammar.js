@@ -253,36 +253,37 @@ export default grammar({
     member_access: $ => prec.left(14, seq(".", $.varref)),
     _inc_assign: $ => prec.left(14, seq($.varref, "++")),
     _dec_assign: $ => prec.left(14, seq($.varref, "--")),
-    _minus_expr: $ => prec.right(13, seq("-", $.expr)),
-    _not_expr: $ => prec.right(13, wrap("!", $.expr)),
-    _bitewise_not_expr: $ => prec.right(13, wrap("~", $.expr)),
+    _minus_expr: $ => prec.right(13, seq("-", $.any_expr)),
+    _not_expr: $ => prec.right(13, wrap("!", $.any_expr)),
+    _bitewise_not_expr: $ => prec.right(13, wrap("~", $.any_expr)),
 
-    _mul_expr: $ => prec.left(12, wrap("*", $.expr)),
-    _div_expr: $ => prec.left(12, wrap("/", $.expr)),
-    _mod_expr: $ => prec.left(12, wrap("%", $.expr)),
+    _mul_expr: $ => prec.left(12, wrap("*", $.any_expr)),
+    _div_expr: $ => prec.left(12, wrap("/", $.any_expr)),
+    _mod_expr: $ => prec.left(12, wrap("%", $.any_expr)),
 
-    _add_expr: $ => prec.left(11, wrap("+", $.expr)),
-    _sub_expr: $ => prec.left(11, wrap("-", $.expr)),
+    _add_expr: $ => prec.left(11, wrap("+", $.any_expr)),
+    _sub_expr: $ => prec.left(11, wrap("-", $.any_expr)),
 
-    _left_shift_expr: $ => prec.left(10, wrap("<<", $.expr)),
-    _right_shift_expr: $ => prec.left(10, wrap(">>", $.expr)),
+    _left_shift_expr: $ => prec.left(10, wrap("<<", $.any_expr)),
+    _right_shift_expr: $ => prec.left(10, wrap(">>", $.any_expr)),
 
-    _lt_expr: $ => prec.left(9, wrap("<", $.expr)),
-    _le_expr: $ => prec.left(9, wrap("<=", $.expr)),
-    _gt_expr: $ => prec.left(9, wrap(">", $.expr)),
-    _ge_expr: $ => prec.left(9, wrap(">=", $.expr)),
+    _lt_expr: $ => prec.left(9, wrap("<", $.any_expr)),
+    _le_expr: $ => prec.left(9, wrap("<=", $.any_expr)),
+    _gt_expr: $ => prec.left(9, wrap(">", $.any_expr)),
+    _ge_expr: $ => prec.left(9, wrap(">=", $.any_expr)),
 
-    _eq_expr: $ => prec.left(8, wrap("==", $.expr)),
-    _ne_expr: $ => prec.left(8, wrap("!=", $.expr)),
+    _eq_expr: $ => prec.left(8, wrap("==", $.any_expr)),
+    _ne_expr: $ => prec.left(8, wrap("!=", $.any_expr)),
 
-    _bitwise_and_expr: $ => prec.left(7, wrap("&", $.expr)),
-    _bitwise_or_expr: $ => prec.left(6, wrap("|", $.expr)),
-    _bitwise_xor_expr: $ => prec.left(5, wrap("^", $.expr)),
+    _bitwise_and_expr: $ => prec.left(7, wrap("&", $.any_expr)),
+    _bitwise_or_expr: $ => prec.left(6, wrap("|", $.any_expr)),
+    _bitwise_xor_expr: $ => prec.left(5, wrap("^", $.any_expr)),
 
+    // NOTE: These to specifically take an any_expr
     _and_expr: $ => prec.left(4, wrap("&&", $.expr)),
     _or_expr: $ => prec.left(3, wrap("||", $.expr)),
 
-    ternary_conditional: $ => prec.right(2, seq("(", $.expr, "->", $.expr, ":", $.expr, ")")),
+    ternary_conditional: $ => prec.right(2, seq("(", $.any_expr, "->", $.any_expr, ":", $.any_expr, ")")),
 
     _eq_assign: $ => prec.right(1, seq($.varref, "=", $.any_expr)),
 
