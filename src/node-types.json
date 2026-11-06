@@ -12,6 +12,10 @@
         "named": true
       },
       {
+        "type": "macro",
+        "named": true
+      },
+      {
         "type": "mtype",
         "named": true
       },
@@ -416,6 +420,162 @@
         },
         {
           "type": "stmnt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "macro_define",
+          "named": true
+        },
+        {
+          "type": "macro_else",
+          "named": true
+        },
+        {
+          "type": "macro_endif",
+          "named": true
+        },
+        {
+          "type": "macro_if",
+          "named": true
+        },
+        {
+          "type": "macro_ifdef",
+          "named": true
+        },
+        {
+          "type": "macro_ifndef",
+          "named": true
+        },
+        {
+          "type": "macro_include",
+          "named": true
+        },
+        {
+          "type": "macro_undef",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_define",
+    "named": true,
+    "fields": {
+      "macro_args": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_if",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "any_expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_ifdef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_ifndef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_include",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_undef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
           "named": true
         }
       ]
@@ -828,6 +988,11 @@
     }
   },
   {
+    "type": "string",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "subscript",
     "named": true,
     "fields": {},
@@ -1000,6 +1165,34 @@
     "named": false
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "#define",
+    "named": false
+  },
+  {
+    "type": "#if",
+    "named": false
+  },
+  {
+    "type": "#ifdef",
+    "named": false
+  },
+  {
+    "type": "#ifndef",
+    "named": false
+  },
+  {
+    "type": "#include",
+    "named": false
+  },
+  {
+    "type": "#undef",
+    "named": false
+  },
+  {
     "type": "%",
     "named": false
   },
@@ -1117,6 +1310,14 @@
   },
   {
     "type": "[",
+    "named": false
+  },
+  {
+    "type": "\\",
+    "named": false
+  },
+  {
+    "type": "\\\"",
     "named": false
   },
   {
@@ -1251,6 +1452,14 @@
   {
     "type": "len",
     "named": false
+  },
+  {
+    "type": "macro_else",
+    "named": true
+  },
+  {
+    "type": "macro_endif",
+    "named": true
   },
   {
     "type": "mtype",

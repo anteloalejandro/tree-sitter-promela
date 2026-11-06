@@ -52,7 +52,6 @@ function wrap(rule, wrapper) {
 
 export default grammar({
   // TODO: #define macros are not defined in the grammar.
-  // TODO: Labels (for `goto`s) are not defined in the grammar.
   // NOTE:
   // Many of the things defined as 'a' 'b' 'c' should actually be defined as
   // 'abc' or the compiler will fail. This is not stated or specified anywhere.
@@ -82,6 +81,8 @@ export default grammar({
       $.utype,
       $.mtype,
       $.decl_lst,
+      // TODO: Macros are only supported on the top level for now
+      $.macro
     ),
 
     // root module types
@@ -366,10 +367,8 @@ export default grammar({
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
     string: $ => seq('"', repeat($._any_ascii_char), '"'),
-    // TODO: THE GRAMMAR IS WRONG:
-    // the spin compiler allows '"', as long as it is preceded by a '\'
-    _any_ascii_char: _ => /[^"]/,
-
+    // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
+    _any_ascii_char: _ => choice(/[^"]/, "\\\""),
 
     uname: $ => $.name,
     // use token to parse as a single token instead of as a sequence of tokens
@@ -384,8 +383,6 @@ export default grammar({
       seq('/* ', repeat(/.*?/), '*/')
     )),
 
-    // TODO: Using _c_block generically for now,
-    // but different kinds of embedded C may allow or disallow certain things
     c_code: $ => seq("c_code", $.c_block),
     c_expr: $ => seq("c_expr", $.c_block),
     c_decl: $ => seq("c_decl", $.c_block),
@@ -394,5 +391,34 @@ export default grammar({
     c_block: $ => seq("{", optional(alias($._c_lines, $.content)), "}"),
     _c_lines: $ => repeat1(choice(/[^{}]+/, $._c_block)),
     _c_block: $ => seq("{", $._c_lines, "}"),
+
+    macro: $ => choice(
+      $.macro_define,
+      $.macro_include,
+      $.macro_if,
+      alias("#else", $.macro_else),
+      alias("#endif", $.macro_endif),
+      $.macro_ifdef,
+      $.macro_ifndef,
+      $.macro_undef,
+    ),
+
+    macro_define: $ => seq(
+      "#define", $.name,
+      field("macro_args", optional(seq("(", commaList($.name), ")"))),
+      $._define_body
+    ),
+    // TODO: We currently don't check for new lines.
+    _define_body: $ => sepList($._define_line, "\\"),
+    // TODO: This is too basic, should consider supporting varnames at least.
+    _define_line: _ => repeat1(/[^\n]/),
+
+    macro_include: $ => seq("#include", $.string),
+
+    // TODO: Using any_expr for now, should only accept constant expresions
+    macro_if: $ => seq("#if", $.any_expr),
+    macro_ifdef: $ => seq("#ifdef", $.name),
+    macro_ifndef: $ => seq("#ifndef", $.name),
+    macro_undef: $ => seq("#undef", $.name),
   }
 });

@@ -39,6 +39,10 @@
         {
           "type": "SYMBOL",
           "name": "decl_lst"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro"
         }
       ]
     },
@@ -2616,8 +2620,17 @@
       ]
     },
     "_any_ascii_char": {
-      "type": "PATTERN",
-      "value": "[^\"]"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[^\"]"
+        },
+        {
+          "type": "STRING",
+          "value": "\\\""
+        }
+      ]
     },
     "uname": {
       "type": "SYMBOL",
@@ -2826,6 +2839,217 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "macro": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "macro_define"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_include"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_if"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "#else"
+          },
+          "named": true,
+          "value": "macro_else"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "#endif"
+          },
+          "named": true,
+          "value": "macro_endif"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_ifdef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_ifndef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_undef"
+        }
+      ]
+    },
+    "macro_define": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#define"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name"
+        },
+        {
+          "type": "FIELD",
+          "name": "macro_args",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "("
+                  },
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "name"
+                      },
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "STRING",
+                              "value": ","
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "name"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ")"
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_define_body"
+        }
+      ]
+    },
+    "_define_body": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_define_line"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "\\"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_define_line"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_define_line": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "PATTERN",
+        "value": "[^\\n]"
+      }
+    },
+    "macro_include": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#include"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        }
+      ]
+    },
+    "macro_if": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#if"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "any_expr"
+        }
+      ]
+    },
+    "macro_ifdef": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#ifdef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name"
+        }
+      ]
+    },
+    "macro_ifndef": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#ifndef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name"
+        }
+      ]
+    },
+    "macro_undef": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#undef"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "name"
         }
       ]
     }

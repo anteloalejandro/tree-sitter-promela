@@ -1,0 +1,119 @@
+==================
+Single-line define
+==================
+
+#define TEST 1
+
+---
+
+(spec
+  (macro
+    (macro_define (name))))
+
+
+=================
+Multi-line define
+=================
+
+#define TEST 1 \
+  + \
+  1
+
+---
+(spec
+  (macro
+    (macro_define (name))))
+
+
+=====================
+Bad Multi-line define
+:error
+:skip
+=====================
+
+#define TEST 1 \ + \ 1
+
+---
+
+=================
+Conditional macro
+=================
+
+#if 2 + 2 > 4
+#define TEST 0
+#else
+#define TEST 1
+#endif
+
+---
+
+(spec
+  (macro
+    (macro_if
+      (any_expr
+        (binary_expression
+          (any_expr
+            (binary_expression
+              (any_expr
+                (const))
+              (any_expr
+                (const))))
+          (any_expr
+            (const))))))
+
+  (macro
+    (macro_define (name)))
+
+  (macro
+    (macro_else)
+  )
+
+  (macro
+    (macro_define (name)))
+
+  (macro
+    (macro_endif))
+)
+
+==================
+Conditional define
+==================
+
+#ifdef TEST
+#ifndef TEST2
+#undef TEST
+#endif
+#endif
+
+---
+
+(spec
+  (macro
+    (macro_ifdef
+      (name)))
+
+  (macro
+    (macro_ifndef
+      (name)))
+
+  (macro
+    (macro_undef
+      (name)))
+
+  (macro
+    (macro_endif))
+
+  (macro
+    (macro_endif))
+)
+
+=============
+include macro
+=============
+
+#include "file.pml"
+
+---
+
+(spec
+  (macro (macro_include (string))))
