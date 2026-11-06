@@ -117,6 +117,8 @@ export default grammar({
     // execution constraints
     enabler: $ => seq("provided", "(", $.expr, ")"),
 
+    // TODO: Only global variables can be `hidden`, but any variable can be `show`.
+    // This means we can't create hidden variables inside a module.
     visible: _ => choice("hidden", "show"),
 
     sequence: $ => separatorList($.step),
@@ -361,7 +363,8 @@ export default grammar({
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
     string: $ => seq('"', repeat($._any_ascii_char), '"'),
-    // NOTE: NOT TRUE, it does allow '"', as long as it is preceded by a '\'
+    // TODO: THE GRAMMAR IS WRONG:
+    // the spin compiler allows '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => /[^"]/,
 
 

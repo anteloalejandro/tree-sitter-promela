@@ -1,0 +1,123 @@
+=============
+Declarations
+=============
+
+init
+{
+  int MyInt;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name))))))))
+
+=============
+Typed Declarations
+=============
+
+init
+{
+  bool MyBool [3] = 5;
+  unsigned MyCounter : 10 = 5;
+  hidden int MyHidden;
+  show int MyShow;
+  chan MyChan [2] = [2] of { int, int };
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name)
+              (const)
+              (any_expr
+                (const))))))
+      (step
+        (decl_lst
+          (one_decl
+            (unsigned_decl
+              (name)
+              (const)
+              (any_expr
+                (const))))))
+      (step
+        (decl_lst
+          (one_decl
+            (visible)
+            (typename)
+            (ivar
+              (name)))))
+      (step
+        (decl_lst
+          (one_decl
+            (visible)
+            (typename)
+            (ivar
+              (name)))))
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name)
+              (const)
+              (ch_init
+                (const)
+                (typename)
+                (typename)))))))))
+
+================
+Primitive Types
+================
+
+init
+{
+  bit MyBit;
+  byte MyByte;
+  short MyShort;
+  mtype MyMtype;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name)))))
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name)))))
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name)))))
+      (step
+        (decl_lst
+          (one_decl
+            (typename)
+            (ivar
+              (name))))))))
