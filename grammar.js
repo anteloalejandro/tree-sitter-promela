@@ -66,9 +66,9 @@ export default grammar({
   // but don't pollute the syntax tree
   supertypes: $ => [$.module],
 
-  // conflicts: $ => [
-  //   [$.sequence],
-  // ],
+  conflicts: $ => [
+    [$.any_expr, $.expr],
+  ],
 
   rules: {
     spec: $ => repeat($.module),
@@ -97,6 +97,7 @@ export default grammar({
     mtype: $ => seq("mtype", optional("="), "{", commaList($.name), "}" ),
     // global vars and chans
     // TODO: should there be an optional ; here?
+    // NOTE: precedence based on the comma operator in C
     decl_lst: $ => prec.left(semicolonList($.one_decl)),
 
     // declarations
@@ -137,35 +138,36 @@ export default grammar({
 
     ch_init: $ => seq("[", $.const, "]", "of", "{", commaList($.typename), "}"),
 
-    // NOTE: Test prec
-    varref: $ => prec(1,seq(
+    varref: $ => seq(
       $.name,
-      optional(seq("[", $.any_expr, "]")),
-      optional(seq(".", $.varref))
-    )),
+      optional($.subscript),
+      optional($.member_access)
+    ),
 
-    // NOTE: Test prec
-    send: $ => prec(1, choice(
+    // NOTE: Precedence based on C function calls
+    send: $ => prec.left(14, choice(
       // normal FIFO send
       seq($.varref, "!", $.send_args),
       // sorted send
-      seq($.varref, "!", "!", $.send_args),
+      seq($.varref, "!!", $.send_args),
     )),
 
-    receive: $ => choice(
+    // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
+    receive: $ => prec.left(14, choice(
       // normal receive
       seq($.varref, "?", $.recv_args),
       // random receive
-      seq($.varref, "?", "?", $.recv_args),
+      seq($.varref, "??", $.recv_args),
       // poll with side effect
       seq($.varref, "?", "<", $.recv_args, ">"),
-      seq($.varref, "?", "?", "<", $.recv_args, ">"),
-    ),
+      seq($.varref, "??", "<", $.recv_args, ">"),
+    )),
 
-    poll: $ => choice(
+    // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
+    poll: $ => prec.left(14, choice(
       seq($.varref, "?", "[", $.recv_args, "]"),
-      seq($.varref, "?", "?", "[", $.recv_args, "]"),
-    ),
+      seq($.varref, "??", "[", $.recv_args, "]"),
+    )),
 
     send_args: $ => choice(
       $.arg_lst,
@@ -194,6 +196,9 @@ export default grammar({
       $._dec_assign
     ),
 
+    // NOTE: precedence based on standard assignment
+    named_stmnt: $ => prec.right(1, seq($.name, ":", $.stmnt)),
+
     stmnt: $ => choice(
       // selection
       seq("if", $.options, "fi"),
@@ -216,7 +221,7 @@ export default grammar({
       "else",
       "break",
       seq("goto", $.name),
-      seq($.name, ":", $.stmnt),
+      $.named_stmnt,
       seq("print", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
       seq("assert", $.expr),
       $.expr,
@@ -242,6 +247,8 @@ export default grammar({
 
     // INFO: operator precedence
     // https://en.cppreference.com/c/language/operator_precedence
+    subscript: $ => prec.left(14, seq("[", $.any_expr, "]")),
+    member_access: $ => prec.left(14, seq(".", $.varref)),
     _inc_assign: $ => prec.left(14, seq($.varref, "++")),
     _dec_assign: $ => prec.left(14, seq($.varref, "--")),
     _minus_expr: $ => prec.right(13, seq("-", $.expr)),
@@ -274,6 +281,7 @@ export default grammar({
     _or_expr: $ => prec.left(3, wrap("||", $.expr)),
 
     ternary_conditional: $ => prec.right(2, seq("(", $.expr, "->", $.expr, ":", $.expr, ")")),
+
     _eq_assign: $ => prec.right(1, seq($.varref, "=", $.any_expr)),
 
     binary_expression: $ => choice(
@@ -305,7 +313,6 @@ export default grammar({
 
     any_expr: $ => choice(
       seq("(", $.any_expr, ")"),
-      // TODO: Test precedence
       $.ternary_conditional,
       $.binary_expression,
       $.unary_expression,
@@ -335,12 +342,12 @@ export default grammar({
     get_priority: _ => "get_priority",
     set_priority: _ => "set_priority",
 
-    expr: $ => prec.left(choice(
+    expr: $ => choice(
       $.any_expr,
       seq("(", $.expr, ")"),
       // TODO: is "cannot be negated" another edge case?
       seq($.chanpoll, "(", $.varref, ")") // cannot be negated
-    )),
+    ),
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
