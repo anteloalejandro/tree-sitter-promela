@@ -8,6 +8,8 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+const separator = choice(";", "->")
+
 /**
  * Creates a list of at least one item (`rule`), sepparated by `sep`.
  * @param {RuleOrLiteral} rule
@@ -26,11 +28,17 @@ function commaList(rule) {
 }
 
 /**
- * Creates a list of at least one item (`rule`), sepparated by semicolons.
+ * Creates a list of at least one item (`rule`),
+ * sepparated by semicolon `;` or arrow `->`, promela's statement separators.
  * @param {RuleOrLiteral} rule
  * */
-function semicolonList(rule) {
-  return sepList(rule, ";")
+function separatorList(rule) {
+  // NOTE: The grammar specifies that statements are only **separated** by the separator,
+  // not **terminated**. Nevertheless, using it as a terminator IS allowed in the compiler itself.
+  //
+  // We give the "optional" terminator a name so consumers can differentiante
+  // between it and other separators if they want.
+  return seq(sepList(rule, separator), optional(field("terminator", separator)))
 }
 
 /**
@@ -43,14 +51,7 @@ function wrap(rule, wrapper) {
 }
 
 export default grammar({
-  // TODO: According to the manual:
-  // > The statement separator used in this list is the semi-colon ';'.
-  // > In most cases the semi-colon can be replaced with a two-character
-  // > arrow symbol: '->', without change of meaning.
-  // This apparently means that anywhere you can put ";" you can put "->" as well.
-  // Maybe it'ts not everywhere, but only within a `sequence`
-  // 
-  // TODO:
+  // NOTE:
   // Many of the things defined as 'a' 'b' 'c' should actually be defined as
   // 'abc' or the compiler will fail. This is not stated or specified anywhere.
 
@@ -94,9 +95,8 @@ export default grammar({
     utype: $ => seq("typedef", $.name, "{", $.decl_lst, "}"),
     mtype: $ => seq("mtype", optional("="), "{", commaList($.name), "}" ),
     // global vars and chans
-    // TODO: should there be an optional ; here?
     // NOTE: precedence based on the comma operator in C
-    decl_lst: $ => prec.left(semicolonList($.one_decl)),
+    decl_lst: $ => prec.left(separatorList($.one_decl)),
 
     // declarations
     one_decl: $ => choice(
@@ -119,7 +119,7 @@ export default grammar({
 
     visible: _ => choice("hidden", "show"),
 
-    sequence: $ => semicolonList($.step),
+    sequence: $ => separatorList($.step),
 
     step: $ => choice(
       seq($.stmnt, optional(seq("unless", $.stmnt))),
@@ -186,8 +186,6 @@ export default grammar({
     ),
 
     // NOTE: These can't act as expresions, even though spin calls them operators.
-    // INFO: operator precedence
-    // https://en.cppreference.com/c/language/operator_precedence
     assign: $ => choice(
       $._eq_assign,
       $._inc_assign,

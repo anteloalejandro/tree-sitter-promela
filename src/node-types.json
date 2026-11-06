@@ -221,7 +221,22 @@
   {
     "type": "decl_lst",
     "named": true,
-    "fields": {},
+    "fields": {
+      "terminator": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "->",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -605,7 +620,22 @@
   {
     "type": "sequence",
     "named": true,
-    "fields": {},
+    "fields": {
+      "terminator": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "->",
+            "named": false
+          },
+          {
+            "type": ";",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
