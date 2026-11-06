@@ -1,6 +1,6 @@
-=================
+================
 Top level Modules
-=================
+================
 
 init
 {
@@ -16,10 +16,208 @@ init
         (decl_lst
           (one_decl
             (typename)
-            (ivar (name))
-          )
-        )
-      )
-    )
-  )
-)
+            (ivar
+              (name))))))))
+
+================
+Proctype
+================
+
+active [1] proctype A(byte state; short foo)
+  priority 5
+  provided (foo > 0)
+{
+  state = foo
+}
+
+---
+
+(spec
+  (proctype
+    (active
+      (const))
+    (name)
+    (decl_lst
+      (one_decl
+        (typename)
+        (ivar
+          (name)))
+      (one_decl
+        (typename)
+        (ivar
+          (name))))
+    (priority
+      (const))
+    (enabler
+      (expr
+        (any_expr
+          (binary_expression
+            (any_expr
+              (varref
+                (name)))
+            (any_expr
+              (const))))))
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (varref
+                (name)))))))))
+
+================
+Init
+================
+
+init
+{
+  MyInt = 5;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))))))
+
+================
+Never
+================
+
+never
+{
+  MyInt = 5
+}
+
+---
+
+(spec
+  (never
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))))))
+
+================
+Trace
+================
+
+trace
+{
+  MyInt = 5
+}
+
+---
+
+(spec
+  (trace
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))))))
+
+================
+Utype
+================
+
+typedef MyType {
+  int MyTypedef
+}
+
+---
+
+(spec
+  (utype
+    (name)
+    (decl_lst
+      (one_decl
+        (typename)
+        (ivar
+          (name))))))
+
+================
+Mtype
+================
+
+mtype { MyMsg, MyOther }
+
+---
+
+(spec
+  (mtype
+    (name)
+    (name)))
+
+================
+Multiple Modules
+================
+
+proctype A() {
+  MyInt = 5
+}
+
+init
+{
+  MyInt = 5
+}
+
+---
+
+(spec
+  (proctype
+    (name)
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const)))))))
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (const))))))))
+
+================
+Module Declarations
+================
+
+int MyInt;
+bool MyBool;
+
+---
+
+(spec
+  (decl_lst
+    (one_decl
+      (typename)
+      (ivar
+        (name))))
+  (decl_lst
+    (one_decl
+      (typename)
+      (ivar
+        (name)))))
