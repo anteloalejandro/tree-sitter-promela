@@ -239,7 +239,6 @@ export default grammar({
       seq("printm", "(", $.name, ")")
     ),
 
-    // TODO: Inject the C tree-sitter parser into embedded_c blocks
     _embedded_c: $ => choice(
       $.c_code,
       $.c_expr,
@@ -387,12 +386,13 @@ export default grammar({
 
     // TODO: Using _c_block generically for now,
     // but different kinds of embedded C may allow or disallow certain things
-    c_code: $ => seq("c_code", $._c_block),
-    c_expr: $ => seq("c_expr", $._c_block),
-    c_decl: $ => seq("c_decl", $._c_block),
-    c_track: $ => seq("c_track", $._c_block),
-    c_state: $ => seq("c_state", $._c_block),
-    _c_block: $ => seq("{", $._c, "}"),
-    _c: _ => /.*/
+    c_code: $ => seq("c_code", $.c_block),
+    c_expr: $ => seq("c_expr", $.c_block),
+    c_decl: $ => seq("c_decl", $.c_block),
+    c_track: $ => seq("c_track", $.c_block),
+    c_state: $ => seq("c_state", $.c_block),
+    c_block: $ => seq("{", optional(alias($._c_lines, $.content)), "}"),
+    _c_lines: $ => repeat1(choice(/[^{}]+/, $._c_block)),
+    _c_block: $ => seq("{", $._c_lines, "}"),
   }
 });

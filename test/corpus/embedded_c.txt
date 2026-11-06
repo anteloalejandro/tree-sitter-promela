@@ -1,0 +1,103 @@
+================
+Embedded C
+================
+
+================
+C Code
+================
+
+init
+{
+  c_code { int x = 0 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (c_code
+            (c_block
+              (content))))))))
+
+================
+C Expression
+================
+
+init
+{
+  c_expr { int x = 0 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (c_expr
+            (c_block
+              (content))))))))
+
+================
+C Declaration
+================
+
+init
+{
+  c_decl { int x = 0 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (c_decl
+            (c_block
+              (content))))))))
+
+================
+C Track
+================
+
+init
+{
+  c_track { int x = 0 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (c_track
+            (c_block
+              (content))))))))
+
+================
+C State
+================
+
+init
+{
+  c_state { int x = 0 }
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (c_state
+            (c_block
+              (content))))))))
