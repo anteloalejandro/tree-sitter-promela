@@ -977,6 +977,10 @@
     "named": false
   },
   {
+    "type": "::",
+    "named": false
+  },
+  {
     "type": ";",
     "named": false
   },
@@ -1206,7 +1210,7 @@
     "named": false
   },
   {
-    "type": "print",
+    "type": "printf",
     "named": false
   },
   {

@@ -1407,7 +1407,7 @@
           "members": [
             {
               "type": "STRING",
-              "value": "print"
+              "value": "printf"
             },
             {
               "type": "STRING",
@@ -1546,11 +1546,7 @@
         "members": [
           {
             "type": "STRING",
-            "value": ":"
-          },
-          {
-            "type": "STRING",
-            "value": ":"
+            "value": "::"
           },
           {
             "type": "SYMBOL",

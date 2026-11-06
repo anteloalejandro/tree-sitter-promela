@@ -222,7 +222,9 @@ export default grammar({
       "break",
       seq("goto", $.name),
       $.named_stmnt,
-      seq("print", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
+      // NOTE: The grammar asserts 'print' is a statemnt,
+      // but only 'printf' exists, even though the later is not mentioned.
+      seq("printf", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
       seq("assert", $.expr),
       $.expr,
 
@@ -243,7 +245,7 @@ export default grammar({
       seq($.name, "in", $.name)
     ),
 
-    options: $ => repeat1(seq(":", ":", $.sequence)),
+    options: $ => repeat1(seq("::", $.sequence)),
 
     // INFO: operator precedence
     // https://en.cppreference.com/c/language/operator_precedence
@@ -352,6 +354,7 @@ export default grammar({
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
     string: $ => seq('"', repeat($._any_ascii_char), '"'),
+    // NOTE: NOT TRUE, it does allow '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => /[^"]/,
 
 
