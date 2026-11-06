@@ -1,0 +1,467 @@
+================
+Arithmetic
+================
+
+init
+{
+  MyInt = MyInt + 2 * 3 - 4 / 5 % 6;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (binary_expression
+                    (any_expr
+                      (varref
+                        (name)))
+                    (any_expr
+                      (binary_expression
+                        (any_expr
+                          (const))
+                        (any_expr
+                          (const))))))
+                (any_expr
+                  (binary_expression
+                    (any_expr
+                      (binary_expression
+                        (any_expr
+                          (const))
+                        (any_expr
+                          (const))))
+                    (any_expr
+                      (const))))))))))))
+
+================
+Logical
+================
+
+init
+{
+  MyInt = MyInt && MyInt2 || MyInt3;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (expr
+                  (any_expr
+                    (binary_expression
+                      (expr
+                        (any_expr
+                          (varref
+                            (name))))
+                      (expr
+                        (any_expr
+                          (varref
+                            (name)))))))
+                (expr
+                  (any_expr
+                    (varref
+                      (name))))))))))))
+
+================
+Unary
+================
+
+init
+{
+  MyInt = -MyInt;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (unary_expression
+                (any_expr
+                  (varref
+                    (name)))))))))))
+
+================
+Ternary
+================
+
+init
+{
+  MyInt = (MyInt -> 5 : 3);
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (ternary_conditional
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const))
+                (any_expr
+                  (const))))))))))
+
+================
+Comparison
+================
+
+init
+{
+  MyInt = MyInt < 3;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const))))))))))
+
+================
+Equality
+================
+
+init
+{
+  MyInt = MyInt == 7;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const))))))))))
+
+================
+Bitwise
+================
+
+init
+{
+  MyInt = MyInt & 1;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const))))))))))
+
+================
+Special Expressions
+================
+
+init
+{
+  MyInt = len(MyInt);
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (varref
+                (name)))))))))
+
+================
+Operators
+================
+
+init
+{
+  MyInt = MyInt << 2;
+  MyInt = MyInt >> 2;
+  MyInt = MyInt != 3;
+  MyInt = MyInt | 1;
+  MyInt = MyInt ^ 2;
+  MyInt = MyInt <= 3;
+  MyInt = MyInt > 2;
+  MyInt = MyInt >= 4;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (binary_expression
+                (any_expr
+                  (varref
+                    (name)))
+                (any_expr
+                  (const))))))))))
+
+================
+System Expressions
+================
+
+init
+{
+  MyInt = timeout;
+  MyInt = np_;
+  MyInt = enabled(0);
+  MyInt = pc_value(0);
+  MyInt = run MyProc();
+  MyInt = get_priority(0);
+  MyInt = set_priority(0);
+  MyInt = MyInt[3]@MyProc;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (any_expr
+                (const))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (any_expr
+                (const))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (name)))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (get_priority)
+              (expr
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (set_priority)
+              (expr
+                (any_expr
+                  (const)))))))
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name))
+            (any_expr
+              (name)
+              (any_expr
+                (const))
+              (name))))))))
+
+================
+Member Access
+================
+
+init
+{
+  MyInt.MyInt2 = 5;
+}
+
+---
+
+(spec
+  (init
+    (sequence
+      (step
+        (stmnt
+          (assign
+            (varref
+              (name)
+              (member_access
+                (varref
+                  (name))))
+            (any_expr
+              (const))))))))
