@@ -231,6 +231,31 @@ export default grammar({
 
     options: $ => repeat1(seq(":", ":", $.sequence)),
 
+    // operator precedence
+    // binary operators:
+    // +
+    // -
+    // *
+    // /
+    // %
+    // &
+    // ^
+    // |
+    // >
+    // <
+    // >=
+    // <=
+    // ==
+    // !=
+    // <<
+    // >>
+    // &&
+    // ||
+    // unary operators:
+    // ~
+    // -
+    // !
+
     andor: _ => choice(seq("&", "&"), seq("|", "|")),
 
     binarop: $ => choice(
@@ -288,9 +313,10 @@ export default grammar({
     string: $ => seq('"', repeat($._any_ascii_char), '"'),
     _any_ascii_char: _ => /[^"]/,
 
+
     uname: $ => $.name,
     // use token to parse as a single token instead of as a sequence of tokens
-    name: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]+/)),
+    name: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
     const: _ => choice("true", "false", "skip", /[0-9]+/),
 
     comment: _ => token(choice(
