@@ -9,37 +9,23 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (binary_expression
-                    (any_expr
-                      (varref
-                        (name)))
-                    (any_expr
-                      (binary_expression
-                        (any_expr
-                          (const))
-                        (any_expr
-                          (const))))))
-                (any_expr
-                  (binary_expression
-                    (any_expr
-                      (binary_expression
-                        (any_expr
-                          (const))
-                        (any_expr
-                          (const))))
-                    (any_expr
-                      (const))))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (binary_expression
+          (variable_reference
+            (name))
+          (binary_expression
+            (const)
+            (const)))
+        (binary_expression
+          (binary_expression
+            (const)
+            (const))
+          (const))))))
 
 ================
 Logical
@@ -52,31 +38,19 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (expr
-                  (any_expr
-                    (binary_expression
-                      (expr
-                        (any_expr
-                          (varref
-                            (name))))
-                      (expr
-                        (any_expr
-                          (varref
-                            (name)))))))
-                (expr
-                  (any_expr
-                    (varref
-                      (name))))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (binary_expression
+          (variable_reference
+            (name))
+          (variable_reference
+            (name)))
+        (variable_reference
+          (name))))))
 
 ================
 Unary
@@ -89,19 +63,14 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (unary_expression
-                (any_expr
-                  (varref
-                    (name)))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (unary_expression
+        (variable_reference
+          (name))))))
 
 ================
 Ternary
@@ -114,23 +83,16 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (ternary_conditional
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const))
-                (any_expr
-                  (const))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (ternary_conditional
+        (variable_reference
+          (name))
+        (const)
+        (const)))))
 
 ================
 Comparison
@@ -143,21 +105,15 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Equality
@@ -170,21 +126,15 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Bitwise
@@ -197,21 +147,15 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Special Expressions
@@ -224,17 +168,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (varref
-                (name)))))))))
+    (assign
+      (variable_reference
+        (name))
+      (variable_reference
+        (name)))))
 
 ================
 Operators
@@ -254,105 +194,64 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (binary_expression
-                (any_expr
-                  (varref
-                    (name)))
-                (any_expr
-                  (const))))))))))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 System Expressions
@@ -372,74 +271,42 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (any_expr
-                (const))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (any_expr
-                (const))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (name)))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (get_priority)
-              (expr
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (set_priority)
-              (expr
-                (any_expr
-                  (const)))))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (name)
-              (any_expr
-                (const))
-              (name))))))))
+    (assign
+      (variable_reference
+        (name)))
+    (assign
+      (variable_reference
+        (name)))
+    (assign
+      (variable_reference
+        (name))
+      (const))
+    (assign
+      (variable_reference
+        (name))
+      (const))
+    (assign
+      (variable_reference
+        (name))
+      (name))
+    (assign
+      (variable_reference
+        (name))
+      (get_priority)
+      (const))
+    (assign
+      (variable_reference
+        (name))
+      (set_priority)
+      (const))
+    (assign
+      (variable_reference
+        (name))
+      (name)
+      (const)
+      (name))))
 
 ================
 Member Access
@@ -452,16 +319,12 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name)
-              (member_access
-                (varref
-                  (name))))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name)
+        (member_access
+          (variable_reference
+            (name))))
+      (const))))

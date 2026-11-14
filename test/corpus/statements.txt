@@ -9,20 +9,14 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (options
-            (sequence
-              (step
-                (stmnt
-                  (assign
-                    (varref
-                      (name))
-                    (any_expr
-                      (const))))))))))))
+    (if
+      (options
+        (assign
+          (variable_reference
+            (name))
+          (const))))))
 
 ================
 Do Loop
@@ -35,20 +29,14 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (options
-            (sequence
-              (step
-                (stmnt
-                  (assign
-                    (varref
-                      (name))
-                    (any_expr
-                      (const))))))))))))
+    (do
+      (options
+        (assign
+          (variable_reference
+            (name))
+          (const))))))
 
 ================
 For Loop
@@ -61,25 +49,17 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (range
-            (name)
-            (any_expr
-              (const))
-            (any_expr
-              (const)))
-          (sequence
-            (step
-              (stmnt
-                (assign
-                  (varref
-                    (name))
-                  (any_expr
-                    (const)))))))))))
+    (for
+      (range
+        (name)
+        (const)
+        (const))
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Atomic Step
@@ -92,19 +72,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (sequence
-            (step
-              (stmnt
-                (assign
-                  (varref
-                    (name))
-                  (any_expr
-                    (const)))))))))))
+    (atomic
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Deterministic Step
@@ -117,19 +91,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (sequence
-            (step
-              (stmnt
-                (assign
-                  (varref
-                    (name))
-                  (any_expr
-                    (const)))))))))))
+    (d_step
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Select
@@ -142,17 +110,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (range
-            (name)
-            (any_expr
-              (const))
-            (any_expr
-              (const))))))))
+    (select
+      (range
+        (name)
+        (const)
+        (const)))))
 
 ================
 Bare Block
@@ -167,19 +131,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (sequence
-            (step
-              (stmnt
-                (assign
-                  (varref
-                    (name))
-                  (any_expr
-                    (const)))))))))))
+    (block
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Messages
@@ -198,77 +156,57 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (send
-            (varref
-              (name))
-            (send_args
-              (arg_lst
-                (any_expr
-                  (varref
-                    (name))))))))
-      (step
-        (stmnt
-          (send
-            (varref
-              (name))
-            (send_args
-              (arg_lst
-                (any_expr
-                  (varref
-                    (name))))))))
-      (step
-        (stmnt
-          (send
-            (varref
-              (name))
-            (send_args
-              (arg_lst
-                (any_expr
-                  (varref
-                    (name))))))))
-      (step
-        (stmnt
-          (receive
-            (varref
-              (name))
-            (recv_args
-              (recv_arg
-                (varref
-                  (name)))))))
-      (step
-        (stmnt
-          (receive
-            (varref
-              (name))
-            (recv_args
-              (recv_arg
-                (varref
-                  (name)))))))
-      (step
-        (stmnt
-          (receive
-            (varref
-              (name))
-            (recv_args
-              (recv_arg
-                (varref
-                  (name)))))))
-      (step
-        (stmnt
-          (expr
-            (any_expr
-              (poll
-                (varref
-                  (name))
-                (recv_args
-                  (recv_arg
-                    (varref
-                      (name))))))))))))
+    (send
+      (variable_reference
+        (name))
+      (send_args
+        (arguments
+          (variable_reference
+            (name)))))
+    (send
+      (variable_reference
+        (name))
+      (send_args
+        (arguments
+          (variable_reference
+            (name)))))
+    (send
+      (variable_reference
+        (name))
+      (send_args
+        (arguments
+          (variable_reference
+            (name)))))
+    (receive
+      (variable_reference
+        (name))
+      (recv_args
+        (recv_arg
+          (variable_reference
+            (name)))))
+    (receive
+      (variable_reference
+        (name))
+      (recv_args
+        (recv_arg
+          (variable_reference
+            (name)))))
+    (receive
+      (variable_reference
+        (name))
+      (recv_args
+        (recv_arg
+          (variable_reference
+            (name)))))
+    (poll
+      (variable_reference
+        (name))
+      (recv_args
+        (recv_arg
+          (variable_reference
+            (name)))))))
 
 ================
 Assignments
@@ -283,26 +221,18 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const)))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name)))))
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))
+    (assign
+      (variable_reference
+        (name)))
+    (assign
+      (variable_reference
+        (name)))))
 
 ================
 Labeled Statements
@@ -315,19 +245,14 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (labeled_stmnt
-            (name)
-            (stmnt
-              (assign
-                (varref
-                  (name))
-                (any_expr
-                  (const))))))))))
+    (labeled_statement
+      (name)
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Flow Control
@@ -344,38 +269,20 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (labeled_stmnt
-            (name)
-            (stmnt
-              (options
-                (sequence
-                  (step
-                    (stmnt
-                      (expr
-                        (any_expr
-                          (varref
-                            (name))))))
-                  (step
-                    (stmnt
-                      (name))))
-                (sequence
-                  (step
-                    (stmnt
-                      (expr
-                        (any_expr
-                          (varref
-                            (name))))))
-                  (step
-                    (stmnt))))))))
-      (step
-        (stmnt
-          (labeled_stmnt
-            (name)))))))
+    (labeled_statement
+      (name)
+      (do
+        (options
+          (variable_reference
+            (name))
+          (goto
+            (name))
+          (variable_reference
+            (name)))))
+    (labeled_statement
+      (name))))
 
 ================
 If Else
@@ -388,37 +295,22 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (options
-            (sequence
-              (step
-                (stmnt
-                  (assign
-                    (varref
-                      (name))
-                    (any_expr
-                      (const)))))
-              (step
-                (stmnt
-                  (assign
-                    (varref
-                      (name))
-                    (any_expr
-                      (const)))))
-              (step
-                (stmnt)))
-            (sequence
-              (step
-                (stmnt
-                  (assign
-                    (varref
-                      (name))
-                    (any_expr
-                      (const))))))))))))
+    (if
+      (options
+        (assign
+          (variable_reference
+            (name))
+          (const))
+        (assign
+          (variable_reference
+            (name))
+          (const))
+        (assign
+          (variable_reference
+            (name))
+          (const))))))
 
 ================
 Unless
@@ -431,22 +323,16 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))
+    (assign
+      (variable_reference
+        (name))
+      (const))))
 
 ================
 For In
@@ -459,22 +345,16 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (range
-            (name)
-            (name))
-          (sequence
-            (step
-              (stmnt
-                (assign
-                  (varref
-                    (name))
-                  (any_expr
-                    (const)))))))))))
+    (for
+      (range
+        (name)
+        (name))
+      (assign
+        (variable_reference
+          (name))
+        (const)))))
 
 ================
 Composed Steps
@@ -488,13 +368,10 @@ proctype A()
 
 ---
 
-(spec
+(source_file
   (proctype
     (name)
-    (sequence
-      (step
-        (varref
-          (name)))
-      (step
-        (varref
-          (name))))))
+    (variable_reference
+      (name))
+    (variable_reference
+      (name))))

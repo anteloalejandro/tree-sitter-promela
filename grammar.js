@@ -66,21 +66,25 @@ export default grammar({
 
   // abstract rules into supertypes we can match against,
   // but don't pollute the syntax tree
-  supertypes: $ => [$.module],
+  supertypes: $ => [
+    $.macro,
+    $.embedded_c,
+    $.print,
+  ],
 
   conflicts: $ => [ ],
 
   rules: {
-    spec: $ => repeat($.module),
+    source_file: $ => repeat($._module),
 
-    module: $ => choice(
+    _module: $ => choice(
       $.proctype,
       $.init,
       $.never,
       $.trace,
       $.utype,
       $.mtype,
-      $.decl_lst,
+      $._decl_lst,
       // TODO: Macros are only supported on the top level for now
       $.macro
     ),
@@ -88,26 +92,29 @@ export default grammar({
     // root module types
     proctype: $ => seq(
       optional($.active), "proctype", $.name,
-      "(", optional($.decl_lst), ")",
+      "(", optional($._decl_lst), ")",
       optional($.priority), optional($.enabler),
-      "{", $.sequence, "}"
+      "{", $._sequence, "}"
     ),
-    init: $ => seq("init", optional($.priority), "{", $.sequence, "}"),
-    never: $ => seq("never", "{", $.sequence, "}"),
-    trace: $ => seq("trace", "{", $.sequence, "}"),
-    utype: $ => seq("typedef", $.name, "{", $.decl_lst, "}"),
+    init: $ => seq("init", optional($.priority), "{", $._sequence, "}"),
+    never: $ => seq("never", "{", $._sequence, "}"),
+    trace: $ => seq("trace", "{", $._sequence, "}"),
+    utype: $ => seq("typedef", $.name, "{", $._decl_lst, "}"),
     mtype: $ => seq("mtype", optional("="), "{", commaList($.name), "}" ),
     // global vars and chans
     // NOTE: precedence based on the comma operator in C
-    decl_lst: $ => prec.left(separatorList($.one_decl)),
+    _decl_lst: $ => prec.left(separatorList($.declaration)),
 
     // declarations
-    one_decl: $ => choice(
-      seq(optional($.visible), $.typename, commaList($.ivar)),
-      seq(optional($.visible), $.unsigned_decl)
+    // previously one_decl
+    declaration: $ => choice(
+      seq(optional($.visible), $.simple_declaration),
+      seq(optional($.visible), $.unsigned_declaration)
     ),
-    unsigned_decl: $ => seq(
-      "unsigned", $.name, ":", $.const, optional(seq("=", $.any_expr))
+    simple_declaration: $ => seq($.typename, commaList($.variable_declaration)),
+    // previously unsigned_decl
+    unsigned_declaration: $ => seq(
+      "unsigned", $.name, ":", $.const, optional(seq("=", $._any_expr))
     ),
     typename: $ => choice($._primitive_types, $.uname),
     _primitive_types: _ => choice(
@@ -118,31 +125,34 @@ export default grammar({
     // simulation priority
     priority: $ => seq("priority", $.const),
     // execution constraints
-    enabler: $ => seq("provided", "(", $.expr, ")"),
+    enabler: $ => seq("provided", "(", $._expr, ")"),
 
     // TODO: Only global variables can be `hidden`, but any variable can be `show`.
     // This means we can't create hidden variables inside a module.
+    // Maybe this should be handled in the LSP itself, but we can probably do it here.
     visible: _ => choice("hidden", "show"),
 
-    sequence: $ => separatorList($.step),
+    _sequence: $ => separatorList($._step),
 
-    step: $ => choice(
-      seq($.stmnt, optional(seq("unless", $.stmnt))),
-      $.decl_lst,
+    _step: $ => choice(
+      seq($._statement, optional(seq("unless", $._statement))),
+      $._decl_lst,
       // TODO: xr and xs can only appear within a proctype.
-      seq("xr", commaList($.varref)),
-      seq("xs", commaList($.varref)),
+      seq("xr", commaList($.variable_reference)),
+      seq("xs", commaList($.variable_reference)),
     ),
 
-    ivar: $ => seq(
+    // previously ivar
+    variable_declaration: $ => seq(
       $.name,
       optional(seq("[", $.const, "]")),
-      optional(seq("=", choice($.any_expr, $.ch_init))),
+      optional(seq("=", choice($._any_expr, $.ch_init))),
     ),
 
     ch_init: $ => seq("[", $.const, "]", "of", "{", commaList($.typename), "}"),
 
-    varref: $ => seq(
+    // previously varref
+    variable_reference: $ => seq(
       $.name,
       optional($.subscript),
       optional($.member_access)
@@ -151,34 +161,34 @@ export default grammar({
     // NOTE: Precedence based on C function calls
     send: $ => prec.left(14, choice(
       // normal FIFO send
-      seq($.varref, "!", $.send_args),
+      seq($.variable_reference, "!", $.send_args),
       // sorted send
-      seq($.varref, "!!", $.send_args),
+      seq($.variable_reference, "!!", $.send_args),
     )),
 
     // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
     receive: $ => prec.left(14, choice(
       // normal receive
-      seq($.varref, "?", $.recv_args),
+      seq($.variable_reference, "?", $.recv_args),
       // random receive
-      seq($.varref, "??", $.recv_args),
+      seq($.variable_reference, "??", $.recv_args),
       // poll with side effect
-      seq($.varref, "?", "<", $.recv_args, ">"),
-      seq($.varref, "??", "<", $.recv_args, ">"),
+      seq($.variable_reference, "?", "<", $.recv_args, ">"),
+      seq($.variable_reference, "??", "<", $.recv_args, ">"),
     )),
 
     // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
     poll: $ => prec.left(14, choice(
-      seq($.varref, "?", "[", $.recv_args, "]"),
-      seq($.varref, "??", "[", $.recv_args, "]"),
+      seq($.variable_reference, "?", "[", $.recv_args, "]"),
+      seq($.variable_reference, "??", "[", $.recv_args, "]"),
     )),
 
     send_args: $ => choice(
-      $.arg_lst,
-      seq($.any_expr, "(", $.arg_lst, ")")
+      $.arguments,
+      seq($._any_expr, "(", $.arguments, ")")
     ),
 
-    arg_lst: $ => commaList($.any_expr),
+    arguments: $ => commaList($._any_expr),
 
     recv_args: $ => choice(
       commaList($.recv_arg),
@@ -186,8 +196,8 @@ export default grammar({
     ),
 
     recv_arg: $ => choice(
-      $.varref,
-      seq("eval", "(", $.varref, ")"),
+      $.variable_reference,
+      seq("eval", "(", $.variable_reference, ")"),
       seq(optional("-"), $.const)
     ),
 
@@ -198,49 +208,63 @@ export default grammar({
       $._dec_assign
     ),
 
-    stmnt: $ => choice(
+    // previously stmnt
+    _statement: $ => choice(
       // selection
-      seq("if", $.options, "fi"),
+      $.if,
       // while-like loops
-      seq("do", $.options, "od"),
+      $.do,
       // for loops
-      seq("for", "(", $.range, ")", "{", $.sequence, "}"),
+      $.for,
       // atomic sequence
-      seq("atomic", "{", $.sequence, "}"),
+      $.atomic,
       // deterministic atomic
-      seq("d_step", "{", $.sequence, "}"),
+      $.d_step,
       // non-deterministic value selection
-      seq("select", "(", $.range, ")"),
+      $.select,
       // normal sequence
-      seq("{", $.sequence, "}"),
-
+      $.block,
       $.send,
       $.receive,
       $.assign,
+      // TODO: `else` should only be used inside `if`
       "else",
+      // TODO: `break` should only be used inside `do` and `for`
       "break",
-      seq("goto", $.name),
-      $.labeled_stmnt,
-      $._print,
-      $.expr,
+      $.goto,
+      $.labeled_statement,
+      $.print,
+      $._expr,
 
-      $._embedded_c
+      $.embedded_c
     ),
+
+    if: $ => seq("if", $.options, "fi"),
+    do: $ => seq("do", $.options, "od"),
+    for: $ => seq("for", "(", $.range, ")", "{", $._sequence, "}"),
+    atomic: $ => seq("atomic", "{", $._sequence, "}"),
+    d_step: $ => seq("d_step", "{", $._sequence, "}"),
+    select: $ => seq("select", "(", $.range, ")"),
+    goto: $ => seq("goto", field("label", $.name)),
+    block: $ => seq("{", $._sequence, "}"),
 
     // NOTE: precedence based on standard assignment
     // NOTE: The spin compiler allows labels followed by nothing
-    labeled_stmnt: $ => prec.right(1, seq($.name, ":", optional($.stmnt))),
+    labeled_statement: $ => prec.right(1, seq($.name, ":", optional($._statement))),
 
 
     // NOTE: In the grammar, PRINT is actually either printf or printm.
-    _print: $ => (
+    print: $ => choice(
       // c-like printf
-      seq("printf", "(", $.string, optional(seq(",", $.arg_lst)), ")"),
+      $.printf,
       // print the name of an mtype constant (mtype x = something; printm(x))
-      seq("printm", "(", $.name, ")")
+      $.printm
     ),
 
-    _embedded_c: $ => choice(
+    printf: $ => seq("printf", "(", $.string, optional(seq(",", $.arguments)), ")"),
+    printm: $ => seq("printm", "(", $.name, ")"),
+
+    embedded_c: $ => choice(
       $.c_code,
       $.c_expr,
       $.c_decl,
@@ -249,51 +273,51 @@ export default grammar({
     ),
 
     range: $ => choice(
-      seq($.name, ":", $.any_expr, "..", $.any_expr),
+      seq($.name, ":", $._any_expr, "..", $._any_expr),
       seq($.name, "in", $.name)
     ),
 
-    options: $ => repeat1(seq("::", $.sequence)),
+    options: $ => repeat1(seq("::", $._sequence)),
 
     // INFO: operator precedence
     // https://en.cppreference.com/c/language/operator_precedence
-    subscript: $ => prec.left(14, seq("[", $.any_expr, "]")),
-    member_access: $ => prec.left(14, seq(".", $.varref)),
-    _inc_assign: $ => prec.left(14, seq($.varref, "++")),
-    _dec_assign: $ => prec.left(14, seq($.varref, "--")),
-    _minus_expr: $ => prec.right(13, seq("-", $.any_expr)),
-    _not_expr: $ => prec.right(13, wrap("!", $.any_expr)),
-    _bitewise_not_expr: $ => prec.right(13, wrap("~", $.any_expr)),
+    subscript: $ => prec.left(14, seq("[", $._any_expr, "]")),
+    member_access: $ => prec.left(14, seq(".", $.variable_reference)),
+    _inc_assign: $ => prec.left(14, seq($.variable_reference, "++")),
+    _dec_assign: $ => prec.left(14, seq($.variable_reference, "--")),
+    _minus_expr: $ => prec.right(13, seq("-", $._any_expr)),
+    _not_expr: $ => prec.right(13, wrap("!", $._any_expr)),
+    _bitewise_not_expr: $ => prec.right(13, wrap("~", $._any_expr)),
 
-    _mul_expr: $ => prec.left(12, wrap("*", $.any_expr)),
-    _div_expr: $ => prec.left(12, wrap("/", $.any_expr)),
-    _mod_expr: $ => prec.left(12, wrap("%", $.any_expr)),
+    _mul_expr: $ => prec.left(12, wrap("*", $._any_expr)),
+    _div_expr: $ => prec.left(12, wrap("/", $._any_expr)),
+    _mod_expr: $ => prec.left(12, wrap("%", $._any_expr)),
 
-    _add_expr: $ => prec.left(11, wrap("+", $.any_expr)),
-    _sub_expr: $ => prec.left(11, wrap("-", $.any_expr)),
+    _add_expr: $ => prec.left(11, wrap("+", $._any_expr)),
+    _sub_expr: $ => prec.left(11, wrap("-", $._any_expr)),
 
-    _left_shift_expr: $ => prec.left(10, wrap("<<", $.any_expr)),
-    _right_shift_expr: $ => prec.left(10, wrap(">>", $.any_expr)),
+    _left_shift_expr: $ => prec.left(10, wrap("<<", $._any_expr)),
+    _right_shift_expr: $ => prec.left(10, wrap(">>", $._any_expr)),
 
-    _lt_expr: $ => prec.left(9, wrap("<", $.any_expr)),
-    _le_expr: $ => prec.left(9, wrap("<=", $.any_expr)),
-    _gt_expr: $ => prec.left(9, wrap(">", $.any_expr)),
-    _ge_expr: $ => prec.left(9, wrap(">=", $.any_expr)),
+    _lt_expr: $ => prec.left(9, wrap("<", $._any_expr)),
+    _le_expr: $ => prec.left(9, wrap("<=", $._any_expr)),
+    _gt_expr: $ => prec.left(9, wrap(">", $._any_expr)),
+    _ge_expr: $ => prec.left(9, wrap(">=", $._any_expr)),
 
-    _eq_expr: $ => prec.left(8, wrap("==", $.any_expr)),
-    _ne_expr: $ => prec.left(8, wrap("!=", $.any_expr)),
+    _eq_expr: $ => prec.left(8, wrap("==", $._any_expr)),
+    _ne_expr: $ => prec.left(8, wrap("!=", $._any_expr)),
 
-    _bitwise_and_expr: $ => prec.left(7, wrap("&", $.any_expr)),
-    _bitwise_or_expr: $ => prec.left(6, wrap("|", $.any_expr)),
-    _bitwise_xor_expr: $ => prec.left(5, wrap("^", $.any_expr)),
+    _bitwise_and_expr: $ => prec.left(7, wrap("&", $._any_expr)),
+    _bitwise_or_expr: $ => prec.left(6, wrap("|", $._any_expr)),
+    _bitwise_xor_expr: $ => prec.left(5, wrap("^", $._any_expr)),
 
     // NOTE: These to specifically take an any_expr
-    _and_expr: $ => prec.left(4, wrap("&&", $.expr)),
-    _or_expr: $ => prec.left(3, wrap("||", $.expr)),
+    _and_expr: $ => prec.left(4, wrap("&&", $._expr)),
+    _or_expr: $ => prec.left(3, wrap("||", $._expr)),
 
-    ternary_conditional: $ => prec.right(2, seq("(", $.any_expr, "->", $.any_expr, ":", $.any_expr, ")")),
+    ternary_conditional: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
 
-    _eq_assign: $ => prec.right(1, seq($.varref, "=", $.any_expr)),
+    _eq_assign: $ => prec.right(1, seq($.variable_reference, "=", $._any_expr)),
 
     binary_expression: $ => choice(
       $._mul_expr,
@@ -322,28 +346,28 @@ export default grammar({
       $._bitewise_not_expr,
     ),
 
-    any_expr: $ => choice(
-      seq("(", $.any_expr, ")"),
+    _any_expr: $ => choice(
+      seq("(", $._any_expr, ")"),
       $.ternary_conditional,
       $.binary_expression,
       $.unary_expression,
       // number of messages in channel
-      seq("len", "(", $.varref, ")"),
+      seq("len", "(", $.variable_reference, ")"),
       $.poll,
-      $.varref,
+      $.variable_reference,
       $.const,
       "timeout",
       "np_", // non-progress system state
       // TODO: we have some "refers to pid" comments here.
       // Should look into it later.
-      seq("enabled", "(", $.any_expr, ")"), // refers to a `pid`
-      seq("pc_value", "(", $.any_expr, ")"), // refers to a `pid`
-      seq($.name, "[", $.any_expr, "]", "@", $.name), // refers to a `pid`
+      seq("enabled", "(", $._any_expr, ")"), // refers to a `pid`
+      seq("pc_value", "(", $._any_expr, ")"), // refers to a `pid`
+      seq($.name, "[", $._any_expr, "]", "@", $.name), // refers to a `pid`
       seq(
-        "run", $.name, "(", optional($.arg_lst), ")", optional($.priority)
+        "run", $.name, "(", optional($.arguments), ")", optional($.priority)
       ),
-      seq($.get_priority, "(", $.expr, ")"), // expr refers to a `pid`
-      seq($.set_priority, "(", $.expr, ")"), // first expr refers to a `pid`
+      seq($.get_priority, "(", $._expr, ")"), // expr refers to a `pid`
+      seq($.set_priority, "(", $._expr, ")"), // first expr refers to a `pid`
     ),
 
     // these two are defined in the reference as non-terminals,
@@ -355,12 +379,12 @@ export default grammar({
 
     _chanpoll_expr: $ => choice(
       // TODO: is "cannot be negated" another edge case?
-      seq($.chanpoll, "(", $.varref, ")"), // cannot be negated
+      seq($.chanpoll, "(", $.variable_reference, ")"), // cannot be negated
       seq("(", $._chanpoll_expr,")")
     ),
 
-    expr: $ => choice(
-      $.any_expr,
+    _expr: $ => choice(
+      $._any_expr,
       $._chanpoll_expr
     ),
 
@@ -416,7 +440,7 @@ export default grammar({
     macro_include: $ => seq("#include", $.string),
 
     // TODO: Using any_expr for now, should only accept constant expresions
-    macro_if: $ => seq("#if", $.any_expr),
+    macro_if: $ => seq("#if", $._any_expr),
     macro_ifdef: $ => seq("#ifdef", $.name),
     macro_ifndef: $ => seq("#ifndef", $.name),
     macro_undef: $ => seq("#undef", $.name),

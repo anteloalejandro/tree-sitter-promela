@@ -1,8 +1,4 @@
 ================
-Embedded C
-================
-
-================
 C Code
 ================
 
@@ -13,14 +9,11 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (c_code
-            (c_block
-              (content))))))))
+    (c_code
+      (c_block
+        (content)))))
 
 ================
 C Expression
@@ -33,14 +26,11 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (c_expr
-            (c_block
-              (content))))))))
+    (c_expr
+      (c_block
+        (content)))))
 
 ================
 C Declaration
@@ -53,14 +43,11 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (c_decl
-            (c_block
-              (content))))))))
+    (c_decl
+      (c_block
+        (content)))))
 
 ================
 C Track
@@ -73,14 +60,11 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (c_track
-            (c_block
-              (content))))))))
+    (c_track
+      (c_block
+        (content)))))
 
 ================
 C State
@@ -93,11 +77,8 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (c_state
-            (c_block
-              (content))))))))
+    (c_state
+      (c_block
+        (content)))))

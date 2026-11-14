@@ -9,15 +9,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name))))))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))))
 
 ================
 Proctype
@@ -32,40 +30,33 @@ active [1] proctype A(byte state; short foo)
 
 ---
 
-(spec
+(source_file
   (proctype
     (active
       (const))
     (name)
-    (decl_lst
-      (one_decl
+    (declaration
+      (simple_declaration
         (typename)
-        (ivar
-          (name)))
-      (one_decl
+        (variable_declaration
+          (name))))
+    (declaration
+      (simple_declaration
         (typename)
-        (ivar
+        (variable_declaration
           (name))))
     (priority
       (const))
     (enabler
-      (expr
-        (any_expr
-          (binary_expression
-            (any_expr
-              (varref
-                (name)))
-            (any_expr
-              (const))))))
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (varref
-                (name)))))))))
+      (binary_expression
+        (variable_reference
+          (name))
+        (const)))
+    (assign
+      (variable_reference
+        (name))
+      (variable_reference
+        (name)))))
 
 ================
 Init
@@ -78,16 +69,12 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))))
 
 ================
 Never
@@ -100,16 +87,12 @@ never
 
 ---
 
-(spec
+(source_file
   (never
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))))
 
 ================
 Trace
@@ -122,16 +105,12 @@ trace
 
 ---
 
-(spec
+(source_file
   (trace
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))))
 
 ================
 Utype
@@ -143,13 +122,13 @@ typedef MyType {
 
 ---
 
-(spec
+(source_file
   (utype
     (name)
-    (decl_lst
-      (one_decl
+    (declaration
+      (simple_declaration
         (typename)
-        (ivar
+        (variable_declaration
           (name))))))
 
 ================
@@ -160,7 +139,7 @@ mtype { MyMsg, MyOther }
 
 ---
 
-(spec
+(source_file
   (mtype
     (name)
     (name)))
@@ -180,26 +159,18 @@ init
 
 ---
 
-(spec
+(source_file
   (proctype
     (name)
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const)))))))
+    (assign
+      (variable_reference
+        (name))
+      (const)))
   (init
-    (sequence
-      (step
-        (stmnt
-          (assign
-            (varref
-              (name))
-            (any_expr
-              (const))))))))
+    (assign
+      (variable_reference
+        (name))
+      (const))))
 
 ================
 Module Declarations
@@ -210,14 +181,14 @@ bool MyBool;
 
 ---
 
-(spec
-  (decl_lst
-    (one_decl
+(source_file
+  (declaration
+    (simple_declaration
       (typename)
-      (ivar
+      (variable_declaration
         (name))))
-  (decl_lst
-    (one_decl
+  (declaration
+    (simple_declaration
       (typename)
-      (ivar
+      (variable_declaration
         (name)))))

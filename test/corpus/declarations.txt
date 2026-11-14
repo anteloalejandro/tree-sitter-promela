@@ -9,15 +9,13 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name))))))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))))
 
 =============
 Typed Declarations
@@ -34,51 +32,42 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (decl_lst
-          (one_decl
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name)
+          (const)
+          (const))))
+    (declaration
+      (unsigned_declaration
+        (name)
+        (const)
+        (const)))
+    (declaration
+      (visible)
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))
+    (declaration
+      (visible)
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name)
+          (const)
+          (ch_init
+            (const)
             (typename)
-            (ivar
-              (name)
-              (const)
-              (any_expr
-                (const))))))
-      (step
-        (decl_lst
-          (one_decl
-            (unsigned_decl
-              (name)
-              (const)
-              (any_expr
-                (const))))))
-      (step
-        (decl_lst
-          (one_decl
-            (visible)
-            (typename)
-            (ivar
-              (name)))))
-      (step
-        (decl_lst
-          (one_decl
-            (visible)
-            (typename)
-            (ivar
-              (name)))))
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name)
-              (const)
-              (ch_init
-                (const)
-                (typename)
-                (typename)))))))))
+            (typename)))))))
 
 ================
 Primitive Types
@@ -94,30 +83,25 @@ init
 
 ---
 
-(spec
+(source_file
   (init
-    (sequence
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name)))))
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name)))))
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name)))))
-      (step
-        (decl_lst
-          (one_decl
-            (typename)
-            (ivar
-              (name))))))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))
+    (declaration
+      (simple_declaration
+        (typename)
+        (variable_declaration
+          (name))))))

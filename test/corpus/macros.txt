@@ -6,10 +6,9 @@ Single-line define
 
 ---
 
-(spec
-  (macro
-    (macro_define (name))))
-
+(source_file
+  (macro_define
+    (name)))
 
 =================
 Multi-line define
@@ -20,20 +19,10 @@ Multi-line define
   1
 
 ---
-(spec
-  (macro
-    (macro_define (name))))
 
-
-=====================
-Bad Multi-line define
-:error
-:skip
-=====================
-
-#define TEST 1 \ + \ 1
-
----
+(source_file
+  (macro_define
+    (name)))
 
 =================
 Conditional macro
@@ -47,33 +36,19 @@ Conditional macro
 
 ---
 
-(spec
-  (macro
-    (macro_if
-      (any_expr
-        (binary_expression
-          (any_expr
-            (binary_expression
-              (any_expr
-                (const))
-              (any_expr
-                (const))))
-          (any_expr
-            (const))))))
-
-  (macro
-    (macro_define (name)))
-
-  (macro
-    (macro_else)
-  )
-
-  (macro
-    (macro_define (name)))
-
-  (macro
-    (macro_endif))
-)
+(source_file
+  (macro_if
+    (binary_expression
+      (binary_expression
+        (const)
+        (const))
+      (const)))
+  (macro_define
+    (name))
+  (macro_else)
+  (macro_define
+    (name))
+  (macro_endif))
 
 ==================
 Conditional define
@@ -87,25 +62,15 @@ Conditional define
 
 ---
 
-(spec
-  (macro
-    (macro_ifdef
-      (name)))
-
-  (macro
-    (macro_ifndef
-      (name)))
-
-  (macro
-    (macro_undef
-      (name)))
-
-  (macro
-    (macro_endif))
-
-  (macro
-    (macro_endif))
-)
+(source_file
+  (macro_ifdef
+    (name))
+  (macro_ifndef
+    (name))
+  (macro_undef
+    (name))
+  (macro_endif)
+  (macro_endif))
 
 =============
 include macro
@@ -115,5 +80,6 @@ include macro
 
 ---
 
-(spec
-  (macro (macro_include (string))))
+(source_file
+  (macro_include
+    (string)))
