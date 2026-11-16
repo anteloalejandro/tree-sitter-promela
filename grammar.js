@@ -58,6 +58,11 @@ export default grammar({
 
   name: "promela",
 
+  // General "word" separated from keywords.
+  // With this, anything that could be and identifier is recognized as one,
+  // so ifmyvar cannot longer be parsed as "if" and "myvar", and is parsed as "ifmyvar" instead.
+  word: $ => $.identifier,
+
   // things to ignore when lexing. must be tokens.
   extras: $ => [
     /\s/,
@@ -70,6 +75,8 @@ export default grammar({
     $.macro,
     $.embedded_c,
     $.print,
+    $.statement,
+    $.expression,
   ],
 
   conflicts: $ => [ ],
@@ -125,7 +132,7 @@ export default grammar({
     // simulation priority
     priority: $ => seq("priority", $.const),
     // execution constraints
-    enabler: $ => seq("provided", "(", $._expr, ")"),
+    enabler: $ => seq("provided", "(", $.expression, ")"),
 
     // TODO: Only global variables can be `hidden`, but any variable can be `show`.
     // This means we can't create hidden variables inside a module.
@@ -135,7 +142,7 @@ export default grammar({
     _sequence: $ => separatorList($._step),
 
     _step: $ => choice(
-      seq($._statement, optional(seq("unless", $._statement))),
+      seq($.statement, optional(seq("unless", $.statement))),
       $._decl_lst,
       // TODO: xr and xs can only appear within a proctype.
       seq("xr", commaList($.variable_reference)),
@@ -209,6 +216,7 @@ export default grammar({
     ),
 
     // previously stmnt
+    statement: $ => $._statement,
     _statement: $ => choice(
       // selection
       $.if,
@@ -234,7 +242,7 @@ export default grammar({
       $.goto,
       $.labeled_statement,
       $.print,
-      $._expr,
+      $.expression,
 
       $.embedded_c
     ),
@@ -250,7 +258,7 @@ export default grammar({
 
     // NOTE: precedence based on standard assignment
     // NOTE: The spin compiler allows labels followed by nothing
-    labeled_statement: $ => prec.right(1, seq($.identifier, ":", optional($._statement))),
+    labeled_statement: $ => prec.right(1, seq($.identifier, ":", optional($.statement))),
 
 
     // NOTE: In the grammar, PRINT is actually either printf or printm.
@@ -312,8 +320,8 @@ export default grammar({
     _bitwise_xor_expr: $ => prec.left(5, wrap("^", $._any_expr)),
 
     // NOTE: These to specifically take an any_expr
-    _and_expr: $ => prec.left(4, wrap("&&", $._expr)),
-    _or_expr: $ => prec.left(3, wrap("||", $._expr)),
+    _and_expr: $ => prec.left(4, wrap("&&", $.expression)),
+    _or_expr: $ => prec.left(3, wrap("||", $.expression)),
 
     ternary_conditional: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
 
@@ -346,42 +354,51 @@ export default grammar({
       $._bitewise_not_expr,
     ),
 
+    expression: $ => $._expr,
+
     _any_expr: $ => choice(
-      seq("(", $._any_expr, ")"),
+      $.paren_expr,
       $.ternary_conditional,
       $.binary_expression,
       $.unary_expression,
-      // number of messages in channel
-      seq("len", "(", $.variable_reference, ")"),
       $.poll,
       $.variable_reference,
       $.const,
+      $.builtin_const,
+      $.builtin_call,
+      $.remote_reference,
+    ),
+
+    builtin_const: _ => choice(
       "timeout",
       "np_", // non-progress system state
-      // TODO: we have some "refers to pid" comments here.
-      // Should look into it later.
-      seq("enabled", "(", $._any_expr, ")"), // refers to a `pid`
-      seq("pc_value", "(", $._any_expr, ")"), // refers to a `pid`
-      seq($.identifier, "[", $._any_expr, "]", "@", $.identifier), // refers to a `pid`
-      seq(
-        "run", $.identifier, "(", optional($.arguments), ")", optional($.priority)
-      ),
-      seq($.get_priority, "(", $._expr, ")"), // expr refers to a `pid`
-      seq($.set_priority, "(", $._expr, ")"), // first expr refers to a `pid`
     ),
 
-    // these two are defined in the reference as non-terminals,
-    // but the production just return their name.
-    // Leaving it like that makes the nodes named instead of anonymous,
-    // so we are leaving it like that.
-    get_priority: _ => "get_priority",
-    set_priority: _ => "set_priority",
+    builtin_call: $ => choice(
+      // number of messages in channel
+      seq(field("function", "len"), "(", $.variable_reference, ")"),
+      seq(field("function", "enabled"), "(", $._any_expr, ")"), // refers to a `pid`
+      seq(field("function", "pc_value"), "(", $._any_expr, ")"), // refers to a `pid`
+      seq(field("function", "run"),
+        $.identifier, "(", optional($.arguments), ")", optional($.priority)
+      ),
+      seq(field("function", "get_priority"), "(", $.expression, ")"), // expr refers to a `pid`
+      seq(field("function", "set_priority"), "(", $.expression, ")"), // first expr refers to a `pid`
+    ),
+
+    paren_expr: $ => seq("(", $._any_expr, ")"),
+
+    // TODO: Apparently, "@" can also be ":" here.
+    remote_reference: $ => seq($.identifier, "[", $._any_expr, "]", "@", $.identifier), // refers to a `pid`
 
     _chanpoll_expr: $ => choice(
-      // TODO: is "cannot be negated" another edge case?
-      seq($.chanpoll, "(", $.variable_reference, ")"), // cannot be negated
-      seq("(", $._chanpoll_expr,")")
+      $.chanpoll_call,
+      $.chanpoll_paren,
     ),
+
+    // TODO: is "cannot be negated" another edge case?
+    chanpoll_call: $ => seq(field("function", $.chanpoll), "(", $.variable_reference, ")"), // cannot be negated
+    chanpoll_paren: $ => seq("(", $._chanpoll_expr,")"),
 
     _expr: $ => choice(
       $._any_expr,
@@ -394,6 +411,7 @@ export default grammar({
     // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => choice(/[^"]/, "\\\""),
 
+    // previously "name"
     // use token to parse as a single token instead of as a sequence of tokens
     identifier: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
     const: _ => choice("true", "false", "skip", /[0-9]+/),

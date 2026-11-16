@@ -173,8 +173,9 @@ init
     (assign
       (variable_reference
         (identifier))
-      (variable_reference
-        (identifier)))))
+      (builtin_call
+        (variable_reference
+          (identifier))))))
 
 ================
 Operators
@@ -275,38 +276,44 @@ init
   (init
     (assign
       (variable_reference
+        (identifier))
+      (builtin_const))
+    (assign
+      (variable_reference
+        (identifier))
+      (builtin_const))
+    (assign
+      (variable_reference
+        (identifier))
+      (builtin_call
+        (const)))
+    (assign
+      (variable_reference
+        (identifier))
+      (builtin_call
+        (const)))
+    (assign
+      (variable_reference
+        (identifier))
+      (builtin_call
         (identifier)))
     (assign
       (variable_reference
-        (identifier)))
+        (identifier))
+      (builtin_call
+        (const)))
     (assign
       (variable_reference
         (identifier))
-      (const))
+      (builtin_call
+        (const)))
     (assign
       (variable_reference
         (identifier))
-      (const))
-    (assign
-      (variable_reference
-        (identifier))
-      (identifier))
-    (assign
-      (variable_reference
-        (identifier))
-      (get_priority)
-      (const))
-    (assign
-      (variable_reference
-        (identifier))
-      (set_priority)
-      (const))
-    (assign
-      (variable_reference
-        (identifier))
-      (identifier)
-      (const)
-      (identifier))))
+      (remote_reference
+        (identifier)
+        (const)
+        (identifier)))))
 
 ================
 Member Access
