@@ -15,7 +15,7 @@ init
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))))
+          (identifier))))))
 
 ================
 Proctype
@@ -34,29 +34,29 @@ active [1] proctype A(byte state; short foo)
   (proctype
     (active
       (const))
-    (name)
+    (identifier)
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (priority
       (const))
     (enabler
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (variable_reference
-        (name)))))
+        (identifier)))))
 
 ================
 Init
@@ -73,7 +73,7 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))))
 
 ================
@@ -91,7 +91,7 @@ never
   (never
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))))
 
 ================
@@ -109,7 +109,7 @@ trace
   (trace
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))))
 
 ================
@@ -124,12 +124,12 @@ typedef MyType {
 
 (source_file
   (utype
-    (name)
+    (identifier)
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))))
+          (identifier))))))
 
 ================
 Mtype
@@ -141,8 +141,8 @@ mtype { MyMsg, MyOther }
 
 (source_file
   (mtype
-    (name)
-    (name)))
+    (identifier)
+    (identifier)))
 
 ================
 Multiple Modules
@@ -161,15 +161,15 @@ init
 
 (source_file
   (proctype
-    (name)
+    (identifier)
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const)))
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))))
 
 ================
@@ -186,9 +186,9 @@ bool MyBool;
     (simple_declaration
       (typename)
       (variable_declaration
-        (name))))
+        (identifier))))
   (declaration
     (simple_declaration
       (typename)
       (variable_declaration
-        (name)))))
+        (identifier)))))

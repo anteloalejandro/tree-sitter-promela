@@ -15,7 +15,7 @@ init
       (options
         (assign
           (variable_reference
-            (name))
+            (identifier))
           (const))))))
 
 ================
@@ -35,7 +35,7 @@ init
       (options
         (assign
           (variable_reference
-            (name))
+            (identifier))
           (const))))))
 
 ================
@@ -53,12 +53,12 @@ init
   (init
     (for
       (range
-        (name)
+        (identifier)
         (const)
         (const))
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -77,7 +77,7 @@ init
     (atomic
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -96,7 +96,7 @@ init
     (d_step
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -114,7 +114,7 @@ init
   (init
     (select
       (range
-        (name)
+        (identifier)
         (const)
         (const)))))
 
@@ -136,7 +136,7 @@ init
     (block
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -160,53 +160,53 @@ init
   (init
     (send
       (variable_reference
-        (name))
+        (identifier))
       (send_args
         (arguments
           (variable_reference
-            (name)))))
+            (identifier)))))
     (send
       (variable_reference
-        (name))
+        (identifier))
       (send_args
         (arguments
           (variable_reference
-            (name)))))
+            (identifier)))))
     (send
       (variable_reference
-        (name))
+        (identifier))
       (send_args
         (arguments
           (variable_reference
-            (name)))))
+            (identifier)))))
     (receive
       (variable_reference
-        (name))
+        (identifier))
       (recv_args
         (recv_arg
           (variable_reference
-            (name)))))
+            (identifier)))))
     (receive
       (variable_reference
-        (name))
+        (identifier))
       (recv_args
         (recv_arg
           (variable_reference
-            (name)))))
+            (identifier)))))
     (receive
       (variable_reference
-        (name))
+        (identifier))
       (recv_args
         (recv_arg
           (variable_reference
-            (name)))))
+            (identifier)))))
     (poll
       (variable_reference
-        (name))
+        (identifier))
       (recv_args
         (recv_arg
           (variable_reference
-            (name)))))))
+            (identifier)))))))
 
 ================
 Assignments
@@ -225,14 +225,14 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))
     (assign
       (variable_reference
-        (name)))
+        (identifier)))
     (assign
       (variable_reference
-        (name)))))
+        (identifier)))))
 
 ================
 Labeled Statements
@@ -248,10 +248,10 @@ init
 (source_file
   (init
     (labeled_statement
-      (name)
+      (identifier)
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -272,17 +272,17 @@ init
 (source_file
   (init
     (labeled_statement
-      (name)
+      (identifier)
       (do
         (options
           (variable_reference
-            (name))
+            (identifier))
           (goto
-            (name))
+            (identifier))
           (variable_reference
-            (name)))))
+            (identifier)))))
     (labeled_statement
-      (name))))
+      (identifier))))
 
 ================
 If Else
@@ -301,15 +301,15 @@ init
       (options
         (assign
           (variable_reference
-            (name))
+            (identifier))
           (const))
         (assign
           (variable_reference
-            (name))
+            (identifier))
           (const))
         (assign
           (variable_reference
-            (name))
+            (identifier))
           (const))))))
 
 ================
@@ -327,11 +327,11 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))))
 
 ================
@@ -349,11 +349,11 @@ init
   (init
     (for
       (range
-        (name)
-        (name))
+        (identifier)
+        (identifier))
       (assign
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -370,8 +370,8 @@ proctype A()
 
 (source_file
   (proctype
-    (name)
+    (identifier)
     (variable_reference
-      (name))
+      (identifier))
     (variable_reference
-      (name))))
+      (identifier))))

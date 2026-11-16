@@ -13,11 +13,11 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (binary_expression
           (variable_reference
-            (name))
+            (identifier))
           (binary_expression
             (const)
             (const)))
@@ -42,15 +42,15 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (binary_expression
           (variable_reference
-            (name))
+            (identifier))
           (variable_reference
-            (name)))
+            (identifier)))
         (variable_reference
-          (name))))))
+          (identifier))))))
 
 ================
 Unary
@@ -67,10 +67,10 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (unary_expression
         (variable_reference
-          (name))))))
+          (identifier))))))
 
 ================
 Ternary
@@ -87,10 +87,10 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (ternary_conditional
         (variable_reference
-          (name))
+          (identifier))
         (const)
         (const)))))
 
@@ -109,10 +109,10 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -130,10 +130,10 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -151,10 +151,10 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -172,9 +172,9 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (variable_reference
-        (name)))))
+        (identifier)))))
 
 ================
 Operators
@@ -198,59 +198,59 @@ init
   (init
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (binary_expression
         (variable_reference
-          (name))
+          (identifier))
         (const)))))
 
 ================
@@ -275,38 +275,38 @@ init
   (init
     (assign
       (variable_reference
-        (name)))
+        (identifier)))
     (assign
       (variable_reference
-        (name)))
+        (identifier)))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (const))
     (assign
       (variable_reference
-        (name))
-      (name))
+        (identifier))
+      (identifier))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (get_priority)
       (const))
     (assign
       (variable_reference
-        (name))
+        (identifier))
       (set_priority)
       (const))
     (assign
       (variable_reference
-        (name))
-      (name)
+        (identifier))
+      (identifier)
       (const)
-      (name))))
+      (identifier))))
 
 ================
 Member Access
@@ -323,8 +323,8 @@ init
   (init
     (assign
       (variable_reference
-        (name)
+        (identifier)
         (member_access
           (variable_reference
-            (name))))
+            (identifier))))
       (const))))

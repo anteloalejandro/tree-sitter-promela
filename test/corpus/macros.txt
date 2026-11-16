@@ -8,7 +8,7 @@ Single-line define
 
 (source_file
   (macro_define
-    (name)))
+    (identifier)))
 
 =================
 Multi-line define
@@ -22,7 +22,7 @@ Multi-line define
 
 (source_file
   (macro_define
-    (name)))
+    (identifier)))
 
 =================
 Conditional macro
@@ -44,10 +44,10 @@ Conditional macro
         (const))
       (const)))
   (macro_define
-    (name))
+    (identifier))
   (macro_else)
   (macro_define
-    (name))
+    (identifier))
   (macro_endif))
 
 ==================
@@ -64,11 +64,11 @@ Conditional define
 
 (source_file
   (macro_ifdef
-    (name))
+    (identifier))
   (macro_ifndef
-    (name))
+    (identifier))
   (macro_undef
-    (name))
+    (identifier))
   (macro_endif)
   (macro_endif))
 

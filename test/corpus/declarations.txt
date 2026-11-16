@@ -15,7 +15,7 @@ init
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))))
+          (identifier))))))
 
 =============
 Typed Declarations
@@ -38,12 +38,12 @@ init
       (simple_declaration
         (typename)
         (variable_declaration
-          (name)
+          (identifier)
           (const)
           (const))))
     (declaration
       (unsigned_declaration
-        (name)
+        (identifier)
         (const)
         (const)))
     (declaration
@@ -51,18 +51,18 @@ init
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (visible)
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name)
+          (identifier)
           (const)
           (ch_init
             (const)
@@ -89,19 +89,19 @@ init
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))
+          (identifier))))
     (declaration
       (simple_declaration
         (typename)
         (variable_declaration
-          (name))))))
+          (identifier))))))

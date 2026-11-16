@@ -121,7 +121,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -180,7 +180,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -290,15 +290,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -373,7 +373,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -483,15 +483,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -741,15 +741,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -862,7 +862,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -972,15 +972,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -1039,7 +1039,7 @@
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "identifier",
             "named": true
           }
         ]
@@ -1141,15 +1141,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -1256,15 +1256,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -1331,7 +1331,7 @@
             "named": false
           },
           {
-            "type": "name",
+            "type": "identifier",
             "named": true
           }
         ]
@@ -1342,7 +1342,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1377,7 +1377,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -1416,7 +1416,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1431,7 +1431,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1461,7 +1461,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1491,7 +1491,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1577,15 +1577,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -1711,15 +1711,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -1812,7 +1812,7 @@
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1921,15 +1921,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -2004,7 +2004,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2154,7 +2154,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2296,7 +2296,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2355,7 +2355,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2465,15 +2465,15 @@
           "named": true
         },
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "if",
           "named": true
         },
         {
           "type": "labeled_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         },
         {
@@ -2535,21 +2535,6 @@
     }
   },
   {
-    "type": "uname",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "unary_expression",
     "named": true,
     "fields": {},
@@ -2578,7 +2563,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2637,7 +2622,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2695,7 +2680,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         }
       ]
@@ -2734,7 +2719,7 @@
           "named": true
         },
         {
-          "type": "name",
+          "type": "identifier",
           "named": true
         },
         {
@@ -2773,11 +2758,11 @@
       "required": true,
       "types": [
         {
-          "type": "member_access",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "name",
+          "type": "member_access",
           "named": true
         },
         {
@@ -3074,6 +3059,10 @@
     "named": false
   },
   {
+    "type": "identifier",
+    "named": true
+  },
+  {
     "type": "if",
     "named": false
   },
@@ -3104,10 +3093,6 @@
   {
     "type": "mtype",
     "named": false
-  },
-  {
-    "type": "name",
-    "named": true
   },
   {
     "type": "nempty",
@@ -3196,6 +3181,10 @@
   {
     "type": "typedef",
     "named": false
+  },
+  {
+    "type": "uname",
+    "named": true
   },
   {
     "type": "unless",

@@ -91,7 +91,7 @@ export default grammar({
 
     // root module types
     proctype: $ => seq(
-      optional($.active), "proctype", $.name,
+      optional($.active), "proctype", $.identifier,
       "(", optional($._decl_lst), ")",
       optional($.priority), optional($.enabler),
       "{", $._sequence, "}"
@@ -99,8 +99,8 @@ export default grammar({
     init: $ => seq("init", optional($.priority), "{", $._sequence, "}"),
     never: $ => seq("never", "{", $._sequence, "}"),
     trace: $ => seq("trace", "{", $._sequence, "}"),
-    utype: $ => seq("typedef", $.name, "{", $._decl_lst, "}"),
-    mtype: $ => seq("mtype", optional("="), "{", commaList($.name), "}" ),
+    utype: $ => seq("typedef", $.identifier, "{", $._decl_lst, "}"),
+    mtype: $ => seq("mtype", optional("="), "{", commaList($.identifier), "}" ),
     // global vars and chans
     // NOTE: precedence based on the comma operator in C
     _decl_lst: $ => prec.left(separatorList($.declaration)),
@@ -114,9 +114,9 @@ export default grammar({
     simple_declaration: $ => seq($.typename, commaList($.variable_declaration)),
     // previously unsigned_decl
     unsigned_declaration: $ => seq(
-      "unsigned", $.name, ":", $.const, optional(seq("=", $._any_expr))
+      "unsigned", $.identifier, ":", $.const, optional(seq("=", $._any_expr))
     ),
-    typename: $ => choice($._primitive_types, $.uname),
+    typename: $ => choice($._primitive_types, alias($.identifier, $.uname)),
     _primitive_types: _ => choice(
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),
@@ -144,7 +144,7 @@ export default grammar({
 
     // previously ivar
     variable_declaration: $ => seq(
-      $.name,
+      $.identifier,
       optional(seq("[", $.const, "]")),
       optional(seq("=", choice($._any_expr, $.ch_init))),
     ),
@@ -153,7 +153,7 @@ export default grammar({
 
     // previously varref
     variable_reference: $ => seq(
-      $.name,
+      $.identifier,
       optional($.subscript),
       optional($.member_access)
     ),
@@ -245,12 +245,12 @@ export default grammar({
     atomic: $ => seq("atomic", "{", $._sequence, "}"),
     d_step: $ => seq("d_step", "{", $._sequence, "}"),
     select: $ => seq("select", "(", $.range, ")"),
-    goto: $ => seq("goto", field("label", $.name)),
+    goto: $ => seq("goto", field("label", $.identifier)),
     block: $ => seq("{", $._sequence, "}"),
 
     // NOTE: precedence based on standard assignment
     // NOTE: The spin compiler allows labels followed by nothing
-    labeled_statement: $ => prec.right(1, seq($.name, ":", optional($._statement))),
+    labeled_statement: $ => prec.right(1, seq($.identifier, ":", optional($._statement))),
 
 
     // NOTE: In the grammar, PRINT is actually either printf or printm.
@@ -262,7 +262,7 @@ export default grammar({
     ),
 
     printf: $ => seq("printf", "(", $.string, optional(seq(",", $.arguments)), ")"),
-    printm: $ => seq("printm", "(", $.name, ")"),
+    printm: $ => seq("printm", "(", $.identifier, ")"),
 
     embedded_c: $ => choice(
       $.c_code,
@@ -273,8 +273,8 @@ export default grammar({
     ),
 
     range: $ => choice(
-      seq($.name, ":", $._any_expr, "..", $._any_expr),
-      seq($.name, "in", $.name)
+      seq($.identifier, ":", $._any_expr, "..", $._any_expr),
+      seq($.identifier, "in", $.identifier)
     ),
 
     options: $ => repeat1(seq("::", $._sequence)),
@@ -362,9 +362,9 @@ export default grammar({
       // Should look into it later.
       seq("enabled", "(", $._any_expr, ")"), // refers to a `pid`
       seq("pc_value", "(", $._any_expr, ")"), // refers to a `pid`
-      seq($.name, "[", $._any_expr, "]", "@", $.name), // refers to a `pid`
+      seq($.identifier, "[", $._any_expr, "]", "@", $.identifier), // refers to a `pid`
       seq(
-        "run", $.name, "(", optional($.arguments), ")", optional($.priority)
+        "run", $.identifier, "(", optional($.arguments), ")", optional($.priority)
       ),
       seq($.get_priority, "(", $._expr, ")"), // expr refers to a `pid`
       seq($.set_priority, "(", $._expr, ")"), // first expr refers to a `pid`
@@ -394,9 +394,8 @@ export default grammar({
     // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => choice(/[^"]/, "\\\""),
 
-    uname: $ => $.name,
     // use token to parse as a single token instead of as a sequence of tokens
-    name: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
+    identifier: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
     const: _ => choice("true", "false", "skip", /[0-9]+/),
 
     comment: _ => token(choice(
@@ -428,8 +427,8 @@ export default grammar({
     ),
 
     macro_define: $ => seq(
-      "#define", $.name,
-      field("macro_args", optional(seq("(", commaList($.name), ")"))),
+      "#define", $.identifier,
+      field("macro_args", optional(seq("(", commaList($.identifier), ")"))),
       $._define_body
     ),
     // TODO: We currently don't check for new lines.
@@ -441,8 +440,8 @@ export default grammar({
 
     // TODO: Using any_expr for now, should only accept constant expresions
     macro_if: $ => seq("#if", $._any_expr),
-    macro_ifdef: $ => seq("#ifdef", $.name),
-    macro_ifndef: $ => seq("#ifndef", $.name),
-    macro_undef: $ => seq("#undef", $.name),
+    macro_ifdef: $ => seq("#ifdef", $.identifier),
+    macro_ifndef: $ => seq("#ifndef", $.identifier),
+    macro_undef: $ => seq("#undef", $.identifier),
   }
 });
