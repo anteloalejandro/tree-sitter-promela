@@ -388,8 +388,9 @@ export default grammar({
 
     paren_expr: $ => seq("(", $._any_expr, ")"),
 
-    // TODO: Apparently, "@" can also be ":" here.
-    remote_reference: $ => seq($.identifier, "[", $._any_expr, "]", "@", $.identifier), // refers to a `pid`
+    // NOTE: "@" can also be ":" here.
+    // https://spinroot.com/spin/Man/remoterefs.html
+    remote_reference: $ => seq($.identifier, "[", $._any_expr, "]", choice(":", "@"), $.identifier), // refers to a `pid`
 
     _chanpoll_expr: $ => choice(
       $.chanpoll_call,
