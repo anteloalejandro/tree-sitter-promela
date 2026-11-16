@@ -252,7 +252,7 @@ export default grammar({
     for: $ => seq("for", "(", $.range, ")", "{", $._sequence, "}"),
     atomic: $ => seq("atomic", "{", $._sequence, "}"),
     d_step: $ => seq("d_step", "{", $._sequence, "}"),
-    select: $ => seq("select", "(", $.range, ")"),
+    select: $ => seq(field("function", "select"), "(", $.range, ")"),
     goto: $ => seq("goto", field("label", $.identifier)),
     block: $ => seq("{", $._sequence, "}"),
 
@@ -269,8 +269,8 @@ export default grammar({
       $.printm
     ),
 
-    printf: $ => seq("printf", "(", $.string, optional(seq(",", $.arguments)), ")"),
-    printm: $ => seq("printm", "(", $.identifier, ")"),
+    printf: $ => seq(field("function", "printf"), "(", $.string, optional(seq(",", $.arguments)), ")"),
+    printm: $ => seq(field("function", "printm"), "(", $.identifier, ")"),
 
     embedded_c: $ => choice(
       $.c_code,

@@ -1486,8 +1486,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "select"
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "STRING",
+            "value": "select"
+          }
         },
         {
           "type": "STRING",
@@ -1583,8 +1587,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "printf"
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "STRING",
+            "value": "printf"
+          }
         },
         {
           "type": "STRING",
@@ -1625,8 +1633,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "printm"
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "STRING",
+            "value": "printm"
+          }
         },
         {
           "type": "STRING",
