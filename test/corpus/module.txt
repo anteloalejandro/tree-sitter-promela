@@ -33,7 +33,8 @@ active [1] proctype A(byte state; short foo)
 (source_file
   (proctype
     (active
-      (const))
+      (const
+        (number)))
     (identifier)
     (declaration
       (simple_declaration
@@ -46,12 +47,14 @@ active [1] proctype A(byte state; short foo)
         (variable_declaration
           (identifier))))
     (priority
-      (const))
+      (const
+        (number)))
     (enabler
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
@@ -74,7 +77,8 @@ init
     (assign
       (variable_reference
         (identifier))
-      (const))))
+      (const
+        (number)))))
 
 ================
 Never
@@ -92,7 +96,8 @@ never
     (assign
       (variable_reference
         (identifier))
-      (const))))
+      (const
+        (number)))))
 
 ================
 Trace
@@ -110,7 +115,8 @@ trace
     (assign
       (variable_reference
         (identifier))
-      (const))))
+      (const
+        (number)))))
 
 ================
 Utype
@@ -165,12 +171,14 @@ init
     (assign
       (variable_reference
         (identifier))
-      (const)))
+      (const
+        (number))))
   (init
     (assign
       (variable_reference
         (identifier))
-      (const))))
+      (const
+        (number)))))
 
 ================
 Module Declarations

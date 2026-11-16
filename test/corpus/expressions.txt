@@ -19,13 +19,18 @@ init
           (variable_reference
             (identifier))
           (binary_expression
-            (const)
-            (const)))
+            (const
+              (number))
+            (const
+              (number))))
         (binary_expression
           (binary_expression
-            (const)
-            (const))
-          (const))))))
+            (const
+              (number))
+            (const
+              (number)))
+          (const
+            (number)))))))
 
 ================
 Logical
@@ -91,8 +96,10 @@ init
       (ternary_conditional
         (variable_reference
           (identifier))
-        (const)
-        (const)))))
+        (const
+          (number))
+        (const
+          (number))))))
 
 ================
 Comparison
@@ -113,7 +120,8 @@ init
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))))
+        (const
+          (number))))))
 
 ================
 Equality
@@ -134,7 +142,8 @@ init
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))))
+        (const
+          (number))))))
 
 ================
 Bitwise
@@ -155,7 +164,8 @@ init
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))))
+        (const
+          (number))))))
 
 ================
 Special Expressions
@@ -203,56 +213,64 @@ init
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (binary_expression
         (variable_reference
           (identifier))
-        (const)))))
+        (const
+          (number))))))
 
 ================
 System Expressions
@@ -286,12 +304,14 @@ init
       (variable_reference
         (identifier))
       (builtin_call
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (builtin_call
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
@@ -301,18 +321,21 @@ init
       (variable_reference
         (identifier))
       (builtin_call
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (builtin_call
-        (const)))
+        (const
+          (number))))
     (assign
       (variable_reference
         (identifier))
       (remote_reference
         (identifier)
-        (const)
+        (const
+          (number))
         (identifier)))))
 
 ================
@@ -334,4 +357,5 @@ init
         (member_access
           (variable_reference
             (identifier))))
-      (const))))
+      (const
+        (number)))))

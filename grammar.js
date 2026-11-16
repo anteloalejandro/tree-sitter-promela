@@ -415,7 +415,13 @@ export default grammar({
     // previously "name"
     // use token to parse as a single token instead of as a sequence of tokens
     identifier: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
-    const: _ => choice("true", "false", "skip", /[0-9]+/),
+    const: $ => choice(
+      $.boolean,
+      $.number,
+      alias("skip", $.skip),
+    ),
+    boolean: _ => choice("true", "false"),
+    number: _ => /[0-9]+/,
 
     comment: _ => token(choice(
       // inline comments

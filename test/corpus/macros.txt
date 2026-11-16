@@ -40,9 +40,12 @@ Conditional macro
   (macro_if
     (binary_expression
       (binary_expression
-        (const)
-        (const))
-      (const)))
+        (const
+          (number))
+        (const
+          (number)))
+      (const
+        (number))))
   (macro_define
     (identifier))
   (macro_else)

@@ -2841,22 +2841,40 @@
       "type": "CHOICE",
       "members": [
         {
+          "type": "SYMBOL",
+          "name": "boolean"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "skip"
+          },
+          "named": true,
+          "value": "skip"
+        }
+      ]
+    },
+    "boolean": {
+      "type": "CHOICE",
+      "members": [
+        {
           "type": "STRING",
           "value": "true"
         },
         {
           "type": "STRING",
           "value": "false"
-        },
-        {
-          "type": "STRING",
-          "value": "skip"
-        },
-        {
-          "type": "PATTERN",
-          "value": "[0-9]+"
         }
       ]
+    },
+    "number": {
+      "type": "PATTERN",
+      "value": "[0-9]+"
     },
     "comment": {
       "type": "TOKEN",

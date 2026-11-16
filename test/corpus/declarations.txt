@@ -39,13 +39,17 @@ init
         (typename)
         (variable_declaration
           (identifier)
-          (const)
-          (const))))
+          (const
+            (number))
+          (const
+            (number)))))
     (declaration
       (unsigned_declaration
         (identifier)
-        (const)
-        (const)))
+        (const
+          (number))
+        (const
+          (number))))
     (declaration
       (visible)
       (simple_declaration
@@ -63,9 +67,11 @@ init
         (typename)
         (variable_declaration
           (identifier)
-          (const)
+          (const
+            (number))
           (ch_init
-            (const)
+            (const
+              (number))
             (typename)
             (typename)))))))
 
