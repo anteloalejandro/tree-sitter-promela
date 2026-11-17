@@ -12,7 +12,7 @@ init
 (source_file
   (init
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))))
@@ -35,7 +35,7 @@ init
 (source_file
   (init
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier)
@@ -52,18 +52,18 @@ init
           (number))))
     (declaration
       (visible)
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
       (visible)
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier)
@@ -92,22 +92,22 @@ init
 (source_file
   (init
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))))

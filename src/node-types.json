@@ -68,6 +68,10 @@
         "named": true
       },
       {
+        "type": "conditional_expression",
+        "named": true
+      },
+      {
         "type": "const",
         "named": true
       },
@@ -81,10 +85,6 @@
       },
       {
         "type": "remote_reference",
-        "named": true
-      },
-      {
-        "type": "ternary_conditional",
         "named": true
       },
       {
@@ -259,6 +259,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -272,10 +276,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -697,6 +697,57 @@
     }
   },
   {
+    "type": "conditional_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_call",
+          "named": true
+        },
+        {
+          "type": "builtin_const",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
+          "type": "const",
+          "named": true
+        },
+        {
+          "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "poll",
+          "named": true
+        },
+        {
+          "type": "remote_reference",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "variable_reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "const",
     "named": true,
     "fields": {},
@@ -797,7 +848,7 @@
       "required": true,
       "types": [
         {
-          "type": "simple_declaration",
+          "type": "signed_declaration",
           "named": true
         },
         {
@@ -882,6 +933,10 @@
             "named": true
           },
           {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
             "type": "const",
             "named": true
           },
@@ -895,10 +950,6 @@
           },
           {
             "type": "remote_reference",
-            "named": true
-          },
-          {
-            "type": "ternary_conditional",
             "named": true
           },
           {
@@ -1132,6 +1183,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -1145,10 +1200,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -1349,6 +1400,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -1362,10 +1417,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -1544,6 +1595,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -1561,10 +1616,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -1656,6 +1707,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -1673,10 +1728,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -1760,6 +1811,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -1776,10 +1831,6 @@
           "named": true
         },
         {
-          "type": "ternary_conditional",
-          "named": true
-        },
-        {
           "type": "unary_expression",
           "named": true
         },
@@ -1791,7 +1842,7 @@
     }
   },
   {
-    "type": "simple_declaration",
+    "type": "signed_declaration",
     "named": true,
     "fields": {},
     "children": {
@@ -1894,54 +1945,7 @@
           "named": true
         },
         {
-          "type": "const",
-          "named": true
-        },
-        {
-          "type": "paren_expr",
-          "named": true
-        },
-        {
-          "type": "poll",
-          "named": true
-        },
-        {
-          "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "variable_reference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ternary_conditional",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "builtin_call",
-          "named": true
-        },
-        {
-          "type": "builtin_const",
+          "type": "conditional_expression",
           "named": true
         },
         {
@@ -1958,10 +1962,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -2049,6 +2049,10 @@
             "named": true
           },
           {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
             "type": "const",
             "named": true
           },
@@ -2062,10 +2066,6 @@
           },
           {
             "type": "remote_reference",
-            "named": true
-          },
-          {
-            "type": "ternary_conditional",
             "named": true
           },
           {
@@ -2119,6 +2119,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -2136,10 +2140,6 @@
         },
         {
           "type": "remote_reference",
-          "named": true
-        },
-        {
-          "type": "ternary_conditional",
           "named": true
         },
         {
@@ -2212,6 +2212,10 @@
           "named": true
         },
         {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
           "type": "const",
           "named": true
         },
@@ -2232,10 +2236,6 @@
           "named": true
         },
         {
-          "type": "ternary_conditional",
-          "named": true
-        },
-        {
           "type": "unary_expression",
           "named": true
         },
@@ -2249,21 +2249,34 @@
   {
     "type": "variable_reference",
     "named": true,
-    "fields": {},
+    "fields": {
+      "field": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      },
+      "index": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "member_access",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "member_access",
-          "named": true
-        },
-        {
-          "type": "subscript",
           "named": true
         }
       ]

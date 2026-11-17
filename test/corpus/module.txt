@@ -12,7 +12,7 @@ init
 (source_file
   (init
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))))
@@ -37,12 +37,12 @@ active [1] proctype A(byte state; short foo)
         (number)))
     (identifier)
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))
@@ -132,7 +132,7 @@ typedef MyType {
   (utype
     (identifier)
     (declaration
-      (simple_declaration
+      (signed_declaration
         (typename)
         (variable_declaration
           (identifier))))))
@@ -191,12 +191,12 @@ bool MyBool;
 
 (source_file
   (declaration
-    (simple_declaration
+    (signed_declaration
       (typename)
       (variable_declaration
         (identifier))))
   (declaration
-    (simple_declaration
+    (signed_declaration
       (typename)
       (variable_declaration
         (identifier)))))

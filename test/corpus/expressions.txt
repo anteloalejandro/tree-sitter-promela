@@ -93,7 +93,7 @@ init
     (eq_assign
       (variable_reference
         (identifier))
-      (ternary_conditional
+      (conditional_expression
         (variable_reference
           (identifier))
         (const

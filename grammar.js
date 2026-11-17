@@ -145,10 +145,11 @@ export default grammar({
     // declarations
     // previously one_decl
     declaration: $ => choice(
-      seq(optional($.visible), $.simple_declaration),
+      seq(optional($.visible), $.signed_declaration),
       seq(optional($.visible), $.unsigned_declaration)
     ),
-    simple_declaration: $ => seq($.typename, commaList($.variable_declaration)),
+    // declaration with a type
+    signed_declaration: $ => seq($.typename, commaList($.variable_declaration)),
     // previously unsigned_decl
     unsigned_declaration: $ => seq(
       "unsigned", $.identifier, ":", $.const, optional(seq("=", $._any_expr))
@@ -191,8 +192,8 @@ export default grammar({
     // previously varref
     variable_reference: $ => seq(
       $.identifier,
-      optional($.subscript),
-      optional($.member_access)
+      optional(field("field", $.subscript)),
+      optional(field("index", $.member_access))
     ),
 
     // NOTE: Precedence based on C function calls
@@ -359,7 +360,7 @@ export default grammar({
     _and_expr: $ => prec.left(4, binaryOp("&&", $.expression)),
     _or_expr: $ => prec.left(3, binaryOp("||", $.expression)),
 
-    ternary_conditional: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
+    conditional_expression: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
 
     // NOTE: precedence based on standard assignment
     eq_assign: $ => prec.right(1, seq(
@@ -399,7 +400,7 @@ export default grammar({
 
     _any_expr: $ => choice(
       $.paren_expr,
-      $.ternary_conditional,
+      $.conditional_expression,
       $.binary_expression,
       $.unary_expression,
       $.poll,
