@@ -14,8 +14,7 @@ init
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))))
+        (identifier)))))
 
 =============
 Typed Declarations
@@ -38,18 +37,16 @@ init
     (visible)
     (signed_declaration
       (primitive_type)
-      (variable_declaration
-        (identifier))))
+      (identifier)))
   (init
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier)
-          (const
-            (number))
-          (const
-            (number)))))
+        (identifier)
+        (const
+          (number))
+        (const
+          (number))))
     (declaration
       (unsigned_declaration
         (identifier)
@@ -61,20 +58,18 @@ init
       (visible)
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))
+        (identifier)))
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier)
+        (identifier)
+        (const
+          (number))
+        (ch_init
           (const
             (number))
-          (ch_init
-            (const
-              (number))
-            (primitive_type)
-            (primitive_type)))))))
+          (primitive_type)
+          (primitive_type))))))
 
 ================
 Primitive Types
@@ -95,20 +90,16 @@ init
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))
+        (identifier)))
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))
+        (identifier)))
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))
+        (identifier)))
     (declaration
       (signed_declaration
         (primitive_type)
-        (variable_declaration
-          (identifier))))))
+        (identifier)))))

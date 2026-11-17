@@ -171,52 +171,38 @@ init
     (send
       (variable_reference
         (identifier))
-      (send_args
-        (arguments
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (send
       (variable_reference
         (identifier))
-      (send_args
-        (arguments
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (send
       (variable_reference
         (identifier))
-      (send_args
-        (arguments
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (receive
       (variable_reference
         (identifier))
-      (recv_args
-        (recv_arg
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (receive
       (variable_reference
         (identifier))
-      (recv_args
-        (recv_arg
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (receive
       (variable_reference
         (identifier))
-      (recv_args
-        (recv_arg
-          (variable_reference
-            (identifier)))))
+      (variable_reference
+        (identifier)))
     (poll
       (variable_reference
         (identifier))
-      (recv_args
-        (recv_arg
-          (variable_reference
-            (identifier)))))))
+      (variable_reference
+        (identifier)))))
 
 ================
 Assignments

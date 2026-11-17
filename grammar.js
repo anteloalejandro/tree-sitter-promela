@@ -11,6 +11,7 @@
 const separator = choice(";", "->")
 
 const fn_field_name = "function"
+const arg_field_name = "arguments"
 const operand_field_name = "operand"
 const operator_field_name = "operator"
 
@@ -76,14 +77,11 @@ function unaryOp(op, operand) {
  * @param {RuleOrLiteral} argument
  */
 function fnCall(name, argument) {
-  return seq(field(fn_field_name, name), "(", argument, ")")
+  return seq(field(fn_field_name, name), "(", field(arg_field_name, argument), ")")
 }
 
 export default grammar({
   // TODO: #define macros are not defined in the grammar.
-  // NOTE:
-  // Many of the things defined as 'a' 'b' 'c' should actually be defined as
-  // 'abc' or the compiler will fail. This is not stated or specified anywhere.
 
   name: "promela",
 
@@ -156,10 +154,14 @@ export default grammar({
       seq(optional(alias("show", $.visible)), $.unsigned_declaration)
     ),
     // declaration with a type
-    signed_declaration: $ => seq($.typename, commaList($.variable_declaration)),
+    signed_declaration: $ => seq(
+      $.typename,
+      commaList(field("declarator", $._variable_declaration))
+    ),
     // previously unsigned_decl
     unsigned_declaration: $ => seq(
-      "unsigned", $.identifier, ":", $.const, optional(seq("=", $._any_expr))
+      "unsigned", $.identifier, ":", field("size", $.const),
+      optional(seq("=", field("value", $._any_expr)))
     ),
     typename: $ => choice($.primitive_type, alias($.identifier, $.user_type)),
     primitive_type: _ => choice(
@@ -190,61 +192,63 @@ export default grammar({
     ),
 
     // previously ivar
-    variable_declaration: $ => seq(
+    _variable_declaration: $ => seq(
       $.identifier,
-      optional(seq("[", $.const, "]")),
-      optional(seq("=", choice($._any_expr, $.ch_init))),
+      optional(seq("[", field("size", $.const), "]")),
+      optional(seq("=", field("value", choice($._any_expr, $.ch_init)))),
     ),
 
-    ch_init: $ => seq("[", $.const, "]", "of", "{", commaList($.typename), "}"),
+    ch_init: $ => seq("[", field("size", $.const), "]", "of", "{", commaList($.typename), "}"),
 
     // previously varref
-    variable_reference: $ => seq(
+    // NOTE: Precedence set to avoid collisions with remote references
+    // (both use ':', so there is a conflict inside ternaries, which also use ':')
+    variable_reference: $ => prec.left(13, seq(
       $.identifier,
       optional(field("index", $.subscript)),
       optional(field("field", $.member_access))
-    ),
+    )),
 
     // NOTE: Precedence based on C function calls
     send: $ => prec.left(14, choice(
       // normal FIFO send
-      seq($.variable_reference, "!", $.send_args),
+      seq($.variable_reference, "!", $._send_args),
       // sorted send
-      seq($.variable_reference, "!!", $.send_args),
+      seq($.variable_reference, "!!", $._send_args),
     )),
 
     // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
     receive: $ => prec.left(14, choice(
       // normal receive
-      seq($.variable_reference, "?", $.recv_args),
+      seq($.variable_reference, "?", $._recv_args),
       // random receive
-      seq($.variable_reference, "??", $.recv_args),
+      seq($.variable_reference, "??", $._recv_args),
       // poll with side effect
-      seq($.variable_reference, "?", "<", $.recv_args, ">"),
-      seq($.variable_reference, "??", "<", $.recv_args, ">"),
+      seq($.variable_reference, "?", "<", $._recv_args, ">"),
+      seq($.variable_reference, "??", "<", $._recv_args, ">"),
     )),
 
     // NOTE: Precedence based on C function calls (not needed here, there is no ambiguity)
     poll: $ => prec.left(14, choice(
-      seq($.variable_reference, "?", "[", $.recv_args, "]"),
-      seq($.variable_reference, "??", "[", $.recv_args, "]"),
+      seq($.variable_reference, "?", "[", $._recv_args, "]"),
+      seq($.variable_reference, "??", "[", $._recv_args, "]"),
     )),
 
-    send_args: $ => choice(
-      $.arguments,
-      seq($._any_expr, "(", $.arguments, ")")
-    ),
+    _send_args: $ => field(arg_field_name, choice(
+      $._arguments,
+      seq($._any_expr, "(", $._arguments, ")")
+    )),
 
-    arguments: $ => commaList($._any_expr),
+    _arguments: $ => commaList($._any_expr),
 
-    recv_args: $ => choice(
-      commaList($.recv_arg),
-      seq($.recv_arg, "(", $.recv_args, ")")
-    ),
+    _recv_args: $ => field(arg_field_name, choice(
+      commaList($._recv_arg),
+      seq($._recv_arg, "(", $._recv_args, ")")
+    )),
 
-    recv_arg: $ => choice(
+    _recv_arg: $ => choice(
       $.variable_reference,
-      seq("eval", "(", $.variable_reference, ")"),
+      fnCall("eval", $.variable_reference),
       seq(optional("-"), $.const)
     ),
 
@@ -308,7 +312,7 @@ export default grammar({
       $.printm
     ),
 
-    printf: $ => fnCall("printf", seq($.string, optional(seq(",", $.arguments)))),
+    printf: $ => fnCall("printf", seq($.string, optional(seq(",", $._arguments)))),
     printm: $ => fnCall("printm", $.identifier),
 
     embedded_c: $ => choice(
@@ -320,56 +324,64 @@ export default grammar({
     ),
 
     range: $ => choice(
-      seq($.identifier, ":", $._any_expr, "..", $._any_expr),
-      seq($.identifier, "in", $.identifier)
+      seq(
+        field("iterator", $.identifier),
+        ":", field("left", $._any_expr),
+        "..", field("right", $._any_expr)
+      ),
+      seq(field("iterator", $.identifier), "in", field("list", $.identifier))
     ),
 
     options: $ => repeat1(seq("::", $._sequence)),
 
     // INFO: operator precedence
     // https://spinroot.com/spin/Man/operators.html
-    subscript: $ => prec.left(14, seq("[", $._any_expr, "]")),
-    member_access: $ => prec.left(14, seq(".", $.variable_reference)),
-    inc_assign: $ => prec.left(13, seq(
+    subscript: $ => prec.left(13, seq("[", $._any_expr, "]")),
+    member_access: $ => prec.left(13, seq(".", $.variable_reference)),
+    inc_assign: $ => prec.left(12, seq(
       field(operand_field_name, $.variable_reference),
       field(operator_field_name, "++")
     )),
-    dec_assign: $ => prec.left(13, seq(
+    dec_assign: $ => prec.left(12, seq(
       field(operand_field_name, $.variable_reference),
       field(operator_field_name, "--")
     )),
-    _not_expr: $ => prec.right(13, unaryOp("!", $._any_expr)),
-    _bitwise_not_expr: $ => prec.right(13, unaryOp("~", $._any_expr)),
+    _not_expr: $ => prec.right(12, unaryOp("!", $._any_expr)),
+    _bitwise_not_expr: $ => prec.right(12, unaryOp("~", $._any_expr)),
     // based on C precedence
-    _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
+    _minus_expr: $ => prec.right(12, unaryOp("-", $._any_expr)),
 
-    _mul_expr: $ => prec.left(12, binaryOp("*", $._any_expr)),
-    _div_expr: $ => prec.left(12, binaryOp("/", $._any_expr)),
-    _mod_expr: $ => prec.left(12, binaryOp("%", $._any_expr)),
+    _mul_expr: $ => prec.left(11, binaryOp("*", $._any_expr)),
+    _div_expr: $ => prec.left(11, binaryOp("/", $._any_expr)),
+    _mod_expr: $ => prec.left(11, binaryOp("%", $._any_expr)),
 
-    _add_expr: $ => prec.left(11, binaryOp("+", $._any_expr)),
-    _sub_expr: $ => prec.left(11, binaryOp("-", $._any_expr)),
+    _add_expr: $ => prec.left(10, binaryOp("+", $._any_expr)),
+    _sub_expr: $ => prec.left(10, binaryOp("-", $._any_expr)),
 
-    _left_shift_expr: $ => prec.left(10, binaryOp("<<", $._any_expr)),
-    _right_shift_expr: $ => prec.left(10, binaryOp(">>", $._any_expr)),
+    _left_shift_expr: $ => prec.left(9, binaryOp("<<", $._any_expr)),
+    _right_shift_expr: $ => prec.left(9, binaryOp(">>", $._any_expr)),
 
-    _lt_expr: $ => prec.left(9, binaryOp("<", $._any_expr)),
-    _le_expr: $ => prec.left(9, binaryOp("<=", $._any_expr)),
-    _gt_expr: $ => prec.left(9, binaryOp(">", $._any_expr)),
-    _ge_expr: $ => prec.left(9, binaryOp(">=", $._any_expr)),
+    _lt_expr: $ => prec.left(8, binaryOp("<", $._any_expr)),
+    _le_expr: $ => prec.left(8, binaryOp("<=", $._any_expr)),
+    _gt_expr: $ => prec.left(8, binaryOp(">", $._any_expr)),
+    _ge_expr: $ => prec.left(8, binaryOp(">=", $._any_expr)),
 
-    _eq_expr: $ => prec.left(8, binaryOp("==", $._any_expr)),
-    _ne_expr: $ => prec.left(8, binaryOp("!=", $._any_expr)),
+    _eq_expr: $ => prec.left(7, binaryOp("==", $._any_expr)),
+    _ne_expr: $ => prec.left(7, binaryOp("!=", $._any_expr)),
 
-    _bitwise_and_expr: $ => prec.left(7, binaryOp("&", $._any_expr)),
-    _bitwise_xor_expr: $ => prec.left(6, binaryOp("^", $._any_expr)),
-    _bitwise_or_expr: $ => prec.left(7, binaryOp("|", $._any_expr)),
+    _bitwise_and_expr: $ => prec.left(6, binaryOp("&", $._any_expr)),
+    _bitwise_or_expr: $ => prec.left(6, binaryOp("|", $._any_expr)),
+    _bitwise_xor_expr: $ => prec.left(5, binaryOp("^", $._any_expr)),
 
-    // NOTE: These to specifically take an any_expr
+    // NOTE: These two specifically take an expr instead of an any_expr
     _and_expr: $ => prec.left(4, binaryOp("&&", $.expression)),
     _or_expr: $ => prec.left(3, binaryOp("||", $.expression)),
 
-    conditional_expression: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
+    conditional_expression: $ => prec.right(2, seq(
+      "(", field("condition", $._any_expr),
+      "->", field("consequence", $._any_expr),
+      ":", field("alternative", $._any_expr), ")"
+    )),
 
     // NOTE: precedence based on standard assignment
     eq_assign: $ => prec.right(1, seq(
@@ -420,6 +432,11 @@ export default grammar({
       $.remote_reference,
     ),
 
+    _expr: $ => choice(
+      $._any_expr,
+      $._chanpoll_expr
+    ),
+
     builtin_const: _ => choice(
       "timeout",
       "np_", // non-progress system state
@@ -432,33 +449,37 @@ export default grammar({
       fnCall("get_priority", $.expression), // expr refers to a `pid`
       fnCall("set_priority", seq($.expression, ",", $.expression)), // first expr refers to a `pid`
       seq(field(fn_field_name, "run"),
-        $.identifier, "(", optional($.arguments), ")", optional($.priority)
+        $.identifier,
+        "(", field(arg_field_name, optional($._arguments)), ")",
+        optional($.priority)
       ),
     ),
 
     paren_expr: $ => seq("(", $._any_expr, ")"),
 
-    // NOTE: "@" can also be ":" here.
+    // NOTE: "@" can also be ":" here, but its for variables instead of labels
     // https://spinroot.com/spin/Man/remoterefs.html
-    remote_reference: $ => seq($.identifier, "[", $._any_expr, "]", choice(":", "@"), $.identifier), // refers to a `pid`
+    remote_reference: $ => seq(
+      $.identifier,
+      optional(seq("[", field("pid", $._any_expr), "]")), // refers to a `pid`
+      choice(
+        seq(":", field("varname", $.identifier)),
+        seq("@", field("labelname", $.identifier))
+      )
+    ),
 
     _chanpoll_expr: $ => choice(
       $.chanpoll_call,
-      $.chanpoll_paren,
+      alias($.paren_chanpoll_expr, $.paren_expr),
     ),
 
-    // TODO: is "cannot be negated" another edge case?
     chanpoll_call: $ => fnCall($.chanpoll, $.variable_reference), // cannot be negated
-    chanpoll_paren: $ => seq("(", $._chanpoll_expr,")"),
-
-    _expr: $ => choice(
-      $._any_expr,
-      $._chanpoll_expr
-    ),
+    // this is sepparated from the normal paren_expr to avoid conflicts
+    paren_chanpoll_expr: $ => seq("(", $._chanpoll_expr,")"),
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
-    string: $ => seq('"', repeat($._any_ascii_char), '"'),
+    string: $ => token(seq('"', repeat($._any_ascii_char), '"')),
     // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => choice(/[^"]/, "\\\""),
 

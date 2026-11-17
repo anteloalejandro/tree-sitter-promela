@@ -327,6 +327,8 @@ init
       (variable_reference
         (identifier))
       (builtin_call
+        (variable_reference
+          (identifier))
         (const
           (number))))
     (eq_assign
