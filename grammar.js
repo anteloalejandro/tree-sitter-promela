@@ -107,6 +107,7 @@ export default grammar({
     $.statement,
     $.expression,
     $.assign,
+    $.typename,
   ],
 
   conflicts: $ => [ ],
@@ -131,9 +132,9 @@ export default grammar({
       optional($.active), "proctype", $.identifier,
       "(", optional($._decl_lst), ")",
       optional($.priority), optional($.enabler),
-      "{", $._sequence, "}"
+      "{", $._proctype_sequence, "}"
     ),
-    init: $ => seq("init", optional($.priority), "{", $._sequence, "}"),
+    init: $ => seq("init", optional($.priority), "{", $._proctype_sequence, "}"),
     never: $ => seq("never", "{", $._sequence, "}"),
     trace: $ => seq("trace", "{", $._sequence, "}"),
     utype: $ => seq("typedef", $.identifier, "{", $._decl_lst, "}"),
@@ -160,8 +161,8 @@ export default grammar({
     unsigned_declaration: $ => seq(
       "unsigned", $.identifier, ":", $.const, optional(seq("=", $._any_expr))
     ),
-    typename: $ => choice($._primitive_types, alias($.identifier, $.uname)),
-    _primitive_types: _ => choice(
+    typename: $ => choice($.primitive_type, alias($.identifier, $.uname)),
+    primitive_type: _ => choice(
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),
     // instantiation
@@ -169,18 +170,23 @@ export default grammar({
     // simulation priority
     priority: $ => seq("priority", $.const),
     // execution constraints
-    enabler: $ => seq("provided", "(", $.expression, ")"),
+    enabler: $ => fnCall("provided", $.expression),
 
     visible: _ => choice("hidden", "show"),
 
     _sequence: $ => separatorList($._step),
 
+    _proctype_sequence: $ => separatorList(choice(
+      $._step,
+      // NOTE: xr and xs can only appear within a proctype (init is considered a proctype).
+      // WARN: outside proctype, xr and xs are interpreted as identifiers
+      seq("xr", commaList($.variable_reference)),
+      seq("xs", commaList($.variable_reference)),
+    )),
+
     _step: $ => choice(
       seq($.statement, optional(seq("unless", $.statement))),
       $._decl_lst,
-      // TODO: xr and xs can only appear within a proctype.
-      seq("xr", commaList($.variable_reference)),
-      seq("xs", commaList($.variable_reference)),
     ),
 
     // previously ivar

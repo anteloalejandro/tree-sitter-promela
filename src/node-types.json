@@ -224,6 +224,20 @@
     ]
   },
   {
+    "type": "typename",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "primitive_type",
+        "named": true
+      },
+      {
+        "type": "uname",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "active",
     "named": true,
     "fields": {},
@@ -318,10 +332,6 @@
         },
         {
           "type": "statement",
-          "named": true
-        },
-        {
-          "type": "variable_reference",
           "named": true
         }
       ]
@@ -460,10 +470,6 @@
         },
         {
           "type": "statement",
-          "named": true
-        },
-        {
-          "type": "variable_reference",
           "named": true
         }
       ]
@@ -805,10 +811,6 @@
         {
           "type": "statement",
           "named": true
-        },
-        {
-          "type": "variable_reference",
-          "named": true
         }
       ]
     }
@@ -880,7 +882,18 @@
   {
     "type": "enabler",
     "named": true,
-    "fields": {},
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "provided",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
@@ -998,10 +1011,6 @@
         {
           "type": "statement",
           "named": true
-        },
-        {
-          "type": "variable_reference",
-          "named": true
         }
       ]
     }
@@ -1084,7 +1093,7 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "declaration",
@@ -1333,10 +1342,6 @@
         {
           "type": "statement",
           "named": true
-        },
-        {
-          "type": "variable_reference",
-          "named": true
         }
       ]
     }
@@ -1370,10 +1375,6 @@
         },
         {
           "type": "statement",
-          "named": true
-        },
-        {
-          "type": "variable_reference",
           "named": true
         }
       ]
@@ -1448,6 +1449,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "primitive_type",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "printf",
@@ -2004,25 +2010,6 @@
         },
         {
           "type": "statement",
-          "named": true
-        },
-        {
-          "type": "variable_reference",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "typename",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "uname",
           "named": true
         }
       ]

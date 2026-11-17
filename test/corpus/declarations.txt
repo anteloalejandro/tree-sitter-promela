@@ -13,7 +13,7 @@ init
   (init
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))))
 
@@ -34,16 +34,16 @@ init
 ---
 
 (source_file
- (declaration
-  (visible)
-  (signed_declaration
-   (typename)
-   (variable_declaration
-    (identifier))))
+  (declaration
+    (visible)
+    (signed_declaration
+      (primitive_type)
+      (variable_declaration
+        (identifier))))
   (init
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier)
           (const
@@ -60,12 +60,12 @@ init
     (declaration
       (visible)
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier)
           (const
@@ -73,8 +73,8 @@ init
           (ch_init
             (const
               (number))
-            (typename)
-            (typename)))))))
+            (primitive_type)
+            (primitive_type)))))))
 
 ================
 Primitive Types
@@ -94,21 +94,21 @@ init
   (init
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))
     (declaration
       (signed_declaration
-        (typename)
+        (primitive_type)
         (variable_declaration
           (identifier))))))
