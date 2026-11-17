@@ -21,11 +21,12 @@ init
 Typed Declarations
 =============
 
+hidden int MyHidden;
+
 init
 {
   bool MyBool [3] = 5;
   unsigned MyCounter : 10 = 5;
-  hidden int MyHidden;
   show int MyShow;
   chan MyChan [2] = [2] of { int, int };
 }
@@ -33,6 +34,12 @@ init
 ---
 
 (source_file
+ (declaration
+  (visible)
+  (signed_declaration
+   (typename)
+   (variable_declaration
+    (identifier))))
   (init
     (declaration
       (signed_declaration
@@ -50,12 +57,6 @@ init
           (number))
         (const
           (number))))
-    (declaration
-      (visible)
-      (signed_declaration
-        (typename)
-        (variable_declaration
-          (identifier))))
     (declaration
       (visible)
       (signed_declaration

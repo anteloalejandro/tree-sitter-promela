@@ -121,7 +121,7 @@ export default grammar({
       $.trace,
       $.utype,
       $.mtype,
-      $._decl_lst,
+      $._global_decl_lst,
       // TODO: Macros are only supported on the top level for now
       $.macro
     ),
@@ -139,14 +139,20 @@ export default grammar({
     utype: $ => seq("typedef", $.identifier, "{", $._decl_lst, "}"),
     mtype: $ => seq("mtype", optional("="), "{", commaList($.identifier), "}" ),
     // global vars and chans
+    _global_decl_lst: $ => prec.left(separatorList(alias($.global_declaration, $.declaration))),
     // NOTE: precedence based on the comma operator in C
     _decl_lst: $ => prec.left(separatorList($.declaration)),
 
+    global_declaration: $ => choice(
+      seq(optional(alias($.visible, $.visible)), $.signed_declaration),
+      seq(optional(alias($.visible, $.visible)), $.unsigned_declaration)
+    ),
     // declarations
     // previously one_decl
     declaration: $ => choice(
-      seq(optional($.visible), $.signed_declaration),
-      seq(optional($.visible), $.unsigned_declaration)
+      // NOTE: non-global declarations can only have "show" visibility, or no visibility
+      seq(optional(alias("show", $.visible)), $.signed_declaration),
+      seq(optional(alias("show", $.visible)), $.unsigned_declaration)
     ),
     // declaration with a type
     signed_declaration: $ => seq($.typename, commaList($.variable_declaration)),
@@ -165,9 +171,6 @@ export default grammar({
     // execution constraints
     enabler: $ => seq("provided", "(", $.expression, ")"),
 
-    // TODO: Only global variables can be `hidden`, but any variable can be `show`.
-    // This means we can't create hidden variables inside a module.
-    // Maybe this should be handled in the LSP itself, but we can probably do it here.
     visible: _ => choice("hidden", "show"),
 
     _sequence: $ => separatorList($._step),
@@ -266,9 +269,9 @@ export default grammar({
       $.send,
       $.receive,
       $.assign,
-      // TODO: `else` should only be used inside `if`
+      // NOTE: `else` CAN be used as a normal statement, even outside if.
       "else",
-      // TODO: `break` should only be used inside `do` and `for`
+      // NOTE: `break` should only be used inside `do` and `for`, but we won't check for that here
       "break",
       $.goto,
       $.labeled_statement,
