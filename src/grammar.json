@@ -3629,7 +3629,7 @@
               },
               {
                 "type": "PATTERN",
-                "value": ".*"
+                "value": "(\\\\+(.|\\r?\\n)|[^\\\\\\n])*"
               }
             ]
           },
@@ -3638,18 +3638,15 @@
             "members": [
               {
                 "type": "STRING",
-                "value": "/* "
+                "value": "/*"
               },
               {
-                "type": "REPEAT",
-                "content": {
-                  "type": "PATTERN",
-                  "value": ".*?"
-                }
+                "type": "PATTERN",
+                "value": "[^*]*\\*+([^/*][^*]*\\*+)*"
               },
               {
                 "type": "STRING",
-                "value": "*/"
+                "value": "/"
               }
             ]
           }
@@ -3999,7 +3996,7 @@
   "extras": [
     {
       "type": "PATTERN",
-      "value": "\\s"
+      "value": "\\s|\\\\\\r?\\n"
     },
     {
       "type": "SYMBOL",

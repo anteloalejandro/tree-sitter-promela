@@ -92,7 +92,9 @@ export default grammar({
 
   // things to ignore when lexing. must be tokens.
   extras: $ => [
-    /\s/,
+    // INFO: Lifted from tree-sitter-c
+    // https://github.com/tree-sitter/tree-sitter-c/blob/b780e47fc780ddc8da13afa35a3f4ed5c157823d/grammar.js#L59
+    /\s|\\\r?\n/,
     $.comment
   ],
 
@@ -479,7 +481,7 @@ export default grammar({
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
-    string: $ => token(seq('"', repeat($._any_ascii_char), '"')),
+    string: $ => seq('"', repeat($._any_ascii_char), '"'),
     // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
     _any_ascii_char: _ => choice(/[^"]/, "\\\""),
 
@@ -494,12 +496,15 @@ export default grammar({
     boolean: _ => choice("true", "false"),
     number: _ => /[0-9]+/,
 
+    // INFO: Lifted from tree-sitter-c
+    // https://github.com/tree-sitter/tree-sitter-c/blob/b780e47fc780ddc8da13afa35a3f4ed5c157823d/grammar.js#L1361
     comment: _ => token(choice(
-      // inline comments
-      // regex only matches to the end of the line by default
-      seq('//', /.*/),
-      // block comments
-      seq('/* ', repeat(/.*?/), '*/')
+      seq('//', /(\\+(.|\r?\n)|[^\\\n])*/),
+      seq(
+        '/*',
+        /[^*]*\*+([^/*][^*]*\*+)*/,
+        '/',
+      ),
     )),
 
     c_code: $ => seq("c_code", $.c_block),
