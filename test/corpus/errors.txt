@@ -1,7 +1,80 @@
-================
+==================
 Bare Keyword
 :error
-================
+==================
 
 init
 
+---
+
+==================
+Unary Plus
+:error
+==================
+
+init
+{
+  MyInt = +MyInt;
+}
+
+---
+
+==================
+Compound Assignment
+:error
+==================
+
+init
+{
+  MyInt += 5;
+}
+
+---
+
+==================
+C Style Ternary
+:error
+==================
+
+init
+{
+  MyInt = MyInt ? 5 : 3;
+}
+
+---
+
+==================
+Cast Expression
+:error
+==================
+
+init
+{
+  MyInt = (int)MyOther;
+}
+
+---
+
+==================
+Chained Assignment
+:error
+==================
+
+init
+{
+  MyInt = MyInt2 = 5;
+}
+
+---
+
+==================
+C Style For Loop
+:error
+==================
+
+init
+{
+  for (MyInt = 0; MyInt < 10; MyInt++) { MyInt = 5 }
+}
+
+---
