@@ -11,6 +11,12 @@ To build this grammar from source you'll need:
 - `nodejs` or any other JavaScript runtime
 - A C/C++ compiler
 
+## Contributing
+
+Most all files are generated and updated automatically by the `tree-sitter` CLI, so all you should probably care about is:
+- `grammar.js`, which contains the Tree-Sitter grammar.
+- `tests/corpus/`, which contains all the test files.
+
 [PROMELA]: https://spinroot.com/spin/Man/Quick.html
 [spin]: https://spinroot.com
 [`tree-sitter-cli`]: https://github.com/tree-sitter/tree-sitter/tree/master/crates/cli
