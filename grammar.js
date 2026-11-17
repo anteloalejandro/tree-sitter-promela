@@ -42,12 +42,38 @@ function separatorList(rule) {
 }
 
 /**
- * Wraps `rule` with the specified `wrapper`
- * @param {RuleOrLiteral} rule
- * @param {RuleOrLiteral} wrapper
+ * Creates a binary operator expression with labeled fields.
+ * @param {RuleOrLiteral} op
+ * @param {RuleOrLiteral} operand
  */
-function wrap(rule, wrapper) {
-  return seq(wrapper, rule, wrapper)
+function binaryOp(op, operand) {
+  return seq(
+    field('left', operand),
+    field('operator', op),
+    field('right', operand)
+  )
+}
+
+/**
+ * Creates a prefix unary operator expression with labeled fields.
+ * @param {RuleOrLiteral} op
+ * @param {RuleOrLiteral} operand
+ */
+function unaryOp(op, operand) {
+  return seq(
+    field('operator', op),
+    field('argument', operand)
+  )
+}
+
+/**
+ * Common format for function calls.
+ * @param {string} name
+ * @param {RuleOrLiteral} parameter
+ */
+function fnCall(name, parameter) {
+  // field("function", "select"), "(", $.range, ")"
+  return seq(field("function", name), "(", parameter, ")")
 }
 
 export default grammar({
@@ -77,6 +103,7 @@ export default grammar({
     $.print,
     $.statement,
     $.expression,
+    $.assign,
   ],
 
   conflicts: $ => [ ],
@@ -210,9 +237,9 @@ export default grammar({
 
     // NOTE: These can't act as expresions, even though spin calls them operators.
     assign: $ => choice(
-      $._eq_assign,
-      $._inc_assign,
-      $._dec_assign
+      $.eq_assign,
+      $.inc_assign,
+      $.dec_assign,
     ),
 
     // previously stmnt
@@ -291,41 +318,52 @@ export default grammar({
     // https://en.cppreference.com/c/language/operator_precedence
     subscript: $ => prec.left(14, seq("[", $._any_expr, "]")),
     member_access: $ => prec.left(14, seq(".", $.variable_reference)),
-    _inc_assign: $ => prec.left(14, seq($.variable_reference, "++")),
-    _dec_assign: $ => prec.left(14, seq($.variable_reference, "--")),
-    _minus_expr: $ => prec.right(13, seq("-", $._any_expr)),
-    _not_expr: $ => prec.right(13, wrap("!", $._any_expr)),
-    _bitewise_not_expr: $ => prec.right(13, wrap("~", $._any_expr)),
+    inc_assign: $ => prec.left(14, seq(
+      field('argument', $.variable_reference),
+      field('operator', "++")
+    )),
+    dec_assign: $ => prec.left(14, seq(
+      field('argument', $.variable_reference),
+      field('operator', "--")
+    )),
+    _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
+    _not_expr: $ => prec.right(13, unaryOp("!", $._any_expr)),
+    _bitewise_not_expr: $ => prec.right(13, unaryOp("~", $._any_expr)),
 
-    _mul_expr: $ => prec.left(12, wrap("*", $._any_expr)),
-    _div_expr: $ => prec.left(12, wrap("/", $._any_expr)),
-    _mod_expr: $ => prec.left(12, wrap("%", $._any_expr)),
+    _mul_expr: $ => prec.left(12, binaryOp("*", $._any_expr)),
+    _div_expr: $ => prec.left(12, binaryOp("/", $._any_expr)),
+    _mod_expr: $ => prec.left(12, binaryOp("%", $._any_expr)),
 
-    _add_expr: $ => prec.left(11, wrap("+", $._any_expr)),
-    _sub_expr: $ => prec.left(11, wrap("-", $._any_expr)),
+    _add_expr: $ => prec.left(11, binaryOp("+", $._any_expr)),
+    _sub_expr: $ => prec.left(11, binaryOp("-", $._any_expr)),
 
-    _left_shift_expr: $ => prec.left(10, wrap("<<", $._any_expr)),
-    _right_shift_expr: $ => prec.left(10, wrap(">>", $._any_expr)),
+    _left_shift_expr: $ => prec.left(10, binaryOp("<<", $._any_expr)),
+    _right_shift_expr: $ => prec.left(10, binaryOp(">>", $._any_expr)),
 
-    _lt_expr: $ => prec.left(9, wrap("<", $._any_expr)),
-    _le_expr: $ => prec.left(9, wrap("<=", $._any_expr)),
-    _gt_expr: $ => prec.left(9, wrap(">", $._any_expr)),
-    _ge_expr: $ => prec.left(9, wrap(">=", $._any_expr)),
+    _lt_expr: $ => prec.left(9, binaryOp("<", $._any_expr)),
+    _le_expr: $ => prec.left(9, binaryOp("<=", $._any_expr)),
+    _gt_expr: $ => prec.left(9, binaryOp(">", $._any_expr)),
+    _ge_expr: $ => prec.left(9, binaryOp(">=", $._any_expr)),
 
-    _eq_expr: $ => prec.left(8, wrap("==", $._any_expr)),
-    _ne_expr: $ => prec.left(8, wrap("!=", $._any_expr)),
+    _eq_expr: $ => prec.left(8, binaryOp("==", $._any_expr)),
+    _ne_expr: $ => prec.left(8, binaryOp("!=", $._any_expr)),
 
-    _bitwise_and_expr: $ => prec.left(7, wrap("&", $._any_expr)),
-    _bitwise_or_expr: $ => prec.left(6, wrap("|", $._any_expr)),
-    _bitwise_xor_expr: $ => prec.left(5, wrap("^", $._any_expr)),
+    _bitwise_and_expr: $ => prec.left(7, binaryOp("&", $._any_expr)),
+    _bitwise_or_expr: $ => prec.left(6, binaryOp("|", $._any_expr)),
+    _bitwise_xor_expr: $ => prec.left(5, binaryOp("^", $._any_expr)),
 
     // NOTE: These to specifically take an any_expr
-    _and_expr: $ => prec.left(4, wrap("&&", $.expression)),
-    _or_expr: $ => prec.left(3, wrap("||", $.expression)),
+    _and_expr: $ => prec.left(4, binaryOp("&&", $.expression)),
+    _or_expr: $ => prec.left(3, binaryOp("||", $.expression)),
 
     ternary_conditional: $ => prec.right(2, seq("(", $._any_expr, "->", $._any_expr, ":", $._any_expr, ")")),
 
-    _eq_assign: $ => prec.right(1, seq($.variable_reference, "=", $._any_expr)),
+    // NOTE: precedence based on standard assignment
+    eq_assign: $ => prec.right(1, seq(
+      field('left', $.variable_reference),
+      field('operator', "="),
+      field('right', $._any_expr)
+    )),
 
     binary_expression: $ => choice(
       $._mul_expr,

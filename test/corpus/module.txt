@@ -55,7 +55,7 @@ active [1] proctype A(byte state; short foo)
           (identifier))
         (const
           (number))))
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (variable_reference
@@ -74,7 +74,7 @@ init
 
 (source_file
   (init
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (const
@@ -93,7 +93,7 @@ never
 
 (source_file
   (never
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (const
@@ -112,7 +112,7 @@ trace
 
 (source_file
   (trace
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (const
@@ -168,13 +168,13 @@ init
 (source_file
   (proctype
     (identifier)
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (const
         (number))))
   (init
-    (assign
+    (eq_assign
       (variable_reference
         (identifier))
       (const
