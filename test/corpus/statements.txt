@@ -292,7 +292,8 @@ init
           (goto
             (identifier))
           (variable_reference
-            (identifier)))))
+            (identifier))
+          (break))))
     (labeled_statement
       (identifier))))
 
@@ -302,7 +303,7 @@ If Else
 
 init
 {
-  if :: MyInt = 1; MyInt = 2; else :: MyInt = 3 fi
+  if :: MyInt = 1; MyInt = 2; :: else -> MyInt = 3 fi
 }
 
 ---
@@ -321,6 +322,7 @@ init
             (identifier))
           (const
             (number)))
+        (else)
         (eq_assign
           (variable_reference
             (identifier))

@@ -167,7 +167,7 @@
       },
       {
         "type": "break",
-        "named": false
+        "named": true
       },
       {
         "type": "d_step",
@@ -179,7 +179,7 @@
       },
       {
         "type": "else",
-        "named": false
+        "named": true
       },
       {
         "type": "embedded_c",
@@ -2481,7 +2481,7 @@
   },
   {
     "type": "break",
-    "named": false
+    "named": true
   },
   {
     "type": "byte",
@@ -2526,7 +2526,7 @@
   },
   {
     "type": "else",
-    "named": false
+    "named": true
   },
   {
     "type": "empty",

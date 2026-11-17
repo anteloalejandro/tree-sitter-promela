@@ -270,9 +270,9 @@ export default grammar({
       $.receive,
       $.assign,
       // NOTE: `else` CAN be used as a normal statement, even outside if.
-      "else",
+      alias("else", $.else),
       // NOTE: `break` should only be used inside `do` and `for`, but we won't check for that here
-      "break",
+      alias("break", $.break),
       $.goto,
       $.labeled_statement,
       $.print,

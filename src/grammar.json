@@ -1497,11 +1497,21 @@
           "name": "assign"
         },
         {
-          "type": "STRING",
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "else"
+          },
+          "named": true,
           "value": "else"
         },
         {
-          "type": "STRING",
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "break"
+          },
+          "named": true,
           "value": "break"
         },
         {

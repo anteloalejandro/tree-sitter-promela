@@ -925,11 +925,11 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
   [anon_sym_else] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [anon_sym_break] = {
     .visible = true,
-    .named = false,
+    .named = true,
   },
   [anon_sym_if] = {
     .visible = true,
