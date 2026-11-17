@@ -161,7 +161,7 @@ export default grammar({
     unsigned_declaration: $ => seq(
       "unsigned", $.identifier, ":", $.const, optional(seq("=", $._any_expr))
     ),
-    typename: $ => choice($.primitive_type, alias($.identifier, $.uname)),
+    typename: $ => choice($.primitive_type, alias($.identifier, $.user_type)),
     primitive_type: _ => choice(
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),

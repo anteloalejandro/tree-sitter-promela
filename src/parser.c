@@ -261,7 +261,7 @@ enum ts_symbol_identifiers {
   aux_sym_string_repeat1 = 239,
   aux_sym__define_body_repeat1 = 240,
   alias_sym_content = 241,
-  alias_sym_uname = 242,
+  alias_sym_user_type = 242,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -507,7 +507,7 @@ static const char * const ts_symbol_names[] = {
   [aux_sym_string_repeat1] = "string_repeat1",
   [aux_sym__define_body_repeat1] = "_define_body_repeat1",
   [alias_sym_content] = "content",
-  [alias_sym_uname] = "uname",
+  [alias_sym_user_type] = "user_type",
 };
 
 static const TSSymbol ts_symbol_map[] = {
@@ -753,7 +753,7 @@ static const TSSymbol ts_symbol_map[] = {
   [aux_sym_string_repeat1] = aux_sym_string_repeat1,
   [aux_sym__define_body_repeat1] = aux_sym__define_body_repeat1,
   [alias_sym_content] = alias_sym_content,
-  [alias_sym_uname] = alias_sym_uname,
+  [alias_sym_user_type] = alias_sym_user_type,
 };
 
 static const TSSymbolMetadata ts_symbol_metadata[] = {
@@ -1732,7 +1732,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
-  [alias_sym_uname] = {
+  [alias_sym_user_type] = {
     .visible = true,
     .named = true,
   },
@@ -1901,7 +1901,7 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
 static const TSSymbol ts_alias_sequences[PRODUCTION_ID_COUNT][MAX_ALIAS_SEQUENCE_LENGTH] = {
   [0] = {0},
   [1] = {
-    [0] = alias_sym_uname,
+    [0] = alias_sym_user_type,
   },
   [11] = {
     [0] = sym_visible,
@@ -2717,7 +2717,7 @@ static const TSSymbol ts_supertype_map_entries[] = {
     sym_select,
     sym_send,
   [47] =
-    alias_sym_uname,
+    alias_sym_user_type,
     sym_primitive_type,
 };
 

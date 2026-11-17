@@ -632,7 +632,7 @@
             "name": "identifier"
           },
           "named": true,
-          "value": "uname"
+          "value": "user_type"
         }
       ]
     },

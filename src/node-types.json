@@ -232,7 +232,7 @@
         "named": true
       },
       {
-        "type": "uname",
+        "type": "user_type",
         "named": true
       }
     ]
@@ -2684,16 +2684,16 @@
     "named": false
   },
   {
-    "type": "uname",
-    "named": true
-  },
-  {
     "type": "unless",
     "named": false
   },
   {
     "type": "unsigned",
     "named": false
+  },
+  {
+    "type": "user_type",
+    "named": true
   },
   {
     "type": "xr",
