@@ -1599,27 +1599,32 @@
           "value": "("
         },
         {
-          "type": "SYMBOL",
-          "name": "string"
-        },
-        {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": ","
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "arguments"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "string"
             },
             {
-              "type": "BLANK"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": ","
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "arguments"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         },
@@ -1788,7 +1793,7 @@
         "members": [
           {
             "type": "FIELD",
-            "name": "argument",
+            "name": "operand",
             "content": {
               "type": "SYMBOL",
               "name": "variable_reference"
@@ -1813,7 +1818,7 @@
         "members": [
           {
             "type": "FIELD",
-            "name": "argument",
+            "name": "operand",
             "content": {
               "type": "SYMBOL",
               "name": "variable_reference"
@@ -1846,7 +1851,7 @@
           },
           {
             "type": "FIELD",
-            "name": "argument",
+            "name": "operand",
             "content": {
               "type": "SYMBOL",
               "name": "_any_expr"
@@ -1871,7 +1876,7 @@
           },
           {
             "type": "FIELD",
-            "name": "argument",
+            "name": "operand",
             "content": {
               "type": "SYMBOL",
               "name": "_any_expr"
@@ -1896,7 +1901,7 @@
           },
           {
             "type": "FIELD",
-            "name": "argument",
+            "name": "operand",
             "content": {
               "type": "SYMBOL",
               "name": "_any_expr"
@@ -2811,55 +2816,6 @@
               "name": "function",
               "content": {
                 "type": "STRING",
-                "value": "run"
-              }
-            },
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "STRING",
-              "value": "("
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "arguments"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "priority"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "function",
-              "content": {
-                "type": "STRING",
                 "value": "get_priority"
               }
             },
@@ -2899,6 +2855,55 @@
             {
               "type": "STRING",
               "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "function",
+              "content": {
+                "type": "STRING",
+                "value": "run"
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "arguments"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "priority"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         }

@@ -10,6 +10,10 @@
 
 const separator = choice(";", "->")
 
+const fn_field_name = "function"
+const operand_field_name = "operand"
+const operator_field_name = "operator"
+
 /**
  * Creates a list of at least one item (`rule`), sepparated by `sep`.
  * @param {RuleOrLiteral} rule
@@ -48,9 +52,9 @@ function separatorList(rule) {
  */
 function binaryOp(op, operand) {
   return seq(
-    field('left', operand),
-    field('operator', op),
-    field('right', operand)
+    field("left", operand),
+    field(operator_field_name, op),
+    field("right", operand)
   )
 }
 
@@ -61,19 +65,18 @@ function binaryOp(op, operand) {
  */
 function unaryOp(op, operand) {
   return seq(
-    field('operator', op),
-    field('argument', operand)
+    field(operator_field_name, op),
+    field(operand_field_name, operand)
   )
 }
 
 /**
  * Common format for function calls.
- * @param {string} name
- * @param {RuleOrLiteral} parameter
+ * @param {RuleOrLiteral} name
+ * @param {RuleOrLiteral} argument
  */
-function fnCall(name, parameter) {
-  // field("function", "select"), "(", $.range, ")"
-  return seq(field("function", name), "(", parameter, ")")
+function fnCall(name, argument) {
+  return seq(field(fn_field_name, name), "(", argument, ")")
 }
 
 export default grammar({
@@ -279,7 +282,7 @@ export default grammar({
     for: $ => seq("for", "(", $.range, ")", "{", $._sequence, "}"),
     atomic: $ => seq("atomic", "{", $._sequence, "}"),
     d_step: $ => seq("d_step", "{", $._sequence, "}"),
-    select: $ => seq(field("function", "select"), "(", $.range, ")"),
+    select: $ => fnCall("select", $.range),
     goto: $ => seq("goto", field("label", $.identifier)),
     block: $ => seq("{", $._sequence, "}"),
 
@@ -296,8 +299,8 @@ export default grammar({
       $.printm
     ),
 
-    printf: $ => seq(field("function", "printf"), "(", $.string, optional(seq(",", $.arguments)), ")"),
-    printm: $ => seq(field("function", "printm"), "(", $.identifier, ")"),
+    printf: $ => fnCall("printf", seq($.string, optional(seq(",", $.arguments)))),
+    printm: $ => fnCall("printm", $.identifier),
 
     embedded_c: $ => choice(
       $.c_code,
@@ -319,12 +322,12 @@ export default grammar({
     subscript: $ => prec.left(14, seq("[", $._any_expr, "]")),
     member_access: $ => prec.left(14, seq(".", $.variable_reference)),
     inc_assign: $ => prec.left(14, seq(
-      field('argument', $.variable_reference),
-      field('operator', "++")
+      field(operand_field_name, $.variable_reference),
+      field(operator_field_name, "++")
     )),
     dec_assign: $ => prec.left(14, seq(
-      field('argument', $.variable_reference),
-      field('operator', "--")
+      field(operand_field_name, $.variable_reference),
+      field(operator_field_name, "--")
     )),
     _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
     _not_expr: $ => prec.right(13, unaryOp("!", $._any_expr)),
@@ -360,9 +363,9 @@ export default grammar({
 
     // NOTE: precedence based on standard assignment
     eq_assign: $ => prec.right(1, seq(
-      field('left', $.variable_reference),
-      field('operator', "="),
-      field('right', $._any_expr)
+      field("left", $.variable_reference),
+      field(operator_field_name, "="),
+      field("right", $._any_expr)
     )),
 
     binary_expression: $ => choice(
@@ -413,15 +416,14 @@ export default grammar({
     ),
 
     builtin_call: $ => choice(
-      // number of messages in channel
-      seq(field("function", "len"), "(", $.variable_reference, ")"),
-      seq(field("function", "enabled"), "(", $._any_expr, ")"), // refers to a `pid`
-      seq(field("function", "pc_value"), "(", $._any_expr, ")"), // refers to a `pid`
-      seq(field("function", "run"),
+      fnCall("len", $.variable_reference), // number of messages in channel
+      fnCall("enabled", $._any_expr), // refers to a `pid`
+      fnCall("pc_value", $._any_expr), // refers to a `pid`
+      fnCall("get_priority", $.expression), // expr refers to a `pid`
+      fnCall("set_priority", $.expression), // first expr refers to a `pid`
+      seq(field(fn_field_name, "run"),
         $.identifier, "(", optional($.arguments), ")", optional($.priority)
       ),
-      seq(field("function", "get_priority"), "(", $.expression, ")"), // expr refers to a `pid`
-      seq(field("function", "set_priority"), "(", $.expression, ")"), // first expr refers to a `pid`
     ),
 
     paren_expr: $ => seq("(", $._any_expr, ")"),
@@ -436,7 +438,7 @@ export default grammar({
     ),
 
     // TODO: is "cannot be negated" another edge case?
-    chanpoll_call: $ => seq(field("function", $.chanpoll), "(", $.variable_reference, ")"), // cannot be negated
+    chanpoll_call: $ => fnCall($.chanpoll, $.variable_reference), // cannot be negated
     chanpoll_paren: $ => seq("(", $._chanpoll_expr,")"),
 
     _expr: $ => choice(

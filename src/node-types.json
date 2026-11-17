@@ -766,7 +766,7 @@
     "type": "dec_assign",
     "named": true,
     "fields": {
-      "argument": {
+      "operand": {
         "multiple": false,
         "required": true,
         "types": [
@@ -990,7 +990,7 @@
     "type": "inc_assign",
     "named": true,
     "fields": {
-      "argument": {
+      "operand": {
         "multiple": false,
         "required": true,
         "types": [
@@ -2032,7 +2032,7 @@
     "type": "unary_expression",
     "named": true,
     "fields": {
-      "argument": {
+      "operand": {
         "multiple": false,
         "required": true,
         "types": [
