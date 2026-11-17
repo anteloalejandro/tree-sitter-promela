@@ -287,9 +287,8 @@ export default grammar({
     goto: $ => seq("goto", field("label", $.identifier)),
     block: $ => seq("{", $._sequence, "}"),
 
-    // NOTE: precedence based on standard assignment
     // NOTE: The spin compiler allows labels followed by nothing
-    labeled_statement: $ => prec.right(1, seq($.identifier, ":", optional($.statement))),
+    labeled_statement: $ => seq($.identifier, ":", optional($.statement)),
 
 
     // NOTE: In the grammar, PRINT is actually either printf or printm.
@@ -319,20 +318,21 @@ export default grammar({
     options: $ => repeat1(seq("::", $._sequence)),
 
     // INFO: operator precedence
-    // https://en.cppreference.com/c/language/operator_precedence
+    // https://spinroot.com/spin/Man/operators.html
     subscript: $ => prec.left(14, seq("[", $._any_expr, "]")),
     member_access: $ => prec.left(14, seq(".", $.variable_reference)),
-    inc_assign: $ => prec.left(14, seq(
+    inc_assign: $ => prec.left(13, seq(
       field(operand_field_name, $.variable_reference),
       field(operator_field_name, "++")
     )),
-    dec_assign: $ => prec.left(14, seq(
+    dec_assign: $ => prec.left(13, seq(
       field(operand_field_name, $.variable_reference),
       field(operator_field_name, "--")
     )),
-    _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
     _not_expr: $ => prec.right(13, unaryOp("!", $._any_expr)),
     _bitewise_not_expr: $ => prec.right(13, unaryOp("~", $._any_expr)),
+    // based on C precedence
+    _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
 
     _mul_expr: $ => prec.left(12, binaryOp("*", $._any_expr)),
     _div_expr: $ => prec.left(12, binaryOp("/", $._any_expr)),
