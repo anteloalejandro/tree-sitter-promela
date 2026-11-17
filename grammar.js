@@ -15,7 +15,7 @@ const operand_field_name = "operand"
 const operator_field_name = "operator"
 
 /**
- * Creates a list of at least one item (`rule`), sepparated by `sep`.
+ * Creates a list of at least one item (`rule`), separated by `sep`.
  * @param {RuleOrLiteral} rule
  * @param {RuleOrLiteral} sep
  * */
@@ -24,7 +24,7 @@ function sepList(rule, sep) {
 }
 
 /**
- * Creates a list of at least one item (`rule`), sepparated by commas.
+ * Creates a list of at least one item (`rule`), separated by commas.
  * @param {RuleOrLiteral} rule
  * */
 function commaList(rule) {
@@ -40,7 +40,7 @@ function separatorList(rule) {
   // NOTE: The grammar specifies that statements are only **separated** by the separator,
   // not **terminated**. Nevertheless, using it as a terminator IS allowed in the compiler itself.
   //
-  // We give the "optional" terminator a name so consumers can differentiante
+  // We give the "optional" terminator a name so consumers can differentiate
   // between it and other separators if they want.
   return seq(sepList(rule, separator), optional(field("terminator", separator)))
 }
@@ -89,7 +89,7 @@ export default grammar({
 
   // General "word" separated from keywords.
   // With this, anything that could be and identifier is recognized as one,
-  // so ifmyvar cannot longer be parsed as "if" and "myvar", and is parsed as "ifmyvar" instead.
+  // so ifmyvar can no longer be parsed as "if" and "myvar", and is parsed as "ifmyvar" instead.
   word: $ => $.identifier,
 
   // things to ignore when lexing. must be tokens.
@@ -201,8 +201,8 @@ export default grammar({
     // previously varref
     variable_reference: $ => seq(
       $.identifier,
-      optional(field("field", $.subscript)),
-      optional(field("index", $.member_access))
+      optional(field("index", $.subscript)),
+      optional(field("field", $.member_access))
     ),
 
     // NOTE: Precedence based on C function calls
@@ -248,7 +248,7 @@ export default grammar({
       seq(optional("-"), $.const)
     ),
 
-    // NOTE: These can't act as expresions, even though spin calls them operators.
+    // NOTE: These can't act as expressions, even though spin calls them operators.
     assign: $ => choice(
       $.eq_assign,
       $.inc_assign,
@@ -339,7 +339,7 @@ export default grammar({
       field(operator_field_name, "--")
     )),
     _not_expr: $ => prec.right(13, unaryOp("!", $._any_expr)),
-    _bitewise_not_expr: $ => prec.right(13, unaryOp("~", $._any_expr)),
+    _bitwise_not_expr: $ => prec.right(13, unaryOp("~", $._any_expr)),
     // based on C precedence
     _minus_expr: $ => prec.right(13, unaryOp("-", $._any_expr)),
 
@@ -362,8 +362,8 @@ export default grammar({
     _ne_expr: $ => prec.left(8, binaryOp("!=", $._any_expr)),
 
     _bitwise_and_expr: $ => prec.left(7, binaryOp("&", $._any_expr)),
-    _bitwise_or_expr: $ => prec.left(6, binaryOp("|", $._any_expr)),
-    _bitwise_xor_expr: $ => prec.left(5, binaryOp("^", $._any_expr)),
+    _bitwise_xor_expr: $ => prec.left(6, binaryOp("^", $._any_expr)),
+    _bitwise_or_expr: $ => prec.left(7, binaryOp("|", $._any_expr)),
 
     // NOTE: These to specifically take an any_expr
     _and_expr: $ => prec.left(4, binaryOp("&&", $.expression)),
@@ -402,7 +402,7 @@ export default grammar({
     unary_expression: $ => choice(
       $._minus_expr,
       $._not_expr,
-      $._bitewise_not_expr,
+      $._bitwise_not_expr,
     ),
 
     expression: $ => $._expr,
@@ -430,7 +430,7 @@ export default grammar({
       fnCall("enabled", $._any_expr), // refers to a `pid`
       fnCall("pc_value", $._any_expr), // refers to a `pid`
       fnCall("get_priority", $.expression), // expr refers to a `pid`
-      fnCall("set_priority", $.expression), // first expr refers to a `pid`
+      fnCall("set_priority", seq($.expression, ",", $.expression)), // first expr refers to a `pid`
       seq(field(fn_field_name, "run"),
         $.identifier, "(", optional($.arguments), ")", optional($.priority)
       ),
@@ -464,7 +464,7 @@ export default grammar({
 
     // previously "name"
     // use token to parse as a single token instead of as a sequence of tokens
-    identifier: _ => token(seq(/[a-zA-Z]/, /[a-zA-Z0-9]*/)),
+    identifier: _ => /[_a-zA-Z][_a-zA-Z0-9]*/,
     const: $ => choice(
       $.boolean,
       $.number,
@@ -513,7 +513,7 @@ export default grammar({
 
     macro_include: $ => seq("#include", $.string),
 
-    // TODO: Using any_expr for now, should only accept constant expresions
+    // TODO: Using any_expr for now, should only accept constant expressions
     macro_if: $ => seq("#if", $._any_expr),
     macro_ifdef: $ => seq("#ifdef", $.identifier),
     macro_ifndef: $ => seq("#ifndef", $.identifier),

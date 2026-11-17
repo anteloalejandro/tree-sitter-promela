@@ -2242,7 +2242,7 @@
         "required": false,
         "types": [
           {
-            "type": "subscript",
+            "type": "member_access",
             "named": true
           }
         ]
@@ -2252,7 +2252,7 @@
         "required": false,
         "types": [
           {
-            "type": "member_access",
+            "type": "subscript",
             "named": true
           }
         ]

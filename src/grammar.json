@@ -1197,7 +1197,7 @@
           "members": [
             {
               "type": "FIELD",
-              "name": "field",
+              "name": "index",
               "content": {
                 "type": "SYMBOL",
                 "name": "subscript"
@@ -1213,7 +1213,7 @@
           "members": [
             {
               "type": "FIELD",
-              "name": "index",
+              "name": "field",
               "content": {
                 "type": "SYMBOL",
                 "name": "member_access"
@@ -2165,7 +2165,7 @@
         ]
       }
     },
-    "_bitewise_not_expr": {
+    "_bitwise_not_expr": {
       "type": "PREC_RIGHT",
       "value": 13,
       "content": {
@@ -2677,7 +2677,7 @@
         ]
       }
     },
-    "_bitwise_or_expr": {
+    "_bitwise_xor_expr": {
       "type": "PREC_LEFT",
       "value": 6,
       "content": {
@@ -2696,7 +2696,7 @@
             "name": "operator",
             "content": {
               "type": "STRING",
-              "value": "|"
+              "value": "^"
             }
           },
           {
@@ -2710,9 +2710,9 @@
         ]
       }
     },
-    "_bitwise_xor_expr": {
+    "_bitwise_or_expr": {
       "type": "PREC_LEFT",
-      "value": 5,
+      "value": 7,
       "content": {
         "type": "SEQ",
         "members": [
@@ -2729,7 +2729,7 @@
             "name": "operator",
             "content": {
               "type": "STRING",
-              "value": "^"
+              "value": "|"
             }
           },
           {
@@ -2969,7 +2969,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_bitewise_not_expr"
+          "name": "_bitwise_not_expr"
         }
       ]
     },
@@ -3154,8 +3154,21 @@
               "value": "("
             },
             {
-              "type": "SYMBOL",
-              "name": "expression"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "expression"
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "expression"
+                }
+              ]
             },
             {
               "type": "STRING",
@@ -3392,20 +3405,8 @@
       ]
     },
     "identifier": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[a-zA-Z]"
-          },
-          {
-            "type": "PATTERN",
-            "value": "[a-zA-Z0-9]*"
-          }
-        ]
-      }
+      "type": "PATTERN",
+      "value": "[_a-zA-Z][_a-zA-Z0-9]*"
     },
     "const": {
       "type": "CHOICE",

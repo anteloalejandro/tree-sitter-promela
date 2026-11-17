@@ -284,7 +284,7 @@ init
   MyInt = pc_value(0);
   MyInt = run MyProc();
   MyInt = get_priority(0);
-  MyInt = set_priority(0);
+  MyInt = set_priority(pid, 0);
   MyInt = MyInt[3]@MyProc;
 }
 
