@@ -6,6 +6,9 @@
  */
 
 /// <reference types="tree-sitter-cli/dsl" />
+
+import { rules as preprocRules } from "./preproc.js"
+
 // @ts-check
 
 const separator = choice(";", "->")
@@ -81,8 +84,6 @@ function fnCall(name, argument) {
 }
 
 export default grammar({
-  // TODO: #define macros are not defined in the grammar.
-
   name: "promela",
 
   // General "word" separated from keywords.
@@ -110,8 +111,6 @@ export default grammar({
     $.typename,
   ],
 
-  conflicts: $ => [ ],
-
   rules: {
     source_file: $ => repeat($._module),
 
@@ -123,8 +122,7 @@ export default grammar({
       $.utype,
       $.mtype,
       $._global_decl_lst,
-      // TODO: Macros are only supported on the top level for now
-      $.macro
+      $.macro,
     ),
 
     // root module types
@@ -178,20 +176,41 @@ export default grammar({
 
     visible: _ => choice("hidden", "show"),
 
-    _sequence: $ => separatorList($._step),
+    // NOTE:
+    // A sequence may contain at least one step, with any following steps separated by a separator.
+    // A sequence can be terminated by the separator, but it is not needed.
+    // Macro declarations can go at any point before the steps, after the steps or inbetween them,
+    // but they are terminated by a newline, never the separator.
+    _sequence: $ => seq(
+      repeat($.macro),
+      $._step,
+      repeat(seq(separator, repeat($.macro), $._step)),
+      optional(field("terminator", separator)),
+      repeat($.macro),
+    ),
+    _proctype_sequence: $ => seq(
+      repeat($.macro),
+      $._proctype_step,
+      repeat(seq(separator, repeat($.macro), $._proctype_step)),
+      optional(field("terminator", separator)),
+      repeat($.macro),
+    ),
 
-    _proctype_sequence: $ => separatorList(choice(
+    _proctype_step: $ => choice(
       $._step,
       // NOTE: xr and xs can only appear within a proctype (init is considered a proctype).
-      // WARN: outside proctype, xr and xs are interpreted as identifiers
+      // WARN: outside proctype, xr and xs are interpreted as identifiers.
+      // maybe this should be in every step and the consumer chooses if its right.
       seq("xr", commaList($.variable_reference)),
       seq("xs", commaList($.variable_reference)),
-    )),
+    ),
 
     _step: $ => choice(
-      seq($.statement, optional(seq("unless", $.statement))),
+      seq($.statement, optional($.unless)),
       $._decl_lst,
     ),
+
+    unless: $ => seq("unless", $.statement),
 
     // previously ivar
     _variable_declaration: $ => seq(
@@ -432,6 +451,8 @@ export default grammar({
       $.builtin_const,
       $.builtin_call,
       $.remote_reference,
+      // from preproc.js
+      $.preproc_call_expression
     ),
 
     _expr: $ => choice(
@@ -517,32 +538,18 @@ export default grammar({
     _c_block: $ => seq("{", $._c_lines, "}"),
 
     macro: $ => choice(
-      $.macro_define,
-      $.macro_include,
-      $.macro_if,
-      alias("#else", $.macro_else),
-      alias("#endif", $.macro_endif),
-      $.macro_ifdef,
-      $.macro_ifndef,
-      $.macro_undef,
+      $.preproc_include,
+      $.preproc_def,
+      $.preproc_function_def,
+      $.preproc_undef,
+      $.preproc_if,
+      $.preproc_elif,
+      $.preproc_ifdef,
+      $.preproc_elifdef,
+      $.preproc_else,
+      $.preproc_endif,
     ),
 
-    macro_define: $ => seq(
-      "#define", $.identifier,
-      field("macro_args", optional(seq("(", commaList($.identifier), ")"))),
-      $._define_body
-    ),
-    // TODO: We currently don't check for new lines.
-    _define_body: $ => sepList($._define_line, "\\"),
-    // TODO: This is too basic, should consider supporting varnames at least.
-    _define_line: _ => repeat1(/[^\n]/),
-
-    macro_include: $ => seq("#include", $.string),
-
-    // TODO: Using any_expr for now, should only accept constant expressions
-    macro_if: $ => seq("#if", $._any_expr),
-    macro_ifdef: $ => seq("#ifdef", $.identifier),
-    macro_ifndef: $ => seq("#ifndef", $.identifier),
-    macro_undef: $ => seq("#undef", $.identifier),
+    ...preprocRules
   }
 });

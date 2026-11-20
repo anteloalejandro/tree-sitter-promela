@@ -7,8 +7,9 @@ Single-line define
 ---
 
 (source_file
-  (macro_define
-    (identifier)))
+  (preproc_def
+    (identifier)
+    (preproc_arg)))
 
 =================
 Multi-line define
@@ -21,8 +22,9 @@ Multi-line define
 ---
 
 (source_file
-  (macro_define
-    (identifier)))
+  (preproc_def
+    (identifier)
+    (preproc_arg)))
 
 =================
 Conditional macro
@@ -37,21 +39,20 @@ Conditional macro
 ---
 
 (source_file
-  (macro_if
-    (binary_expression
-      (binary_expression
-        (const
-          (number))
-        (const
-          (number)))
-      (const
-        (number))))
-  (macro_define
-    (identifier))
-  (macro_else)
-  (macro_define
-    (identifier))
-  (macro_endif))
+  (preproc_if
+    (preproc_binary_expression
+      (preproc_binary_expression
+        (preproc_number_literal)
+        (preproc_number_literal))
+      (preproc_number_literal)))
+  (preproc_def
+    (identifier)
+    (preproc_arg))
+  (preproc_else)
+  (preproc_def
+    (identifier)
+    (preproc_arg))
+  (preproc_endif))
 
 ==================
 Conditional define
@@ -66,14 +67,14 @@ Conditional define
 ---
 
 (source_file
-  (macro_ifdef
+  (preproc_ifdef
     (identifier))
-  (macro_ifndef
+  (preproc_ifdef
     (identifier))
-  (macro_undef
+  (preproc_undef
     (identifier))
-  (macro_endif)
-  (macro_endif))
+  (preproc_endif)
+  (preproc_endif))
 
 =============
 include macro
@@ -84,5 +85,356 @@ include macro
 ---
 
 (source_file
-  (macro_include
-    (string)))
+  (preproc_include
+    (preproc_string_literal
+      (string_content))))
+
+========================================
+Function-like macro definition and use
+========================================
+
+#define MAX(a, b) (a > b ? a : b)
+
+init
+{
+  MyInt = MAX(MyInt, 3);
+}
+
+---
+
+(source_file
+  (preproc_function_def
+    name: (identifier)
+    parameters: (preproc_params
+      (identifier)
+      (identifier))
+    value: (preproc_arg))
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (preproc_call_expression
+        function: (identifier)
+        arguments: (preproc_argument_list
+          (identifier)
+          (preproc_number_literal))))))
+
+========================================
+Variadic macro definition and use
+========================================
+
+#define LOG(...) 1
+
+init
+{
+  MyInt = LOG(1, 2, 3);
+}
+
+---
+
+(source_file
+  (preproc_function_def
+    name: (identifier)
+    parameters: (preproc_params)
+    value: (preproc_arg))
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (preproc_call_expression
+        function: (identifier)
+        arguments: (preproc_argument_list
+          (preproc_number_literal)
+          (preproc_number_literal)
+          (preproc_number_literal))))))
+
+===============================================
+Conditional compilation with elifdef / elifndef
+===============================================
+
+#ifdef FOO
+#define FOO 1
+#elifdef BAR
+#define BAR 1
+#elifndef BAZ
+#define BAZ 1
+#else
+#define QUX 1
+#endif
+
+---
+
+(source_file
+  (preproc_ifdef
+    name: (identifier))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_elifdef
+    name: (identifier))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_elifdef
+    name: (identifier))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_else)
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_endif))
+
+========================================
+Preprocessor defined() in conditions
+========================================
+
+#if defined(FOO) && !defined(BAR)
+#define BAZ 1
+#endif
+
+---
+
+(source_file
+  (preproc_if
+    condition: (preproc_binary_expression
+      left: (preproc_defined
+        (identifier))
+      right: (preproc_unary_expression
+        argument: (preproc_defined
+          (identifier)))))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_endif))
+
+===========================================
+Character literal in preprocessor condition
+===========================================
+
+#if 'a' == 97
+#define FOO 1
+#endif
+
+---
+
+(source_file
+  (preproc_if
+    condition: (preproc_binary_expression
+      left: (preproc_char_literal
+        (character))
+      right: (preproc_number_literal)))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_endif))
+
+========================================
+System library include
+========================================
+
+#include <stdio.h>
+
+---
+
+(source_file
+  (preproc_include
+    path: (preproc_system_lib_string)))
+
+========================================
+Include with identifier
+========================================
+
+#include FOO
+
+---
+
+(source_file
+  (preproc_include
+    path: (identifier)))
+
+========================================
+Object-like macro used in initializer
+========================================
+
+#define N 10
+
+init
+{
+  int x = N;
+}
+
+---
+
+(source_file
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (init
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)
+        value: (variable_reference
+          (identifier))))))
+
+========================================
+Conditional elif
+========================================
+
+#if 1
+#define FOO 1
+#elif 2
+#define BAR 1
+#endif
+
+---
+
+(source_file
+  (preproc_if
+    condition: (preproc_number_literal))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_elif
+    condition: (preproc_number_literal))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_endif))
+
+========================================
+Parenthesized preprocessor expression
+========================================
+
+#if (1 + 2) * 3
+#define FOO 1
+#endif
+
+---
+
+(source_file
+  (preproc_if
+    condition: (preproc_binary_expression
+      left: (preproc_parenthesized_expression
+        (preproc_binary_expression
+          left: (preproc_number_literal)
+          right: (preproc_number_literal)))
+      right: (preproc_number_literal)))
+  (preproc_def
+    name: (identifier)
+    value: (preproc_arg))
+  (preproc_endif))
+
+=================
+Macro as a Step
+=================
+
+init
+{
+  #define TEST 1
+  myVar = 1;
+}
+
+---
+
+(source_file
+  (init
+    (preproc_def
+      name: (identifier)
+      value: (preproc_arg))
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (number)))))
+
+=================
+Macro Include as a Step
+=================
+
+init
+{
+  #include "file.pml"
+  int myVar;
+}
+
+---
+
+(source_file
+  (init
+    (preproc_include
+      path: (preproc_string_literal
+        (string_content)))
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)))))
+
+=================
+Macro Undef as a Step
+=================
+
+init
+{
+  #undef MY_MACRO
+  int myVar;
+}
+
+---
+
+(source_file
+  (init
+    (preproc_undef
+      name: (identifier))
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)))))
+
+=================
+Conditional As A Step
+=================
+
+init
+{
+  #ifdef FOO
+  int myVar;
+  #endif
+}
+
+---
+
+(source_file
+  (init
+    (preproc_ifdef
+      name: (identifier))
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)))
+    (preproc_endif)))
+
+=================
+Conditional If As A Step
+=================
+
+init
+{
+  #if 1
+  int myVar;
+  #endif
+}
+
+---
+
+(source_file
+  (init
+    (preproc_if
+      condition: (preproc_number_literal))
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)))
+    (preproc_endif)))

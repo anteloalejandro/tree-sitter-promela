@@ -361,3 +361,324 @@ init
             (identifier))))
       (const
         (number)))))
+========================================
+Logical not
+========================================
+
+init
+{
+  MyInt = !MyInt;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (unary_expression
+        operand: (variable_reference
+          (identifier))))))
+
+========================================
+Bitwise not
+========================================
+
+init
+{
+  MyInt = ~MyInt;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (unary_expression
+        operand: (variable_reference
+          (identifier))))))
+
+========================================
+Boolean true
+========================================
+
+init
+{
+  MyInt = true;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (boolean)))))
+
+========================================
+Boolean false
+========================================
+
+init
+{
+  MyInt = false;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (boolean)))))
+
+========================================
+Skip constant
+========================================
+
+init
+{
+  MyInt = skip;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (skip)))))
+
+========================================
+Parenthesized expression
+========================================
+
+init
+{
+  MyInt = (MyInt + 1);
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (paren_expr
+        (binary_expression
+          left: (variable_reference
+            (identifier))
+          right: (const
+            (number)))))))
+
+========================================
+Channel poll full and empty
+========================================
+
+init
+{
+  MyInt = full(MyChan) && empty(MyChan);
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (binary_expression
+        left: (chanpoll_call
+          function: (chanpoll)
+          arguments: (variable_reference
+            (identifier)))
+        right: (chanpoll_call
+          function: (chanpoll)
+          arguments: (variable_reference
+            (identifier)))))))
+
+========================================
+Remote reference with variable name
+========================================
+
+init
+{
+  MyInt = MyProc:MyVar;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (remote_reference
+        (identifier)
+        varname: (identifier)))))
+
+========================================
+Random poll
+========================================
+
+init
+{
+  MyChan ?? [MyInt];
+}
+
+---
+
+(source_file
+  (init
+    (poll
+      (variable_reference
+        (identifier))
+      arguments: (variable_reference
+        (identifier)))))
+
+========================================
+Receive with constant argument
+========================================
+
+init
+{
+  MyChan ? 5;
+}
+
+---
+
+(source_file
+  (init
+    (receive
+      (variable_reference
+        (identifier))
+      arguments: (const
+        (number)))))
+
+========================================
+Receive with negative constant argument
+========================================
+
+init
+{
+  MyChan ? -5;
+}
+
+---
+
+(source_file
+  (init
+    (receive
+      (variable_reference
+        (identifier))
+      arguments: (const
+        (number)))))
+
+========================================
+Receive with eval
+========================================
+
+init
+{
+  MyChan ? eval(MyInt);
+}
+
+---
+
+(source_file
+  (init
+    (receive
+      (variable_reference
+        (identifier))
+      arguments: (variable_reference
+        (identifier)))))
+
+========================================
+Remote reference with labelname
+========================================
+
+init
+{
+  MyInt = MyProc@MyLabel;
+}
+
+---
+
+(source_file
+  (init
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (remote_reference
+        (identifier)
+        labelname: (identifier)))))
+
+========================================
+Comments in code
+========================================
+
+init
+{
+  // line comment
+  MyInt = 1; /* block comment */
+}
+
+---
+
+(source_file
+  (init
+    (comment)
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (number)))
+    (comment)))
+
+========================================
+Receive with side-effect poll
+========================================
+
+init
+{
+  MyChan ? <MyInt>;
+}
+
+---
+
+(source_file
+  (init
+    (receive
+      (variable_reference
+        (identifier))
+      arguments: (variable_reference
+        (identifier)))))
+
+========================================
+Random receive with side-effect poll
+========================================
+
+init
+{
+  MyChan ?? <MyInt>;
+}
+
+---
+
+(source_file
+  (init
+    (receive
+      (variable_reference
+        (identifier))
+      arguments: (variable_reference
+        (identifier)))))

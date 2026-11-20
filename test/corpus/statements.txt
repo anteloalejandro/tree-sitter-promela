@@ -333,11 +333,12 @@ init
         (identifier))
       (const
         (number)))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))))
+    (unless
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number))))))
 
 ================
 For In
@@ -381,3 +382,83 @@ proctype A()
       (identifier))
     (variable_reference
       (identifier))))
+
+========================================
+Printf with arguments
+========================================
+
+init
+{
+  printf("hello %d", MyInt);
+}
+
+---
+
+(source_file
+  (init
+    (printf
+      arguments: (string)
+      arguments: (variable_reference
+        (identifier)))))
+
+========================================
+Printm
+========================================
+
+init
+{
+  printm(MyMsg);
+}
+
+---
+
+(source_file
+  (init
+    (printm
+      arguments: (identifier))))
+
+========================================
+Bare else statement
+========================================
+
+init
+{
+  else -> MyInt = 1;
+}
+
+---
+
+(source_file
+  (init
+    (else)
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (number)))))
+
+========================================
+Atomic with unless
+========================================
+
+init
+{
+  atomic { MyInt = 1 unless MyInt = 2; }
+}
+
+---
+
+(source_file
+  (init
+    (atomic
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (number)))
+      (unless
+        (eq_assign
+          left: (variable_reference
+            (identifier))
+          right: (const
+            (number)))))))

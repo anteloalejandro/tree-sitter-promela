@@ -194,3 +194,88 @@ bool MyBool;
     (signed_declaration
       (primitive_type)
       (identifier))))
+========================================
+Active proctype without index
+========================================
+
+active proctype A()
+{
+  MyInt = 5
+}
+
+---
+
+(source_file
+  (proctype
+    (active)
+    (identifier)
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (number)))))
+
+========================================
+Init with priority
+========================================
+
+init priority 5
+{
+  MyInt = 5
+}
+
+---
+
+(source_file
+  (init
+    (priority
+      (const
+        (number)))
+    (eq_assign
+      left: (variable_reference
+        (identifier))
+      right: (const
+        (number)))))
+
+========================================
+Multiple declarators
+========================================
+
+init
+{
+  int a, b;
+}
+
+---
+
+(source_file
+  (init
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier)
+        declarator: (identifier)))))
+
+========================================
+Typedef and user type usage
+========================================
+
+typedef MyType {
+  int MyTypedef
+}
+
+MyType MyVar;
+
+---
+
+(source_file
+  (utype
+    (identifier)
+    (declaration
+      (signed_declaration
+        (primitive_type)
+        declarator: (identifier))))
+  (declaration
+    (signed_declaration
+      (user_type)
+      declarator: (identifier))))
