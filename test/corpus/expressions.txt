@@ -11,26 +11,27 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
-        (binary_expression
-          (variable_reference
-            (identifier))
-          (binary_expression
-            (const
-              (number))
-            (const
-              (number))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
         (binary_expression
           (binary_expression
+            (variable_reference
+              (identifier))
+            (binary_expression
+              (const
+                (number))
+              (const
+                (number))))
+          (binary_expression
+            (binary_expression
+              (const
+                (number))
+              (const
+                (number)))
             (const
-              (number))
-            (const
-              (number)))
-          (const
-            (number)))))))
+              (number))))))))
 
 ================
 Logical
@@ -45,17 +46,18 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
-        (binary_expression
-          (variable_reference
-            (identifier))
-          (variable_reference
-            (identifier)))
+    (block
+      (eq_assign
         (variable_reference
-          (identifier))))))
+          (identifier))
+        (binary_expression
+          (binary_expression
+            (variable_reference
+              (identifier))
+            (variable_reference
+              (identifier)))
+          (variable_reference
+            (identifier)))))))
 
 ================
 Unary
@@ -70,12 +72,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (unary_expression
+    (block
+      (eq_assign
         (variable_reference
-          (identifier))))))
+          (identifier))
+        (unary_expression
+          (variable_reference
+            (identifier)))))))
 
 ================
 Ternary
@@ -90,16 +93,17 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (conditional_expression
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))
-        (const
-          (number))))))
+        (conditional_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))
+          (const
+            (number)))))))
 
 ================
 Comparison
@@ -114,14 +118,15 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))))
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 Equality
@@ -136,14 +141,15 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))))
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 Bitwise
@@ -158,14 +164,15 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))))
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 Special Expressions
@@ -180,12 +187,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
+    (block
+      (eq_assign
         (variable_reference
-          (identifier))))))
+          (identifier))
+        (builtin_call
+          (variable_reference
+            (identifier)))))))
 
 ================
 Operators
@@ -207,70 +215,71 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (binary_expression
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))))
+        (binary_expression
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 System Expressions
@@ -292,53 +301,54 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_const))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_const))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
-        (identifier)))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (builtin_call
+    (block
+      (eq_assign
         (variable_reference
           (identifier))
-        (const
-          (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (remote_reference
-        (identifier)
-        (const
-          (number))
-        (identifier)))))
+        (builtin_const))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_const))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_call
+          (const
+            (number))))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_call
+          (const
+            (number))))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_call
+          (identifier)))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_call
+          (const
+            (number))))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (builtin_call
+          (variable_reference
+            (identifier))
+          (const
+            (number))))
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (remote_reference
+          (identifier)
+          (const
+            (number))
+          (identifier))))))
 
 ================
 Member Access
@@ -353,14 +363,16 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier)
-        (member_access
-          (variable_reference
-            (identifier))))
-      (const
-        (number)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier)
+          (member_access
+            (variable_reference
+              (identifier))))
+        (const
+          (number))))))
+
 ========================================
 Logical not
 ========================================
@@ -374,12 +386,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (unary_expression
-        operand: (variable_reference
-          (identifier))))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (unary_expression
+          operand: (variable_reference
+            (identifier)))))))
 
 ========================================
 Bitwise not
@@ -394,12 +407,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (unary_expression
-        operand: (variable_reference
-          (identifier))))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (unary_expression
+          operand: (variable_reference
+            (identifier)))))))
 
 ========================================
 Boolean true
@@ -414,11 +428,12 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (boolean)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (boolean))))))
 
 ========================================
 Boolean false
@@ -433,11 +448,12 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (boolean)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (boolean))))))
 
 ========================================
 Skip constant
@@ -452,11 +468,12 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (skip)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (skip))))))
 
 ========================================
 Parenthesized expression
@@ -471,15 +488,16 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (paren_expr
-        (binary_expression
-          left: (variable_reference
-            (identifier))
-          right: (const
-            (number)))))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (paren_expr
+          (binary_expression
+            left: (variable_reference
+              (identifier))
+            right: (const
+              (number))))))))
 
 ========================================
 Channel poll full and empty
@@ -494,18 +512,19 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (binary_expression
-        left: (chanpoll_call
-          function: (chanpoll)
-          arguments: (variable_reference
-            (identifier)))
-        right: (chanpoll_call
-          function: (chanpoll)
-          arguments: (variable_reference
-            (identifier)))))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (binary_expression
+          left: (chanpoll_call
+            function: (chanpoll)
+            arguments: (variable_reference
+              (identifier)))
+          right: (chanpoll_call
+            function: (chanpoll)
+            arguments: (variable_reference
+              (identifier))))))))
 
 ========================================
 Remote reference with variable name
@@ -520,12 +539,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (remote_reference
-        (identifier)
-        varname: (identifier)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (remote_reference
+          (identifier)
+          varname: (identifier))))))
 
 ========================================
 Random poll
@@ -540,11 +560,12 @@ init
 
 (source_file
   (init
-    (poll
-      (variable_reference
-        (identifier))
-      arguments: (variable_reference
-        (identifier)))))
+    body: (block
+      (poll
+        (variable_reference
+          (identifier))
+        arguments: (variable_reference
+          (identifier))))))
 
 ========================================
 Receive with constant argument
@@ -559,11 +580,12 @@ init
 
 (source_file
   (init
-    (receive
-      (variable_reference
-        (identifier))
-      arguments: (const
-        (number)))))
+    body: (block
+      (receive
+        (variable_reference
+          (identifier))
+        arguments: (const
+          (number))))))
 
 ========================================
 Receive with negative constant argument
@@ -578,11 +600,12 @@ init
 
 (source_file
   (init
-    (receive
-      (variable_reference
-        (identifier))
-      arguments: (const
-        (number)))))
+    body: (block
+      (receive
+        (variable_reference
+          (identifier))
+        arguments: (const
+          (number))))))
 
 ========================================
 Receive with eval
@@ -597,11 +620,12 @@ init
 
 (source_file
   (init
-    (receive
-      (variable_reference
-        (identifier))
-      arguments: (variable_reference
-        (identifier)))))
+    body: (block
+      (receive
+        (variable_reference
+          (identifier))
+        arguments: (variable_reference
+          (identifier))))))
 
 ========================================
 Remote reference with labelname
@@ -616,12 +640,13 @@ init
 
 (source_file
   (init
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (remote_reference
-        (identifier)
-        labelname: (identifier)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (remote_reference
+          (identifier)
+          labelname: (identifier))))))
 
 ========================================
 Comments in code
@@ -637,13 +662,14 @@ init
 
 (source_file
   (init
-    (comment)
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (number)))
-    (comment)))
+    body: (block
+      (comment)
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (number)))
+      (comment))))
 
 ========================================
 Receive with side-effect poll
@@ -658,11 +684,12 @@ init
 
 (source_file
   (init
-    (receive
-      (variable_reference
-        (identifier))
-      arguments: (variable_reference
-        (identifier)))))
+    body: (block
+      (receive
+        (variable_reference
+          (identifier))
+        arguments: (variable_reference
+          (identifier))))))
 
 ========================================
 Random receive with side-effect poll
@@ -677,8 +704,9 @@ init
 
 (source_file
   (init
-    (receive
-      (variable_reference
-        (identifier))
-      arguments: (variable_reference
-        (identifier)))))
+    body: (block
+      (receive
+        (variable_reference
+          (identifier))
+        arguments: (variable_reference
+          (identifier))))))

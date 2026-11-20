@@ -11,13 +11,14 @@ init
 
 (source_file
   (init
-    (if
-      (options
-        (eq_assign
-          (variable_reference
-            (identifier))
-          (const
-            (number)))))))
+    (block
+      (if
+        (options
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Do Loop
@@ -32,13 +33,14 @@ init
 
 (source_file
   (init
-    (do
-      (options
-        (eq_assign
-          (variable_reference
-            (identifier))
-          (const
-            (number)))))))
+    (block
+      (do
+        (options
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 For Loop
@@ -53,18 +55,20 @@ init
 
 (source_file
   (init
-    (for
-      (range
-        (identifier)
-        (const
-          (number))
-        (const
-          (number)))
-      (eq_assign
-        (variable_reference
-          (identifier))
-        (const
-          (number))))))
+    (block
+      (for
+        (range
+          (identifier)
+          (const
+            (number))
+          (const
+            (number)))
+        (block
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Atomic Step
@@ -79,12 +83,14 @@ init
 
 (source_file
   (init
-    (atomic
-      (eq_assign
-        (variable_reference
-          (identifier))
-        (const
-          (number))))))
+    (block
+      (atomic
+        (block
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Deterministic Step
@@ -99,12 +105,14 @@ init
 
 (source_file
   (init
-    (d_step
-      (eq_assign
-        (variable_reference
-          (identifier))
-        (const
-          (number))))))
+    (block
+      (d_step
+        (block
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Select
@@ -119,13 +127,14 @@ init
 
 (source_file
   (init
-    (select
-      (range
-        (identifier)
-        (const
-          (number))
-        (const
-          (number))))))
+    (block
+      (select
+        (range
+          (identifier)
+          (const
+            (number))
+          (const
+            (number)))))))
 
 ================
 Bare Block
@@ -143,11 +152,12 @@ init
 (source_file
   (init
     (block
-      (eq_assign
-        (variable_reference
-          (identifier))
-        (const
-          (number))))))
+      (block
+        (eq_assign
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 Messages
@@ -168,41 +178,42 @@ init
 
 (source_file
   (init
-    (send
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (send
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (send
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (receive
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (receive
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (receive
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))
-    (poll
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))))
+    (block
+      (send
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (send
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (send
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (receive
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (receive
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (receive
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier)))
+      (poll
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier))))))
 
 ================
 Assignments
@@ -219,17 +230,18 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))
-    (inc_assign
-      (variable_reference
-        (identifier)))
-    (dec_assign
-      (variable_reference
-        (identifier)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number)))
+      (inc_assign
+        (variable_reference
+          (identifier)))
+      (dec_assign
+        (variable_reference
+          (identifier))))))
 
 ================
 Labeled Statements
@@ -244,13 +256,14 @@ init
 
 (source_file
   (init
-    (labeled_statement
-      (identifier)
-      (eq_assign
-        (variable_reference
-          (identifier))
-        (const
-          (number))))))
+    (block
+      (labeled_statement
+        (identifier)
+        (eq_assign
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 Flow Control
@@ -269,19 +282,20 @@ init
 
 (source_file
   (init
-    (labeled_statement
-      (identifier)
-      (do
-        (options
-          (variable_reference
-            (identifier))
-          (goto
-            (identifier))
-          (variable_reference
-            (identifier))
-          (break))))
-    (labeled_statement
-      (identifier))))
+    (block
+      (labeled_statement
+        (identifier)
+        (do
+          (options
+            (variable_reference
+              (identifier))
+            (goto
+              (identifier))
+            (variable_reference
+              (identifier))
+            (break))))
+      (labeled_statement
+        (identifier)))))
 
 ================
 If Else
@@ -296,24 +310,25 @@ init
 
 (source_file
   (init
-    (if
-      (options
-        (eq_assign
-          (variable_reference
-            (identifier))
-          (const
-            (number)))
-        (eq_assign
-          (variable_reference
-            (identifier))
-          (const
-            (number)))
-        (else)
-        (eq_assign
-          (variable_reference
-            (identifier))
-          (const
-            (number)))))))
+    (block
+      (if
+        (options
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number)))
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number)))
+          (else)
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Unless
@@ -328,17 +343,18 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))
-    (unless
+    (block
       (eq_assign
         (variable_reference
           (identifier))
         (const
-          (number))))))
+          (number)))
+      (unless
+        (eq_assign
+          (variable_reference
+            (identifier))
+          (const
+            (number)))))))
 
 ================
 For In
@@ -353,15 +369,17 @@ init
 
 (source_file
   (init
-    (for
-      (range
-        (identifier)
-        (identifier))
-      (eq_assign
-        (variable_reference
+    (block
+      (for
+        (range
+          (identifier)
           (identifier))
-        (const
-          (number))))))
+        (block
+          (eq_assign
+            (variable_reference
+              (identifier))
+            (const
+              (number))))))))
 
 ================
 Composed Steps
@@ -378,10 +396,13 @@ proctype A()
 (source_file
   (proctype
     (identifier)
-    (variable_reference
-      (identifier))
-    (variable_reference
-      (identifier))))
+    (block
+      (xs
+        (variable_reference
+          (identifier)))
+      (xr
+        (variable_reference
+          (identifier))))))
 
 ========================================
 Printf with arguments
@@ -396,10 +417,11 @@ init
 
 (source_file
   (init
-    (printf
-      arguments: (string)
-      arguments: (variable_reference
-        (identifier)))))
+    body: (block
+      (printf
+        arguments: (string)
+        arguments: (variable_reference
+          (identifier))))))
 
 ========================================
 Printm
@@ -414,8 +436,9 @@ init
 
 (source_file
   (init
-    (printm
-      arguments: (identifier))))
+    body: (block
+      (printm
+        arguments: (identifier)))))
 
 ========================================
 Bare else statement
@@ -430,12 +453,13 @@ init
 
 (source_file
   (init
-    (else)
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (number)))))
+    body: (block
+      (else)
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (number))))))
 
 ========================================
 Atomic with unless
@@ -450,15 +474,17 @@ init
 
 (source_file
   (init
-    (atomic
-      (eq_assign
-        left: (variable_reference
-          (identifier))
-        right: (const
-          (number)))
-      (unless
-        (eq_assign
-          left: (variable_reference
-            (identifier))
-          right: (const
-            (number)))))))
+    body: (block
+      (atomic
+        body: (block
+          (eq_assign
+            left: (variable_reference
+              (identifier))
+            right: (const
+              (number)))
+          (unless
+            (eq_assign
+              left: (variable_reference
+                (identifier))
+              right: (const
+                (number)))))))))

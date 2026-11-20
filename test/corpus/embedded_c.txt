@@ -11,9 +11,10 @@ init
 
 (source_file
   (init
-    (c_code
-      (c_block
-        (content)))))
+    (block
+      (c_code
+        (c_block
+          (content))))))
 
 ================
 C Expression
@@ -28,9 +29,10 @@ init
 
 (source_file
   (init
-    (c_expr
-      (c_block
-        (content)))))
+    (block
+      (c_expr
+        (c_block
+          (content))))))
 
 ================
 C Declaration
@@ -45,9 +47,10 @@ init
 
 (source_file
   (init
-    (c_decl
-      (c_block
-        (content)))))
+    (block
+      (c_decl
+        (c_block
+          (content))))))
 
 ================
 C Track
@@ -62,9 +65,10 @@ init
 
 (source_file
   (init
-    (c_track
-      (c_block
-        (content)))))
+    (block
+      (c_track
+        (c_block
+          (content))))))
 
 ================
 C State
@@ -79,6 +83,7 @@ init
 
 (source_file
   (init
-    (c_state
-      (c_block
-        (content)))))
+    (block
+      (c_state
+        (c_block
+          (content))))))

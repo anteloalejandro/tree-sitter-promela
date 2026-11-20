@@ -11,10 +11,11 @@ init
 
 (source_file
   (init
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))))
+    (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier))))))
 
 ================
 Proctype
@@ -52,11 +53,12 @@ active [1] proctype A(byte state; short foo)
           (identifier))
         (const
           (number))))
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (variable_reference
-        (identifier)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (variable_reference
+          (identifier))))))
 
 ================
 Init
@@ -71,11 +73,12 @@ init
 
 (source_file
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number))))))
 
 ================
 Never
@@ -90,11 +93,12 @@ never
 
 (source_file
   (never
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number))))))
 
 ================
 Trace
@@ -109,11 +113,12 @@ trace
 
 (source_file
   (trace
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number))))))
 
 ================
 Utype
@@ -128,10 +133,11 @@ typedef MyType {
 (source_file
   (utype
     (identifier)
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))))
+    (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier))))))
 
 ================
 Mtype
@@ -164,17 +170,19 @@ init
 (source_file
   (proctype
     (identifier)
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number)))))
   (init
-    (eq_assign
-      (variable_reference
-        (identifier))
-      (const
-        (number)))))
+    (block
+      (eq_assign
+        (variable_reference
+          (identifier))
+        (const
+          (number))))))
 
 ================
 Module Declarations
@@ -194,6 +202,7 @@ bool MyBool;
     (signed_declaration
       (primitive_type)
       (identifier))))
+
 ========================================
 Active proctype without index
 ========================================
@@ -208,12 +217,13 @@ active proctype A()
 (source_file
   (proctype
     (active)
-    (identifier)
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (number)))))
+    name: (identifier)
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (number))))))
 
 ========================================
 Init with priority
@@ -231,11 +241,12 @@ init priority 5
     (priority
       (const
         (number)))
-    (eq_assign
-      left: (variable_reference
-        (identifier))
-      right: (const
-        (number)))))
+    body: (block
+      (eq_assign
+        left: (variable_reference
+          (identifier))
+        right: (const
+          (number))))))
 
 ========================================
 Multiple declarators
@@ -250,11 +261,12 @@ init
 
 (source_file
   (init
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        declarator: (identifier)
-        declarator: (identifier)))))
+    body: (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          declarator: (identifier)
+          declarator: (identifier))))))
 
 ========================================
 Typedef and user type usage
@@ -270,11 +282,12 @@ MyType MyVar;
 
 (source_file
   (utype
-    (identifier)
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        declarator: (identifier))))
+    name: (identifier)
+    body: (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          declarator: (identifier)))))
   (declaration
     (signed_declaration
       (user_type)

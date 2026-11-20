@@ -11,10 +11,11 @@ init
 
 (source_file
   (init
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))))
+    (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier))))))
 
 =============
 Typed Declarations
@@ -39,37 +40,38 @@ init
       (primitive_type)
       (identifier)))
   (init
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)
-        (const
-          (number))
-        (const
-          (number))))
-    (declaration
-      (unsigned_declaration
-        (identifier)
-        (const
-          (number))
-        (const
-          (number))))
-    (declaration
-      (visible)
-      (signed_declaration
-        (primitive_type)
-        (identifier)))
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)
-        (const
-          (number))
-        (ch_init
+    (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier)
           (const
             (number))
+          (const
+            (number))))
+      (declaration
+        (unsigned_declaration
+          (identifier)
+          (const
+            (number))
+          (const
+            (number))))
+      (declaration
+        (visible)
+        (signed_declaration
           (primitive_type)
-          (primitive_type))))))
+          (identifier)))
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier)
+          (const
+            (number))
+          (ch_init
+            (const
+              (number))
+            (primitive_type)
+            (primitive_type)))))))
 
 ================
 Primitive Types
@@ -87,19 +89,20 @@ init
 
 (source_file
   (init
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))
-    (declaration
-      (signed_declaration
-        (primitive_type)
-        (identifier)))))
+    (block
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier)))
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier)))
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier)))
+      (declaration
+        (signed_declaration
+          (primitive_type)
+          (identifier))))))

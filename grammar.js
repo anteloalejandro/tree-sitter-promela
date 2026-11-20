@@ -127,16 +127,19 @@ export default grammar({
 
     // root module types
     proctype: $ => seq(
-      optional($.active), "proctype", $.identifier,
-      "(", optional($._decl_lst), ")",
-      optional($.priority), optional($.enabler),
-      "{", $._proctype_sequence, "}"
+      optional($.active),
+      "proctype",
+      field("name", $.identifier),
+      "(", field(arg_field_name, optional($._decl_lst)), ")",
+      optional($.priority),
+      optional($.enabler),
+      field("body", $.block)
     ),
-    init: $ => seq("init", optional($.priority), "{", $._proctype_sequence, "}"),
-    never: $ => seq("never", "{", $._sequence, "}"),
-    trace: $ => seq("trace", "{", $._sequence, "}"),
-    utype: $ => seq("typedef", $.identifier, "{", $._decl_lst, "}"),
-    mtype: $ => seq("mtype", optional("="), "{", commaList($.identifier), "}" ),
+    init: $ => seq("init", optional($.priority), field("body", $.block)),
+    never: $ => seq("never", field("body", $.block)),
+    trace: $ => seq("trace", field("body", $.block)),
+    utype: $ => seq("typedef", field("name", $.identifier), field("body", $.block)),
+    mtype: $ => seq("mtype", optional("="), "{", field("values", commaList($.identifier)), "}" ),
     // global vars and chans
     _global_decl_lst: $ => prec.left(separatorList(alias($.global_declaration, $.declaration))),
     // NOTE: precedence based on the comma operator in C
@@ -168,7 +171,7 @@ export default grammar({
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),
     // instantiation
-    active: $ => seq("active", optional(seq("[", $.const, "]"))),
+    active: $ => seq("active", optional(seq("[", field("instances", $.const), "]"))),
     // simulation priority
     priority: $ => seq("priority", $.const),
     // execution constraints
@@ -188,27 +191,17 @@ export default grammar({
       optional(field("terminator", separator)),
       repeat($.macro),
     ),
-    _proctype_sequence: $ => seq(
-      repeat($.macro),
-      $._proctype_step,
-      repeat(seq(separator, repeat($.macro), $._proctype_step)),
-      optional(field("terminator", separator)),
-      repeat($.macro),
-    ),
-
-    _proctype_step: $ => choice(
-      $._step,
-      // NOTE: xr and xs can only appear within a proctype (init is considered a proctype).
-      // WARN: outside proctype, xr and xs are interpreted as identifiers.
-      // maybe this should be in every step and the consumer chooses if its right.
-      seq("xr", commaList($.variable_reference)),
-      seq("xs", commaList($.variable_reference)),
-    ),
 
     _step: $ => choice(
       seq($.statement, optional($.unless)),
       $._decl_lst,
+      // NOTE: xr and xs can only appear within a proctype (init is considered a proctype),
+      // but we won't handle this here.
+      $.xr, $.xs,
     ),
+
+    xr: $ => seq("xr", commaList($.variable_reference)),
+    xs: $ => seq("xs", commaList($.variable_reference)),
 
     unless: $ => seq("unless", $.statement),
 
@@ -314,9 +307,9 @@ export default grammar({
 
     if: $ => seq("if", $.options, "fi"),
     do: $ => seq("do", $.options, "od"),
-    for: $ => seq("for", "(", $.range, ")", "{", $._sequence, "}"),
-    atomic: $ => seq("atomic", "{", $._sequence, "}"),
-    d_step: $ => seq("d_step", "{", $._sequence, "}"),
+    for: $ => seq("for", "(", $.range, ")", field("body", $.block)),
+    atomic: $ => seq("atomic", field("body", $.block)),
+    d_step: $ => seq("d_step", field("body", $.block)),
     select: $ => fnCall("select", $.range),
     goto: $ => seq("goto", field("label", $.identifier)),
     block: $ => seq("{", $._sequence, "}"),
