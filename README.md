@@ -17,6 +17,7 @@ To build this grammar from source you'll need:
 - Macros can be declared in the top level or as steps in the sequence of steps inside module. That is to say, they act basically as statements, but they can't be used before or after `unless`, and they can't be used after a label.
 - Macro declarations don't create and organized tree like in `tree-sitter-c`, the nodes are flattened instead (see the [macros tests](test/corpus/macros.txt)).
 - This grammar does not check if the syntax is correct (or not) after the C compiler processes the macros in the source code. 
+- `xr` and `xs` can show up in any top level module, although they are only allowed inside `proctype` and `init` blocks. Left it like this because they will be confused with custom types otherwise.
 
 ## Contributing
 
