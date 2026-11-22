@@ -114,15 +114,19 @@ export default grammar({
   rules: {
     source_file: $ => repeat($._module),
 
-    _module: $ => choice(
-      $.proctype,
-      $.init,
-      $.never,
-      $.trace,
-      $.utype,
-      $.mtype,
-      $._global_decl_lst,
-      $.macro,
+    _module: $ => seq(
+      choice(
+        $.proctype,
+        $.init,
+        $.never,
+        $.trace,
+        $.utype,
+        $.mtype,
+        $._global_decl_lst,
+        $.macro,
+      ),
+      // This shouldn't be allowed, but spin allows it.
+      optional(";")
     ),
 
     // root module types
