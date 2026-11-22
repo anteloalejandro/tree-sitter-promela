@@ -80,7 +80,7 @@
         },
         {
           "type": "FIELD",
-          "name": "arguments",
+          "name": "parameters",
           "content": {
             "type": "CHOICE",
             "members": [
@@ -224,8 +224,17 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "mtype"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "mtype"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "subtype"
+            }
+          ]
         },
         {
           "type": "CHOICE",
@@ -275,6 +284,23 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "subtype": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "mtype"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
         }
       ]
     },
@@ -636,6 +662,10 @@
         {
           "type": "SYMBOL",
           "name": "primitive_type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "subtype"
         },
         {
           "type": "ALIAS",

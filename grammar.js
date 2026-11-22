@@ -130,7 +130,7 @@ export default grammar({
       optional($.active),
       "proctype",
       field("name", $.identifier),
-      "(", field(arg_field_name, optional($._decl_lst)), ")",
+      "(", field("parameters", optional($._decl_lst)), ")",
       optional($.priority),
       optional($.enabler),
       field("body", $.block)
@@ -139,7 +139,12 @@ export default grammar({
     never: $ => seq("never", field("body", $.block)),
     trace: $ => seq("trace", field("body", $.block)),
     utype: $ => seq("typedef", field("name", $.identifier), field("body", $.block)),
-    mtype: $ => seq("mtype", optional("="), "{", field("values", commaList($.identifier)), "}" ),
+    mtype: $ => seq(
+      choice("mtype", $.subtype),
+      optional("="),
+      "{", field("values", commaList($.identifier)), "}"
+    ),
+    subtype: $ => seq("mtype", ":", $.identifier),
     // global vars and chans
     _global_decl_lst: $ => prec.left(separatorList(alias($.global_declaration, $.declaration))),
     // NOTE: precedence based on the comma operator in C
@@ -166,7 +171,11 @@ export default grammar({
       "unsigned", $.identifier, ":", field("size", $.const),
       optional(seq("=", field("value", $._any_expr)))
     ),
-    typename: $ => choice($.primitive_type, alias($.identifier, $.user_type)),
+    typename: $ => choice(
+      $.primitive_type,
+      $.subtype,
+      alias($.identifier, $.user_type)
+    ),
     primitive_type: _ => choice(
       "bit", "bool", "byte", "short", "int", "mtype", "chan"
     ),
