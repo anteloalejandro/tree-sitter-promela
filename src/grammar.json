@@ -47,6 +47,10 @@
             {
               "type": "SYMBOL",
               "name": "macro"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "inline"
             }
           ]
         },
@@ -318,6 +322,35 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
+        }
+      ]
+    },
+    "inline": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "inline"
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "parameters",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_arguments"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "block"
         }
       ]
     },
@@ -1659,6 +1692,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "assert"
+        },
+        {
+          "type": "SYMBOL",
           "name": "expression"
         },
         {
@@ -1941,6 +1978,35 @@
           "content": {
             "type": "SYMBOL",
             "name": "identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "assert": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "STRING",
+            "value": "assert"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "arguments",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expression"
           }
         },
         {
@@ -3031,15 +3097,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "builtin_call"
-        },
-        {
-          "type": "SYMBOL",
           "name": "remote_reference"
         },
         {
           "type": "SYMBOL",
-          "name": "preproc_call_expression"
+          "name": "_call_expr"
         }
       ]
     },
@@ -3282,6 +3344,79 @@
               ]
             }
           ]
+        }
+      ]
+    },
+    "inline_call": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "function",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "arguments",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_arguments"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "_call_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "preproc_call_expression"
+            },
+            "named": true,
+            "value": "call_expression"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "inline_call"
+            },
+            "named": true,
+            "value": "call_expression"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": 3,
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "builtin_call"
+            },
+            "named": true,
+            "value": "call_expression"
+          }
         }
       ]
     },
@@ -5581,7 +5716,13 @@
       "name": "comment"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "variable_reference",
+      "inline_call",
+      "preproc_call_expression"
+    ]
+  ],
   "precedences": [],
   "externals": [],
   "inline": [],

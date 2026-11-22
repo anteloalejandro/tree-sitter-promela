@@ -114,11 +114,12 @@ init
       (eq_assign
         left: (variable_reference
           (identifier))
-        right: (preproc_call_expression
+        right: (call_expression
           function: (identifier)
-          arguments: (preproc_argument_list
-            (identifier)
-            (preproc_number_literal)))))))
+          arguments: (variable_reference
+            (identifier))
+          arguments: (const
+            (number)))))))
 
 ========================================
 Variadic macro definition and use
@@ -143,12 +144,14 @@ init
       (eq_assign
         left: (variable_reference
           (identifier))
-        right: (preproc_call_expression
+        right: (call_expression
           function: (identifier)
-          arguments: (preproc_argument_list
-            (preproc_number_literal)
-            (preproc_number_literal)
-            (preproc_number_literal)))))))
+          arguments: (const
+            (number))
+          arguments: (const
+            (number))
+          arguments: (const
+            (number)))))))
 
 ===============================================
 Conditional compilation with elifdef / elifndef

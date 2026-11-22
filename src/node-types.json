@@ -52,11 +52,11 @@
         "named": true
       },
       {
-        "type": "builtin_call",
+        "type": "builtin_const",
         "named": true
       },
       {
-        "type": "builtin_const",
+        "type": "call_expression",
         "named": true
       },
       {
@@ -77,10 +77,6 @@
       },
       {
         "type": "poll",
-        "named": true
-      },
-      {
-        "type": "preproc_call_expression",
         "named": true
       },
       {
@@ -161,6 +157,10 @@
     "type": "statement",
     "named": true,
     "subtypes": [
+      {
+        "type": "assert",
+        "named": true
+      },
       {
         "type": "assign",
         "named": true
@@ -260,6 +260,32 @@
           {
             "type": "const",
             "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "assert",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "assert",
+            "named": false
           }
         ]
       }
@@ -441,70 +467,6 @@
     "fields": {}
   },
   {
-    "type": "builtin_call",
-    "named": true,
-    "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "function": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "enabled",
-            "named": false
-          },
-          {
-            "type": "get_priority",
-            "named": false
-          },
-          {
-            "type": "len",
-            "named": false
-          },
-          {
-            "type": "pc_value",
-            "named": false
-          },
-          {
-            "type": "run",
-            "named": false
-          },
-          {
-            "type": "set_priority",
-            "named": false
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "priority",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "builtin_const",
     "named": true,
     "fields": {}
@@ -600,6 +562,78 @@
     }
   },
   {
+    "type": "call_expression",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "preproc_argument_list",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "enabled",
+            "named": false
+          },
+          {
+            "type": "get_priority",
+            "named": false
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "len",
+            "named": false
+          },
+          {
+            "type": "pc_value",
+            "named": false
+          },
+          {
+            "type": "run",
+            "named": false
+          },
+          {
+            "type": "set_priority",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "priority",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ch_init",
     "named": true,
     "fields": {
@@ -669,11 +703,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -690,10 +724,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -719,11 +749,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -740,10 +770,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -769,11 +795,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -790,10 +816,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -979,11 +1001,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -1000,10 +1022,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -1126,6 +1144,72 @@
       "types": [
         {
           "type": "priority",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "inline",
+    "named": true,
+    "fields": {
+      "parameters": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_const",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
+            "type": "const",
+            "named": true
+          },
+          {
+            "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "poll",
+            "named": true
+          },
+          {
+            "type": "remote_reference",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "variable_reference",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
           "named": true
         }
       ]
@@ -1274,11 +1358,11 @@
           "named": true
         },
         {
-          "type": "builtin_call",
+          "type": "builtin_const",
           "named": true
         },
         {
-          "type": "builtin_const",
+          "type": "call_expression",
           "named": true
         },
         {
@@ -1299,10 +1383,6 @@
         },
         {
           "type": "poll",
-          "named": true
-        },
-        {
-          "type": "preproc_call_expression",
           "named": true
         },
         {
@@ -2044,11 +2124,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2065,10 +2145,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2241,11 +2317,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2262,10 +2338,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2301,11 +2373,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2322,10 +2394,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2427,11 +2495,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2448,10 +2516,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2541,11 +2605,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2562,10 +2626,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2619,11 +2679,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2648,10 +2708,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2687,11 +2743,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2712,10 +2768,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -2777,6 +2829,10 @@
           "named": true
         },
         {
+          "type": "inline",
+          "named": true
+        },
+        {
           "type": "macro",
           "named": true
         },
@@ -2821,11 +2877,11 @@
           "named": true
         },
         {
-          "type": "builtin_call",
+          "type": "builtin_const",
           "named": true
         },
         {
-          "type": "builtin_const",
+          "type": "call_expression",
           "named": true
         },
         {
@@ -2842,10 +2898,6 @@
         },
         {
           "type": "poll",
-          "named": true
-        },
-        {
-          "type": "preproc_call_expression",
           "named": true
         },
         {
@@ -2907,11 +2959,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -2928,10 +2980,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -3006,11 +3054,11 @@
             "named": true
           },
           {
-            "type": "builtin_call",
+            "type": "builtin_const",
             "named": true
           },
           {
-            "type": "builtin_const",
+            "type": "call_expression",
             "named": true
           },
           {
@@ -3027,10 +3075,6 @@
           },
           {
             "type": "poll",
-            "named": true
-          },
-          {
-            "type": "preproc_call_expression",
             "named": true
           },
           {
@@ -3377,6 +3421,10 @@
     "named": false
   },
   {
+    "type": "assert",
+    "named": false
+  },
+  {
     "type": "atomic",
     "named": false
   },
@@ -3499,6 +3547,10 @@
   },
   {
     "type": "init",
+    "named": false
+  },
+  {
+    "type": "inline",
     "named": false
   },
   {

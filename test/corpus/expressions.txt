@@ -191,7 +191,7 @@ init
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (variable_reference
             (identifier)))))))
 
@@ -313,30 +313,30 @@ init
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (const
             (number))))
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (const
             (number))))
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (identifier)))
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (const
             (number))))
       (eq_assign
         (variable_reference
           (identifier))
-        (builtin_call
+        (call_expression
           (variable_reference
             (identifier))
           (const

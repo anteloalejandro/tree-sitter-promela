@@ -91,6 +91,11 @@ export default grammar({
   // so ifmyvar can no longer be parsed as "if" and "myvar", and is parsed as "ifmyvar" instead.
   word: $ => $.identifier,
 
+  conflicts: $ => [
+    // [$.inline_call, $.preproc_call_expression] should suffice, but this works for now
+    [$.variable_reference, $.inline_call, $.preproc_call_expression],
+  ],
+
   // things to ignore when lexing. must be tokens.
   extras: $ => [
     // INFO: Lifted from tree-sitter-c
@@ -124,6 +129,8 @@ export default grammar({
         $.mtype,
         $._global_decl_lst,
         $.macro,
+        // INFO: https://spinroot.com/spin/Man/inline.html
+        $.inline,
       ),
       // This shouldn't be allowed, but spin allows it.
       optional(";")
@@ -149,6 +156,9 @@ export default grammar({
       "{", field("values", commaList($.identifier)), "}"
     ),
     subtype: $ => seq("mtype", ":", $.identifier),
+
+    inline: $ => seq("inline", "(", field("parameters", $._arguments), ")", $.block),
+
     // global vars and chans
     _global_decl_lst: $ => prec.left(separatorList(alias($.global_declaration, $.declaration))),
     // NOTE: precedence based on the comma operator in C
@@ -313,6 +323,7 @@ export default grammar({
       $.goto,
       $.labeled_statement,
       $.print,
+      $.assert,
       $.expression,
 
       $.embedded_c
@@ -341,6 +352,8 @@ export default grammar({
 
     printf: $ => fnCall("printf", seq($.string, optional(seq(",", $._arguments)))),
     printm: $ => fnCall("printm", $.identifier),
+
+    assert: $ => fnCall("assert", $.expression),
 
     embedded_c: $ => choice(
       $.c_code,
@@ -455,10 +468,8 @@ export default grammar({
       $.variable_reference,
       $.const,
       $.builtin_const,
-      $.builtin_call,
       $.remote_reference,
-      // from preproc.js
-      $.preproc_call_expression
+      $._call_expr,
     ),
 
     _expr: $ => choice(
@@ -482,6 +493,14 @@ export default grammar({
         "(", field(arg_field_name, optional($._arguments)), ")",
         optional($.priority)
       ),
+    ),
+
+    inline_call: $ => fnCall($.identifier, $._arguments),
+
+    _call_expr: $ => choice(
+      prec(1, alias($.preproc_call_expression, $.call_expression)),
+      prec(2, alias($.inline_call, $.call_expression)),
+      prec(3, alias($.builtin_call, $.call_expression)),
     ),
 
     paren_expr: $ => seq("(", $._any_expr, ")"),
