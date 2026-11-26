@@ -93,7 +93,7 @@ export default grammar({
 
   conflicts: $ => [
     // [$.inline_call, $.preproc_call_expression] should suffice, but this works for now
-    [$.variable_reference, $.inline_call, $.preproc_call_expression],
+    [$.variable_reference, $.inline_call, $.preproc_call_expression, $.const],
   ],
 
   // things to ignore when lexing. must be tokens.
@@ -560,6 +560,9 @@ export default grammar({
       alias("skip", $.skip),
       // NOTE: Not mentioned in the grammar, but spin supports chars.
       $.char,
+      // NOTE: To properly support #define preproc macros,
+      // everywhere a const can appear, so can an identifier.
+      alias($.identifier, $.defined_macro)
     ),
     boolean: _ => choice("true", "false"),
     number: _ => /[0-9]+/,

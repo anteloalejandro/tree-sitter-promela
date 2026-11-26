@@ -3742,6 +3742,15 @@
         {
           "type": "SYMBOL",
           "name": "char"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          },
+          "named": true,
+          "value": "defined_macro"
         }
       ]
     },
@@ -5873,7 +5882,8 @@
     [
       "variable_reference",
       "inline_call",
-      "preproc_call_expression"
+      "preproc_call_expression",
+      "const"
     ]
   ],
   "precedences": [],

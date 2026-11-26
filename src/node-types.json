@@ -870,6 +870,10 @@
           "named": true
         },
         {
+          "type": "defined_macro",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
@@ -3501,6 +3505,10 @@
   {
     "type": "defined",
     "named": false
+  },
+  {
+    "type": "defined_macro",
+    "named": true
   },
   {
     "type": "do",
