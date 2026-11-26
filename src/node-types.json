@@ -1181,6 +1181,16 @@
     "type": "inline",
     "named": true,
     "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
       "parameters": {
         "multiple": true,
         "required": true,
@@ -1190,43 +1200,7 @@
             "named": false
           },
           {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "builtin_const",
-            "named": true
-          },
-          {
-            "type": "call_expression",
-            "named": true
-          },
-          {
-            "type": "conditional_expression",
-            "named": true
-          },
-          {
-            "type": "const",
-            "named": true
-          },
-          {
-            "type": "paren_expr",
-            "named": true
-          },
-          {
-            "type": "poll",
-            "named": true
-          },
-          {
-            "type": "remote_reference",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "variable_reference",
+            "type": "identifier",
             "named": true
           }
         ]

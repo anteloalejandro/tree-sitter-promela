@@ -157,7 +157,13 @@ export default grammar({
     ),
     subtype: $ => seq("mtype", ":", $.identifier),
 
-    inline: $ => seq("inline", "(", field("parameters", $._arguments), ")", $.block),
+    inline: $ => seq("inline",
+      field("name", $.identifier),
+      "(",
+      field("parameters", commaList($.identifier)),
+      ")",
+      $.block
+    ),
 
     // global vars and chans
     _global_decl_lst: $ => prec.left(separatorList(alias($.global_declaration, $.declaration))),
