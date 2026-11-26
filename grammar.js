@@ -527,10 +527,24 @@ export default grammar({
 
     chanpoll: _ => choice("full", "empty", "nfull", "nempty"),
 
-    string: $ => seq('"', repeat($._any_ascii_char), '"'),
-    // NOTE: the spin compiler allows '"', as long as it is preceded by a '\'
-    _any_ascii_char: _ => choice(/[^"]/, "\\\""),
-
+    string: $ => seq(
+      '"',
+      repeat(choice(
+        alias(token.immediate(prec(1, /[^\\"\n]+/)), $.string_content),
+        alias($.string_escape_sequence, $.escape_sequence)
+      )),
+      '"',
+    ),
+    string_escape_sequence: _ => token(prec(1, seq(
+      '\\',
+      choice(
+        /[^xuU]/,
+        /\d{2,3}/,
+        /x[0-9a-fA-F]{1,4}/,
+        /u[0-9a-fA-F]{4}/,
+        /U[0-9a-fA-F]{8}/,
+      ),
+    ))),
     // previously "name"
     // use token to parse as a single token instead of as a sequence of tokens
     identifier: _ => /[_a-zA-Z][_a-zA-Z0-9]*/,
@@ -538,9 +552,22 @@ export default grammar({
       $.boolean,
       $.number,
       alias("skip", $.skip),
+      // NOTE: Not mentioned in the grammar, but spin supports chars.
+      $.char,
     ),
     boolean: _ => choice("true", "false"),
     number: _ => /[0-9]+/,
+    char: $ => seq(
+      "'",
+      repeat1(prec(1, choice(
+        alias($.char_escape_sequence, $.escape_sequence),
+        alias(token.immediate(/[^\n']/), $.character),
+      ))),
+      "'"
+    ),
+    char_escape_sequence: _ => token(prec(1, seq(
+      '\\', /[^\\]/
+    ))),
 
     // INFO: Lifted from tree-sitter-c
     // https://github.com/tree-sitter/tree-sitter-c/blob/b780e47fc780ddc8da13afa35a3f4ed5c157823d/grammar.js#L1361

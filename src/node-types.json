@@ -691,6 +691,25 @@
     }
   },
   {
+    "type": "char",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "character",
+          "named": true
+        },
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "conditional_expression",
     "named": true,
     "fields": {
@@ -844,6 +863,10 @@
       "types": [
         {
           "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "char",
           "named": true
         },
         {
@@ -1039,6 +1062,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "escape_sequence",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "for",
@@ -1816,6 +1844,11 @@
   },
   {
     "type": "preproc_endif",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "preproc_escape_sequence",
     "named": true,
     "fields": {}
   },
@@ -2862,7 +2895,21 @@
   {
     "type": "string",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "string_content",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "subscript",
@@ -3405,10 +3452,6 @@
     "named": false
   },
   {
-    "type": "\\\"",
-    "named": false
-  },
-  {
     "type": "]",
     "named": false
   },
@@ -3599,10 +3642,6 @@
   },
   {
     "type": "preproc_arg",
-    "named": true
-  },
-  {
-    "type": "preproc_escape_sequence",
     "named": true
   },
   {

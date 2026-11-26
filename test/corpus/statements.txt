@@ -419,7 +419,8 @@ init
   (init
     body: (block
       (printf
-        arguments: (string)
+        arguments: (string
+          (string_content))
         arguments: (variable_reference
           (identifier))))))
 
